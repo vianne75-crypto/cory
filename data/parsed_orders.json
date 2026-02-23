@@ -1,0 +1,5552 @@
+[
+  {
+    "id": 1,
+    "name": "강진구보건소",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "강진군",
+    "lat": 34.9097,
+    "lng": 126.8485,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-02-13"
+  },
+  {
+    "id": 2,
+    "name": "한국기술교육대학교",
+    "type": "학교/대학",
+    "region": "충청남도",
+    "district": "천안시",
+    "lat": 36.4509,
+    "lng": 126.717,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 6120,
+    "purchaseAmount": 8040000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2026-02-11"
+  },
+  {
+    "id": 3,
+    "name": "청주시서원보건소",
+    "type": "보건소",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": 36.7066,
+    "lng": 127.5447,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 10,
+    "purchaseAmount": 50000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-02-11"
+  },
+  {
+    "id": 4,
+    "name": "청주시서원보건소건강증진팀",
+    "type": "보건소",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": 36.7534,
+    "lng": 127.3678,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 10,
+    "purchaseAmount": 42000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-02-11"
+  },
+  {
+    "id": 5,
+    "name": "이천시보건소",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "원주시",
+    "lat": 37.7994,
+    "lng": 128.0144,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 681000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-02-10"
+  },
+  {
+    "id": 6,
+    "name": "전북특별자치도 정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.7359,
+    "lng": 127.1105,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-02-04"
+  },
+  {
+    "id": 7,
+    "name": "횡성군보건소",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "횡성군",
+    "lat": 37.6808,
+    "lng": 128.0652,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 2856,
+    "purchaseAmount": 3985000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2026-02-03"
+  },
+  {
+    "id": 8,
+    "name": "국민건강보험공단 김제지사",
+    "type": "광역시도 건강증진부서",
+    "region": "전북특별자치도",
+    "district": "김제시",
+    "lat": 35.8653,
+    "lng": 127.1224,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 492000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-01-30"
+  },
+  {
+    "id": 9,
+    "name": "국민건강보험공단 김제지사 2026년 캠페인 홍보 물품 납품",
+    "type": "광역시도 건강증진부서",
+    "region": "전북특별자치도",
+    "district": "김제시",
+    "lat": 35.7364,
+    "lng": 127.1357,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 409500,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-01-30"
+  },
+  {
+    "id": 10,
+    "name": "함평군보건소",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "함평군",
+    "lat": 34.9607,
+    "lng": 126.8429,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-01-27"
+  },
+  {
+    "id": 11,
+    "name": "경상북도 구미시 선산읍 선주로 121 선산보건소 건강증진팀 조윤호 T.054-480-4134",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "구미시",
+    "lat": 36.5836,
+    "lng": 128.9483,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 955000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-01-14"
+  },
+  {
+    "id": 12,
+    "name": "조은요양병원",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "평택시",
+    "lat": 37.3659,
+    "lng": 127.4149,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2,
+    "purchaseAmount": 8400,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-01-05"
+  },
+  {
+    "id": 13,
+    "name": "김해중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경상남도",
+    "district": "김해시",
+    "lat": 35.5978,
+    "lng": 128.1642,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 1602,
+    "purchaseAmount": 2770168,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-12-26"
+  },
+  {
+    "id": 14,
+    "name": "진주중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경상남도",
+    "district": "진주시",
+    "lat": 35.3384,
+    "lng": 128.0922,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1100,
+    "purchaseAmount": 2310000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-26"
+  },
+  {
+    "id": 15,
+    "name": "삼척시정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "강원특별자치도",
+    "district": "삼척시",
+    "lat": 37.927,
+    "lng": 128.1866,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1702,
+    "purchaseAmount": 2867020,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-12-23"
+  },
+  {
+    "id": 16,
+    "name": "파주시중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경기도",
+    "district": "파주시",
+    "lat": 37.5059,
+    "lng": 127.5872,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1413,
+    "purchaseAmount": 987500,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-12-22"
+  },
+  {
+    "id": 17,
+    "name": "군위군보건소",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "군위군",
+    "lat": 35.8823,
+    "lng": 128.7433,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 1752,
+    "purchaseAmount": 3975000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-19"
+  },
+  {
+    "id": 18,
+    "name": "광진구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": 37.5301,
+    "lng": 126.9936,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 9556,
+    "purchaseAmount": 3655000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-12-18"
+  },
+  {
+    "id": 19,
+    "name": "부산중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "부산광역시",
+    "district": "서구",
+    "lat": 35.2784,
+    "lng": 129.1112,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 7310,
+    "purchaseAmount": 9051000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-12-17"
+  },
+  {
+    "id": 20,
+    "name": "대구광역시청",
+    "type": "공공기관(기타)",
+    "region": "대구광역시",
+    "district": "중구",
+    "lat": 35.9799,
+    "lng": 128.6246,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 1665,
+    "purchaseAmount": 2789530,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-16"
+  },
+  {
+    "id": 21,
+    "name": "통영시보건소",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "통영시",
+    "lat": 35.522,
+    "lng": 128.0769,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1030,
+    "purchaseAmount": 2272000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-12-15"
+  },
+  {
+    "id": 22,
+    "name": "구미중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경상북도",
+    "district": "구미시",
+    "lat": 36.4103,
+    "lng": 128.8257,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-15"
+  },
+  {
+    "id": 23,
+    "name": "군포시 산본보건지소",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "군포시",
+    "lat": 37.2877,
+    "lng": 127.4381,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 1300,
+    "purchaseAmount": 2730000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-12-12"
+  },
+  {
+    "id": 24,
+    "name": "포항북구보건소",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "포항시",
+    "lat": 36.3722,
+    "lng": 128.8223,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 955000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-08"
+  },
+  {
+    "id": 25,
+    "name": "남양주시 동부보건소",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.4545,
+    "lng": 127.4777,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-05"
+  },
+  {
+    "id": 26,
+    "name": "정선고등학교",
+    "type": "학교/대학",
+    "region": "강원특별자치도",
+    "district": "정선군",
+    "lat": 37.7839,
+    "lng": 128.0684,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 110,
+    "purchaseAmount": 330000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-02"
+  },
+  {
+    "id": 27,
+    "name": "제주중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "제주특별자치도",
+    "district": "제주시",
+    "lat": 33.4191,
+    "lng": 126.6293,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 360,
+    "purchaseAmount": 900000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-02"
+  },
+  {
+    "id": 28,
+    "name": "여수시보건소",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "여수시",
+    "lat": 34.9123,
+    "lng": 127.0237,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1500,
+    "purchaseAmount": 2355000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-12-01"
+  },
+  {
+    "id": 29,
+    "name": "경상남도광역정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "경상남도",
+    "district": "창원시",
+    "lat": 35.3619,
+    "lng": 128.2819,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1908,
+    "purchaseAmount": 1333000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-11-26"
+  },
+  {
+    "id": 30,
+    "name": "충북광역정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": 36.5347,
+    "lng": 127.4555,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 550,
+    "purchaseAmount": 863500,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-25"
+  },
+  {
+    "id": 31,
+    "name": "대전광역정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "대전광역시",
+    "district": "중구",
+    "lat": 36.4973,
+    "lng": 127.4265,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 8102,
+    "purchaseAmount": 7500000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-24"
+  },
+  {
+    "id": 32,
+    "name": "구지언(창원중독관리통합지원센터)",
+    "type": "중독관리통합지원센터",
+    "region": "기타",
+    "district": "창원시",
+    "lat": 36.5171,
+    "lng": 127.5554,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 9000,
+    "purchaseAmount": 6000000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-11-24"
+  },
+  {
+    "id": 33,
+    "name": "강북구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "강북구",
+    "lat": 37.6694,
+    "lng": 127.0608,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 4240,
+    "purchaseAmount": 4200000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-11-24"
+  },
+  {
+    "id": 34,
+    "name": "우산건강생활지원센터",
+    "type": "광역시도 건강증진부서",
+    "region": "광주광역시",
+    "district": "광산구",
+    "lat": 35.0782,
+    "lng": 126.7122,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2400,
+    "purchaseAmount": 3768000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-24"
+  },
+  {
+    "id": 35,
+    "name": "서울여자대학교 금연 캠페인 프로젝트팀 포장불가",
+    "type": "금연지원센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": 37.5111,
+    "lng": 126.9083,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 80,
+    "purchaseAmount": 248000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-21"
+  },
+  {
+    "id": 36,
+    "name": "성동구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "성동구",
+    "lat": 37.4798,
+    "lng": 127.1109,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 900,
+    "purchaseAmount": 1890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-20"
+  },
+  {
+    "id": 37,
+    "name": "동해시정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "강원특별자치도",
+    "district": "동해시",
+    "lat": 37.9357,
+    "lng": 128.0999,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-20"
+  },
+  {
+    "id": 38,
+    "name": "아산시보건소",
+    "type": "보건소",
+    "region": "충청남도",
+    "district": "아산시",
+    "lat": 36.565,
+    "lng": 126.7687,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 1835000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-20"
+  },
+  {
+    "id": 39,
+    "name": "국군포천병원 외래간호과(건강증진실)",
+    "type": "광역시도 건강증진부서",
+    "region": "경기도",
+    "district": "포천시",
+    "lat": 37.5382,
+    "lng": 127.506,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 201,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-19"
+  },
+  {
+    "id": 40,
+    "name": "보건소",
+    "type": "보건소",
+    "region": "기타",
+    "district": "괴산군",
+    "lat": 36.4295,
+    "lng": 127.424,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 340,
+    "purchaseAmount": 771800,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-19"
+  },
+  {
+    "id": 41,
+    "name": "광문고등학교",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "강동구",
+    "lat": 37.5849,
+    "lng": 126.9068,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 680,
+    "purchaseAmount": 1700000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-18"
+  },
+  {
+    "id": 42,
+    "name": "대전서구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "대전광역시",
+    "district": "서구",
+    "lat": 36.3758,
+    "lng": 127.5038,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 600,
+    "purchaseAmount": 1260000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-13"
+  },
+  {
+    "id": 43,
+    "name": "울릉군보건의료원",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "울릉군",
+    "lat": 36.4617,
+    "lng": 128.8047,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 602,
+    "purchaseAmount": 1410000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-11-13"
+  },
+  {
+    "id": 44,
+    "name": "제주보건소",
+    "type": "보건소",
+    "region": "제주특별자치도",
+    "district": "제주시",
+    "lat": 33.6383,
+    "lng": 126.5012,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 3000,
+    "purchaseAmount": 1780000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-11-12"
+  },
+  {
+    "id": 45,
+    "name": "구미건강생활지원센터",
+    "type": "광역시도 건강증진부서",
+    "region": "경상북도",
+    "district": "안동시",
+    "lat": 36.3692,
+    "lng": 128.753,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 501,
+    "purchaseAmount": 955000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-11"
+  },
+  {
+    "id": 46,
+    "name": "포항보건소",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "포항시",
+    "lat": 36.3748,
+    "lng": 128.9271,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 955000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-10"
+  },
+  {
+    "id": 47,
+    "name": "김포시청",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "김포시",
+    "lat": 37.5014,
+    "lng": 127.4949,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 55,
+    "purchaseAmount": 231000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-10"
+  },
+  {
+    "id": 48,
+    "name": "남양주보건소",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.2829,
+    "lng": 127.4828,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 1102,
+    "purchaseAmount": 1830000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-11-10"
+  },
+  {
+    "id": 49,
+    "name": "무주군보건의료원",
+    "type": "보건소",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.9691,
+    "lng": 127.1176,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 200,
+    "purchaseAmount": 656000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-06"
+  },
+  {
+    "id": 50,
+    "name": "김해시보건소",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "김해시",
+    "lat": 35.6019,
+    "lng": 128.3214,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1234,
+    "purchaseAmount": 2789300,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-04"
+  },
+  {
+    "id": 51,
+    "name": "국군수도병원",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "성남시",
+    "lat": 37.2672,
+    "lng": 127.5845,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 250,
+    "purchaseAmount": 930000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-04"
+  },
+  {
+    "id": 52,
+    "name": "서초구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "서초구",
+    "lat": 37.621,
+    "lng": 126.9891,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 3266,
+    "purchaseAmount": 3690000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-11-03"
+  },
+  {
+    "id": 53,
+    "name": "무안군보건소",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "무안군",
+    "lat": 34.7979,
+    "lng": 127.0333,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1200,
+    "purchaseAmount": 1283000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-11-03"
+  },
+  {
+    "id": 54,
+    "name": "중1동행정복지센터",
+    "type": "복지기관",
+    "region": "부산광역시",
+    "district": "해운대구",
+    "lat": 35.0631,
+    "lng": 129.056,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 450000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-29"
+  },
+  {
+    "id": 55,
+    "name": "부산기장군보건소",
+    "type": "보건소",
+    "region": "부산광역시",
+    "district": "기장군",
+    "lat": 35.1657,
+    "lng": 129.2117,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 1100,
+    "purchaseAmount": 1727000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-29"
+  },
+  {
+    "id": 56,
+    "name": "동대문구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": 37.6793,
+    "lng": 126.907,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 600,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-28"
+  },
+  {
+    "id": 57,
+    "name": "춘천시보건소",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": 37.823,
+    "lng": 128.0591,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-27"
+  },
+  {
+    "id": 58,
+    "name": "완산고등학교",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.9441,
+    "lng": 127.2201,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 50,
+    "purchaseAmount": 210000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-24"
+  },
+  {
+    "id": 59,
+    "name": "금산군보건소",
+    "type": "보건소",
+    "region": "대전광역시",
+    "district": "유성구",
+    "lat": 36.2899,
+    "lng": 127.4262,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 742,
+    "purchaseAmount": 842170,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-22"
+  },
+  {
+    "id": 60,
+    "name": "구미시보건소",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "안동시",
+    "lat": 36.5246,
+    "lng": 128.7848,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 501,
+    "purchaseAmount": 955000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-22"
+  },
+  {
+    "id": 61,
+    "name": "상경중학교",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": 37.6453,
+    "lng": 126.9898,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 120,
+    "purchaseAmount": 367200,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-22"
+  },
+  {
+    "id": 62,
+    "name": "덕양구보건소",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "고양시",
+    "lat": 37.4974,
+    "lng": 127.5274,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 561000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-22"
+  },
+  {
+    "id": 63,
+    "name": "60사단 의무대",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "고양시",
+    "lat": 37.264,
+    "lng": 127.4655,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1038,
+    "purchaseAmount": 959700,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-10-20"
+  },
+  {
+    "id": 64,
+    "name": "옹진군보건소",
+    "type": "보건소",
+    "region": "인천광역시",
+    "district": "부평구",
+    "lat": 37.3121,
+    "lng": 126.8339,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 1552,
+    "purchaseAmount": 2774500,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-10-20"
+  },
+  {
+    "id": 65,
+    "name": "조은영(마포구정신건강복지센터)",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "마포구",
+    "lat": 37.6801,
+    "lng": 127.0775,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 250,
+    "purchaseAmount": 525000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-14"
+  },
+  {
+    "id": 66,
+    "name": "보령시보건소",
+    "type": "보건소",
+    "region": "충청남도",
+    "district": "공주시",
+    "lat": 36.4607,
+    "lng": 126.6674,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 380,
+    "purchaseAmount": 862600,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-10-14"
+  },
+  {
+    "id": 67,
+    "name": "도봉중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "서울특별시",
+    "district": "도봉구",
+    "lat": 37.6799,
+    "lng": 127.1121,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 2753,
+    "purchaseAmount": 2550000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-10-10"
+  },
+  {
+    "id": 68,
+    "name": "한국보훈복지의료공단 광주보훈병원",
+    "type": "공공기관(기타)",
+    "region": "광주광역시",
+    "district": "광산구",
+    "lat": 35.0352,
+    "lng": 126.8484,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 302,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-30"
+  },
+  {
+    "id": 69,
+    "name": "대구북구보건소",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "북구",
+    "lat": 35.7422,
+    "lng": 128.6796,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-30"
+  },
+  {
+    "id": 70,
+    "name": "서울시통합건강증진사업지원단",
+    "type": "광역시도 건강증진부서",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": 37.6463,
+    "lng": 126.8665,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 400,
+    "purchaseAmount": 1000000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-30"
+  },
+  {
+    "id": 71,
+    "name": "약학대학 학부실습 과정에 사용 예정",
+    "type": "학교/대학",
+    "region": "인천광역시",
+    "district": "연수구",
+    "lat": 37.4489,
+    "lng": 126.7201,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 40,
+    "purchaseAmount": 117600,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-30"
+  },
+  {
+    "id": 72,
+    "name": "마포구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "마포구",
+    "lat": 37.496,
+    "lng": 127.0897,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 2772,
+    "purchaseAmount": 2349600,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-09-26"
+  },
+  {
+    "id": 73,
+    "name": "국립정신건강센터 정신건강사업과 키트 제작",
+    "type": "정신건강복지센터",
+    "region": "경기도",
+    "district": "평택시",
+    "lat": 37.3907,
+    "lng": 127.4318,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 955000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-22"
+  },
+  {
+    "id": 74,
+    "name": "부산가톨릭대학교중독이음센터",
+    "type": "중독관리통합지원센터",
+    "region": "부산광역시",
+    "district": "금정구",
+    "lat": 35.1914,
+    "lng": 129.1446,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1936,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-22"
+  },
+  {
+    "id": 75,
+    "name": "양천구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "양천구",
+    "lat": 37.4768,
+    "lng": 126.9215,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1256000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-18"
+  },
+  {
+    "id": 76,
+    "name": "안양범계중학교",
+    "type": "학교/대학",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.5623,
+    "lng": 127.5633,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 10,
+    "purchaseAmount": 35700,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-16"
+  },
+  {
+    "id": 77,
+    "name": "광주 광산중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "전라남도",
+    "district": "화순군",
+    "lat": 34.8493,
+    "lng": 126.9963,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-15"
+  },
+  {
+    "id": 78,
+    "name": "군산시보건소",
+    "type": "보건소",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.7066,
+    "lng": 127.0263,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 1910000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-12"
+  },
+  {
+    "id": 79,
+    "name": "사천시보건소",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "사천시",
+    "lat": 35.412,
+    "lng": 128.2397,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1680000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-11"
+  },
+  {
+    "id": 80,
+    "name": "대구광역시 중구보건소",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "고령군",
+    "lat": 36.4109,
+    "lng": 128.805,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 955000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-11"
+  },
+  {
+    "id": 81,
+    "name": "전남여자상업고등학교",
+    "type": "학교/대학",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.2851,
+    "lng": 127.5576,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 20,
+    "purchaseAmount": 71400,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-09"
+  },
+  {
+    "id": 82,
+    "name": "안성시정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "경기도",
+    "district": "안성시",
+    "lat": 37.3325,
+    "lng": 127.6399,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 225000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-09"
+  },
+  {
+    "id": 83,
+    "name": "전북대학교 소방공무원 심리지원센터",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.9282,
+    "lng": 126.9802,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 4000,
+    "purchaseAmount": 7300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-05"
+  },
+  {
+    "id": 84,
+    "name": "마포구정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "마포구",
+    "lat": 37.4879,
+    "lng": 127.0287,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-04"
+  },
+  {
+    "id": 85,
+    "name": "서대문구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.4808,
+    "lng": 126.8677,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-02"
+  },
+  {
+    "id": 86,
+    "name": "[육군]66보병사단 의무대",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "가평군",
+    "lat": 37.5445,
+    "lng": 127.5396,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 502,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-09-02"
+  },
+  {
+    "id": 87,
+    "name": "송파구정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "송파구",
+    "lat": 37.5583,
+    "lng": 127.0634,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 4000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-09-02"
+  },
+  {
+    "id": 88,
+    "name": "한양대학교 학생지원팀 한양보건센터",
+    "type": "학교/대학",
+    "region": "경기도",
+    "district": "안산시",
+    "lat": 37.506,
+    "lng": 127.4254,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-08-28"
+  },
+  {
+    "id": 89,
+    "name": "서울중구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "중구",
+    "lat": 37.4456,
+    "lng": 126.9573,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1503,
+    "purchaseAmount": 1000000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-08-27"
+  },
+  {
+    "id": 90,
+    "name": "국립부곡병원",
+    "type": "공공기관(기타)",
+    "region": "경상남도",
+    "district": "창녕군",
+    "lat": 35.4377,
+    "lng": 128.2033,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1500,
+    "purchaseAmount": 2830000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-08-27"
+  },
+  {
+    "id": 91,
+    "name": "양평군보건소 / 스티커디자인 메일로보내겠습니다",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "원주시",
+    "lat": 37.8915,
+    "lng": 128.2075,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-08-24"
+  },
+  {
+    "id": 92,
+    "name": "대구수성구보건소",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "수성구",
+    "lat": 36.0166,
+    "lng": 128.4809,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 625,
+    "purchaseAmount": 981250,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-08-20"
+  },
+  {
+    "id": 93,
+    "name": "국군양주병원",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "양주시",
+    "lat": 37.3846,
+    "lng": 127.4701,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 1150,
+    "purchaseAmount": 2550000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-08-11"
+  },
+  {
+    "id": 94,
+    "name": "경주시보건소",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "경주시",
+    "lat": 36.6004,
+    "lng": 128.8135,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 6502,
+    "purchaseAmount": 9480000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-08-08"
+  },
+  {
+    "id": 95,
+    "name": "울주군보건소",
+    "type": "보건소",
+    "region": "울산광역시",
+    "district": "울주군",
+    "lat": 35.4455,
+    "lng": 129.296,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 3803,
+    "purchaseAmount": 8820000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-08-07"
+  },
+  {
+    "id": 96,
+    "name": "서울금연지원센터",
+    "type": "금연지원센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.5431,
+    "lng": 126.9116,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 400,
+    "purchaseAmount": 1000000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-08-05"
+  },
+  {
+    "id": 97,
+    "name": "김해중독관리통합지원센터(교육용)",
+    "type": "중독관리통합지원센터",
+    "region": "경상남도",
+    "district": "김해시",
+    "lat": 35.3855,
+    "lng": 128.3402,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-08-04"
+  },
+  {
+    "id": 98,
+    "name": "3사단(1968부대)",
+    "type": "군/경/소방",
+    "region": "강원특별자치도",
+    "district": "철원군",
+    "lat": 37.8057,
+    "lng": 128.2639,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 600,
+    "purchaseAmount": 1500000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-07-30"
+  },
+  {
+    "id": 99,
+    "name": "영동군보건소",
+    "type": "보건소",
+    "region": "충청북도",
+    "district": "충주시",
+    "lat": 36.6508,
+    "lng": 127.3569,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 2500,
+    "purchaseAmount": 3925000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-07-29"
+  },
+  {
+    "id": 100,
+    "name": "연수구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "인천광역시",
+    "district": "연수구",
+    "lat": 37.6061,
+    "lng": 126.806,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 600,
+    "purchaseAmount": 1260000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-07-25"
+  },
+  {
+    "id": 101,
+    "name": "송파구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "송파구",
+    "lat": 37.7072,
+    "lng": 127.1059,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-07-22"
+  },
+  {
+    "id": 102,
+    "name": "경기도중독관리센터",
+    "type": "중독관리통합지원센터",
+    "region": "경기도",
+    "district": "수원시",
+    "lat": 37.5184,
+    "lng": 127.4182,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-07-04"
+  },
+  {
+    "id": 103,
+    "name": "판촉사랑 수령 후 최종납품처 (국군강릉병원)",
+    "type": "공공기관(기타)",
+    "region": "인천광역시",
+    "district": "남동구",
+    "lat": 37.452,
+    "lng": 126.6193,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 636000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-07-03"
+  },
+  {
+    "id": 104,
+    "name": "마산중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경상남도",
+    "district": "창원시",
+    "lat": 35.4309,
+    "lng": 128.0808,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 3000,
+    "purchaseAmount": 2000000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-07-02"
+  },
+  {
+    "id": 105,
+    "name": "대전세종금연지원센터",
+    "type": "금연지원센터",
+    "region": "대전광역시",
+    "district": "중구",
+    "lat": 36.3141,
+    "lng": 127.5301,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1250000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-27"
+  },
+  {
+    "id": 106,
+    "name": "진주시보건소",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "진주시",
+    "lat": 35.3902,
+    "lng": 128.2984,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 3140000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-27"
+  },
+  {
+    "id": 107,
+    "name": "육군제2062부대",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.4003,
+    "lng": 127.4952,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 450000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-23"
+  },
+  {
+    "id": 108,
+    "name": "춘천시보건소 건강관리과",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": 37.96,
+    "lng": 128.3041,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 1502,
+    "purchaseAmount": 2130000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-06-20"
+  },
+  {
+    "id": 109,
+    "name": "한국건강관리협회 울산광역시지부",
+    "type": "광역시도 건강증진부서",
+    "region": "울산광역시",
+    "district": "중구",
+    "lat": 35.5551,
+    "lng": 129.3769,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 45,
+    "purchaseAmount": 189000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-17"
+  },
+  {
+    "id": 110,
+    "name": "홍선군보건소",
+    "type": "보건소",
+    "region": "대전광역시",
+    "district": "중구",
+    "lat": 36.2468,
+    "lng": 127.3235,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 3060,
+    "purchaseAmount": 712000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-13"
+  },
+  {
+    "id": 111,
+    "name": "홍성군보건소",
+    "type": "보건소",
+    "region": "대전광역시",
+    "district": "중구",
+    "lat": 36.491,
+    "lng": 127.4083,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 9180,
+    "purchaseAmount": 2011400,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-06-13"
+  },
+  {
+    "id": 112,
+    "name": "부안보건소",
+    "type": "보건소",
+    "region": "전북특별자치도",
+    "district": "부안군",
+    "lat": 35.833,
+    "lng": 127.1833,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 600,
+    "purchaseAmount": 1146000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-11"
+  },
+  {
+    "id": 113,
+    "name": "설천중·고등학교",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "무주군",
+    "lat": 35.6874,
+    "lng": 127.1342,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 201,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-11"
+  },
+  {
+    "id": 114,
+    "name": "남해군보건소 납품건",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "창원시",
+    "lat": 35.4615,
+    "lng": 128.319,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 273000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-05"
+  },
+  {
+    "id": 115,
+    "name": "보건소 납품",
+    "type": "보건소",
+    "region": "광주광역시",
+    "district": "북구",
+    "lat": 35.0567,
+    "lng": 126.9908,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 320,
+    "purchaseAmount": 902400,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-06-04"
+  },
+  {
+    "id": 116,
+    "name": "예산덕산중학교",
+    "type": "학교/대학",
+    "region": "충청남도",
+    "district": "예산군",
+    "lat": 36.3924,
+    "lng": 126.7057,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 180,
+    "purchaseAmount": 459000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-30"
+  },
+  {
+    "id": 117,
+    "name": "한국건강관리협회",
+    "type": "광역시도 건강증진부서",
+    "region": "서울특별시",
+    "district": "강서구",
+    "lat": 37.595,
+    "lng": 127.0306,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 20,
+    "purchaseAmount": 76400,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-29"
+  },
+  {
+    "id": 118,
+    "name": "한국경마축산고등학교",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "남원시",
+    "lat": 35.7409,
+    "lng": 126.9949,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 360000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-27"
+  },
+  {
+    "id": 119,
+    "name": "달성군보건소",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "달성군",
+    "lat": 35.9885,
+    "lng": 128.5253,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 906,
+    "purchaseAmount": 810000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-05-26"
+  },
+  {
+    "id": 120,
+    "name": "강남구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "강남구",
+    "lat": 37.5949,
+    "lng": 127.0138,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 6070,
+    "purchaseAmount": 6360000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-05-19"
+  },
+  {
+    "id": 121,
+    "name": "줄포자동차공업고등학교",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "부안군",
+    "lat": 35.7961,
+    "lng": 127.134,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 30,
+    "purchaseAmount": 150000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-19"
+  },
+  {
+    "id": 122,
+    "name": "종로구정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "종로구",
+    "lat": 37.5733,
+    "lng": 127.1084,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 450000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-14"
+  },
+  {
+    "id": 123,
+    "name": "대구한의대학교 보건학부",
+    "type": "학교/대학",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": 36.4032,
+    "lng": 128.9538,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 400,
+    "purchaseAmount": 700000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-13"
+  },
+  {
+    "id": 124,
+    "name": "용인 3개구 보건소",
+    "type": "보건소",
+    "region": "기타",
+    "district": "대주빌딩,",
+    "lat": 36.4216,
+    "lng": 127.4687,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 550,
+    "purchaseAmount": 1050500,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-13"
+  },
+  {
+    "id": 125,
+    "name": "무주중학교",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "무주군",
+    "lat": 35.8718,
+    "lng": 127.0489,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 121,
+    "purchaseAmount": 360000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-12"
+  },
+  {
+    "id": 126,
+    "name": "카프성모병원",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "고양시",
+    "lat": 37.3587,
+    "lng": 127.5939,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 20,
+    "purchaseAmount": 84000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-08"
+  },
+  {
+    "id": 127,
+    "name": "청평고등학교",
+    "type": "학교/대학",
+    "region": "경기도",
+    "district": "가평군",
+    "lat": 37.2856,
+    "lng": 127.5058,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 72,
+    "purchaseAmount": 334000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-05-08"
+  },
+  {
+    "id": 128,
+    "name": "학교 보건수업",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "익산시",
+    "lat": 35.9698,
+    "lng": 127.2577,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 450000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-07"
+  },
+  {
+    "id": 129,
+    "name": "서산시보건소",
+    "type": "보건소",
+    "region": "충청남도",
+    "district": "서산시",
+    "lat": 36.3904,
+    "lng": 126.7139,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-05-01"
+  },
+  {
+    "id": 130,
+    "name": "대구한의대학교",
+    "type": "학교/대학",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": 36.4215,
+    "lng": 129.0189,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 40,
+    "purchaseAmount": 117600,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-04-25"
+  },
+  {
+    "id": 131,
+    "name": "고윤(서울금연)",
+    "type": "금연지원센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.6808,
+    "lng": 127.0918,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 1600,
+    "purchaseAmount": 2500000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2025-04-15"
+  },
+  {
+    "id": 132,
+    "name": "17사단의무대대",
+    "type": "군/경/소방",
+    "region": "인천광역시",
+    "district": "부평구",
+    "lat": 37.4172,
+    "lng": 126.6025,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 5724,
+    "purchaseAmount": 1550000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2025-04-14"
+  },
+  {
+    "id": 133,
+    "name": "전주중학교(수업교구)",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.9204,
+    "lng": 127.17,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 220,
+    "purchaseAmount": 660000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-04-08"
+  },
+  {
+    "id": 134,
+    "name": "동국대학교사범대학부속고등학교",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": 37.6,
+    "lng": 127.1242,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 316,
+    "purchaseAmount": 590000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-04-03"
+  },
+  {
+    "id": 135,
+    "name": "서울교통공사(건강증진사업 절주캠페인용)",
+    "type": "광역시도 건강증진부서",
+    "region": "서울특별시",
+    "district": "성동구",
+    "lat": 37.6127,
+    "lng": 126.8303,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 501,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-27"
+  },
+  {
+    "id": 136,
+    "name": "한국나노마이스터고등학교",
+    "type": "학교/대학",
+    "region": "경상남도",
+    "district": "밀양시",
+    "lat": 35.5557,
+    "lng": 128.153,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 382500,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-20"
+  },
+  {
+    "id": 137,
+    "name": "전북특별자치도정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.8693,
+    "lng": 127.2406,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2286,
+    "purchaseAmount": 2400300,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-19"
+  },
+  {
+    "id": 138,
+    "name": "아산시보건소 중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "대전광역시",
+    "district": "서구",
+    "lat": 36.2407,
+    "lng": 127.2691,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 534000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-19"
+  },
+  {
+    "id": 139,
+    "name": "전주호성중학교",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.7024,
+    "lng": 127.1249,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 41,
+    "purchaseAmount": 172200,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-18"
+  },
+  {
+    "id": 140,
+    "name": "유성구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "대전광역시",
+    "district": "유성구",
+    "lat": 36.2821,
+    "lng": 127.4159,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 420000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-07"
+  },
+  {
+    "id": 141,
+    "name": "사업장 건강증진프로그램",
+    "type": "광역시도 건강증진부서",
+    "region": "경기도",
+    "district": "이천시",
+    "lat": 37.4791,
+    "lng": 127.4294,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 70,
+    "purchaseAmount": 294000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-05"
+  },
+  {
+    "id": 142,
+    "name": "판촉사랑->국군강릉병원으로 납품",
+    "type": "공공기관(기타)",
+    "region": "인천광역시",
+    "district": "남동구",
+    "lat": 37.4966,
+    "lng": 126.6344,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 200,
+    "purchaseAmount": 510000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-05"
+  },
+  {
+    "id": 143,
+    "name": "성남시중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경기도",
+    "district": "성남시",
+    "lat": 37.4104,
+    "lng": 127.6399,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-03-05"
+  },
+  {
+    "id": 144,
+    "name": "광주광역시 서구보건소",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "화순군",
+    "lat": 34.9717,
+    "lng": 126.8687,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 550,
+    "purchaseAmount": 979000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-02-28"
+  },
+  {
+    "id": 145,
+    "name": "(보건소로고)아산시중독관리통합지원센터 「술잔을 줄이면 건강이 채워집니다」문구넣어서 스티커시안부탁드립니다",
+    "type": "중독관리통합지원센터",
+    "region": "대전광역시",
+    "district": "서구",
+    "lat": 36.3275,
+    "lng": 127.3175,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-02-26"
+  },
+  {
+    "id": 146,
+    "name": "온누리안과병원",
+    "type": "공공기관(기타)",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.6714,
+    "lng": 127.1902,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-02-24"
+  },
+  {
+    "id": 147,
+    "name": "GC녹십자 건강관리실",
+    "type": "광역시도 건강증진부서",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": 37.4549,
+    "lng": 127.4469,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 301,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-02-05"
+  },
+  {
+    "id": 148,
+    "name": "순천향대학교",
+    "type": "학교/대학",
+    "region": "충청남도",
+    "district": "아산시",
+    "lat": 36.5908,
+    "lng": 126.8155,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 10,
+    "purchaseAmount": 42000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2025-01-14"
+  },
+  {
+    "id": 149,
+    "name": "고등학교 동아리 행사",
+    "type": "학교/대학",
+    "region": "경상북도",
+    "district": "영주시",
+    "lat": 36.4702,
+    "lng": 128.7418,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 36,
+    "purchaseAmount": 147000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-31"
+  },
+  {
+    "id": 150,
+    "name": "창원시중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "기타",
+    "district": "창원시",
+    "lat": 36.3726,
+    "lng": 127.6149,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 9000,
+    "purchaseAmount": 6300000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2024-12-23"
+  },
+  {
+    "id": 151,
+    "name": "경북기계공업고등학교",
+    "type": "학교/대학",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": 36.6131,
+    "lng": 128.9026,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 220,
+    "purchaseAmount": 426700,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-20"
+  },
+  {
+    "id": 152,
+    "name": "김포시정신건강복지센터 부설 중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경기도",
+    "district": "김포시",
+    "lat": 37.5142,
+    "lng": 127.5431,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1250,
+    "purchaseAmount": 2625000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-20"
+  },
+  {
+    "id": 153,
+    "name": "강백송(바이플러스,김제시보건소)",
+    "type": "보건소",
+    "region": "전북특별자치도",
+    "district": "김제시",
+    "lat": 35.7147,
+    "lng": 126.9971,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 600,
+    "purchaseAmount": 841500,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-13"
+  },
+  {
+    "id": 154,
+    "name": "행정실(춘성중학교)",
+    "type": "학교/대학",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": 37.7653,
+    "lng": 128.2752,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 40,
+    "purchaseAmount": 168000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-11"
+  },
+  {
+    "id": 155,
+    "name": "이윤경(국립부곡병원)",
+    "type": "공공기관(기타)",
+    "region": "경상남도",
+    "district": "창녕군",
+    "lat": 35.5494,
+    "lng": 128.3214,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-09"
+  },
+  {
+    "id": 156,
+    "name": "조정용(무안군보건소,나우메디파머)",
+    "type": "보건소",
+    "region": "광주광역시",
+    "district": "북구",
+    "lat": 35.2792,
+    "lng": 126.7656,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 540,
+    "purchaseAmount": 961200,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-09"
+  },
+  {
+    "id": 157,
+    "name": "인천동구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "기타",
+    "district": "",
+    "lat": 36.4249,
+    "lng": 127.3808,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 4014,
+    "purchaseAmount": 4560000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-05"
+  },
+  {
+    "id": 158,
+    "name": "신나래(성동구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "성동구",
+    "lat": 37.6505,
+    "lng": 127.0932,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-05"
+  },
+  {
+    "id": 159,
+    "name": "광주북구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "광주광역시",
+    "district": "북구",
+    "lat": 35.1314,
+    "lng": 126.8888,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-05"
+  },
+  {
+    "id": 160,
+    "name": "최옥진(동두천정신건강복지센터)",
+    "type": "정신건강복지센터",
+    "region": "경기도",
+    "district": "동두천시",
+    "lat": 37.3102,
+    "lng": 127.6473,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 60,
+    "purchaseAmount": 200000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-03"
+  },
+  {
+    "id": 161,
+    "name": "청양정산중학교 보건선생님",
+    "type": "학교/대학",
+    "region": "충청남도",
+    "district": "청양군",
+    "lat": 36.6278,
+    "lng": 126.9429,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 459000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-12-03"
+  },
+  {
+    "id": 162,
+    "name": "홍지영(애드원,금산군보건소)",
+    "type": "보건소",
+    "region": "대전광역시",
+    "district": "중구",
+    "lat": 36.4436,
+    "lng": 127.4989,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1150,
+    "purchaseAmount": 2047000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-26"
+  },
+  {
+    "id": 163,
+    "name": "육군사관학교 의무대대",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": 37.4239,
+    "lng": 127.049,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-25"
+  },
+  {
+    "id": 164,
+    "name": "조성찬(광진구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": 37.5162,
+    "lng": 127.1072,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-25"
+  },
+  {
+    "id": 165,
+    "name": "고신범(국민건강의료기)",
+    "type": "공공기관(기타)",
+    "region": "경상북도",
+    "district": "포항시",
+    "lat": 36.5826,
+    "lng": 128.9981,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1200,
+    "purchaseAmount": 1170000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-18"
+  },
+  {
+    "id": 166,
+    "name": "김지수(진주보건소, 맥선)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "진주시",
+    "lat": 35.5538,
+    "lng": 128.1432,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 900,
+    "purchaseAmount": 1413000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-15"
+  },
+  {
+    "id": 167,
+    "name": "임지영 대위(국군춘천병원)",
+    "type": "공공기관(기타)",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": 37.909,
+    "lng": 128.0379,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 40,
+    "purchaseAmount": 126000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-14"
+  },
+  {
+    "id": 168,
+    "name": "국군서울지구병원",
+    "type": "공공기관(기타)",
+    "region": "서울특별시",
+    "district": "종로구",
+    "lat": 37.6782,
+    "lng": 127.0856,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 74,
+    "purchaseAmount": 147000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-13"
+  },
+  {
+    "id": 169,
+    "name": "대구남구보건소",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "남구",
+    "lat": 35.7881,
+    "lng": 128.6964,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1900,
+    "purchaseAmount": 1995000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-01"
+  },
+  {
+    "id": 170,
+    "name": "기장군보건소",
+    "type": "보건소",
+    "region": "부산광역시",
+    "district": "기장군",
+    "lat": 35.1677,
+    "lng": 129.0172,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1002,
+    "purchaseAmount": 1100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-11-01"
+  },
+  {
+    "id": 171,
+    "name": "김지윤(남양주동부보건센터)",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.5024,
+    "lng": 127.4366,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-10-31"
+  },
+  {
+    "id": 172,
+    "name": "15사단 의무대대",
+    "type": "군/경/소방",
+    "region": "강원특별자치도",
+    "district": "화천군",
+    "lat": 37.6799,
+    "lng": 128.0634,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-10-29"
+  },
+  {
+    "id": 173,
+    "name": "75사단 의무대",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.3623,
+    "lng": 127.6276,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 402,
+    "purchaseAmount": 630000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-10-17"
+  },
+  {
+    "id": 174,
+    "name": "대구동구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "대구광역시",
+    "district": "동구",
+    "lat": 36.0115,
+    "lng": 128.5351,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-10-16"
+  },
+  {
+    "id": 175,
+    "name": "국군강릉병원",
+    "type": "공공기관(기타)",
+    "region": "강원특별자치도",
+    "district": "강릉시",
+    "lat": 37.8652,
+    "lng": 128.1254,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 86,
+    "purchaseAmount": 240000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-10-08"
+  },
+  {
+    "id": 176,
+    "name": "이민지(양평군보건소)",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "양평군",
+    "lat": 37.5581,
+    "lng": 127.5292,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 785000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-10-07"
+  },
+  {
+    "id": 177,
+    "name": "서울시통합건강증진사업단",
+    "type": "광역시도 건강증진부서",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": 37.6983,
+    "lng": 126.8626,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 3735,
+    "purchaseAmount": 3610500,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2024-09-30"
+  },
+  {
+    "id": 178,
+    "name": "박소현(수성구보건소)",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "수성구",
+    "lat": 36.0125,
+    "lng": 128.505,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 785000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-09-19"
+  },
+  {
+    "id": 179,
+    "name": "종로구보건소",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "종로구",
+    "lat": 37.7053,
+    "lng": 126.9076,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 230,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-09-12"
+  },
+  {
+    "id": 180,
+    "name": "동대문구정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": 37.449,
+    "lng": 126.9584,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 50,
+    "purchaseAmount": 210000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-09-09"
+  },
+  {
+    "id": 181,
+    "name": "동작구정신보건복지센터",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "동작구",
+    "lat": 37.6351,
+    "lng": 126.9221,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-09-06"
+  },
+  {
+    "id": 182,
+    "name": "울산남구보건소",
+    "type": "보건소",
+    "region": "울산광역시",
+    "district": "남구",
+    "lat": 35.5703,
+    "lng": 129.3148,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1680000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-09-06"
+  },
+  {
+    "id": 183,
+    "name": "김아름(예산군보건소)",
+    "type": "보건소",
+    "region": "충청남도",
+    "district": "예산군",
+    "lat": 36.484,
+    "lng": 126.823,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 2500000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-09-05"
+  },
+  {
+    "id": 184,
+    "name": "신나래(성동구보건소)",
+    "type": "보건소",
+    "region": "기타",
+    "district": "서울",
+    "lat": 36.4264,
+    "lng": 127.5626,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-08-30"
+  },
+  {
+    "id": 185,
+    "name": "최장미(서울시청)",
+    "type": "공공기관(기타)",
+    "region": "서울특별시",
+    "district": "중구",
+    "lat": 37.417,
+    "lng": 127.1057,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 1570000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-08-30"
+  },
+  {
+    "id": 186,
+    "name": "성은약품(정선군보건소)",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "강릉시",
+    "lat": 37.8343,
+    "lng": 128.2213,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-08-28"
+  },
+  {
+    "id": 187,
+    "name": "류혜진(대구북구보건소)",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "북구",
+    "lat": 35.944,
+    "lng": 128.6526,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-08-27"
+  },
+  {
+    "id": 188,
+    "name": "김성주(영등포구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "영등포구",
+    "lat": 37.5258,
+    "lng": 126.849,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1842,
+    "purchaseAmount": 1932000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-08-26"
+  },
+  {
+    "id": 189,
+    "name": "경상대예방의학교실",
+    "type": "학교/대학",
+    "region": "경상남도",
+    "district": "진주시",
+    "lat": 35.5099,
+    "lng": 128.1623,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 5,
+    "purchaseAmount": 148500,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-08-22"
+  },
+  {
+    "id": 190,
+    "name": "경상국립대학교 예방의학교실",
+    "type": "학교/대학",
+    "region": "경상남도",
+    "district": "진주시",
+    "lat": 35.4048,
+    "lng": 128.3176,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 607,
+    "purchaseAmount": 784300,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-07-12"
+  },
+  {
+    "id": 191,
+    "name": "태백시보건소",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "태백시",
+    "lat": 37.8887,
+    "lng": 128.0956,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 1466,
+    "purchaseAmount": 3024000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-07-05"
+  },
+  {
+    "id": 192,
+    "name": "국군구리병원",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "구리시",
+    "lat": 37.3566,
+    "lng": 127.4908,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-07-05"
+  },
+  {
+    "id": 193,
+    "name": "박주성(예산군보건소,리더스앤케어)",
+    "type": "보건소",
+    "region": "대전광역시",
+    "district": "서구",
+    "lat": 36.3211,
+    "lng": 127.3232,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1600,
+    "purchaseAmount": 1424000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-06-21"
+  },
+  {
+    "id": 194,
+    "name": "완도해양경찰서",
+    "type": "군/경/소방",
+    "region": "전라남도",
+    "district": "완도군",
+    "lat": 34.7561,
+    "lng": 126.9671,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 400,
+    "purchaseAmount": 800000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-06-17"
+  },
+  {
+    "id": 195,
+    "name": "공수원(사천시보건소)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "사천시",
+    "lat": 35.5927,
+    "lng": 128.2664,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1680000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-06-14"
+  },
+  {
+    "id": 196,
+    "name": "용산구보건소(이윤미)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "용산구",
+    "lat": 37.6873,
+    "lng": 127.0127,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1250000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-06-14"
+  },
+  {
+    "id": 197,
+    "name": "정문희(충남 서산시보건소)",
+    "type": "보건소",
+    "region": "기타",
+    "district": "서산시",
+    "lat": 36.4403,
+    "lng": 127.5144,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-27"
+  },
+  {
+    "id": 198,
+    "name": "유지수(동국대학교사범대학부속중고등학교)",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": 37.4166,
+    "lng": 126.9141,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1,
+    "purchaseAmount": 0,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-24"
+  },
+  {
+    "id": 199,
+    "name": "이보현(무풍고등학교)",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "무주군",
+    "lat": 35.7993,
+    "lng": 127.1329,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 30,
+    "purchaseAmount": 150000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-24"
+  },
+  {
+    "id": 200,
+    "name": "김영진(광진구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": 37.6129,
+    "lng": 126.9675,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 2504,
+    "purchaseAmount": 3180000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2024-05-23"
+  },
+  {
+    "id": 201,
+    "name": "창원중독관리통합지원센터(구지언)",
+    "type": "중독관리통합지원센터",
+    "region": "경상남도",
+    "district": "창원시",
+    "lat": 35.4432,
+    "lng": 128.1273,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 9000,
+    "purchaseAmount": 9000000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2024-05-21"
+  },
+  {
+    "id": 202,
+    "name": "김리안(달서구보건소)",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "달서구",
+    "lat": 35.8634,
+    "lng": 128.7218,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-21"
+  },
+  {
+    "id": 203,
+    "name": "원주시보건소",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "원주시",
+    "lat": 37.9116,
+    "lng": 128.0564,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1250000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-20"
+  },
+  {
+    "id": 204,
+    "name": "박진범(서울시 통합건강증진사업지원단 금연사업팀)",
+    "type": "금연지원센터",
+    "region": "서울특별시",
+    "district": "중구",
+    "lat": 37.4419,
+    "lng": 126.9826,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2500000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-16"
+  },
+  {
+    "id": 205,
+    "name": "유케어메디칼(영동군보건소납품건)",
+    "type": "보건소",
+    "region": "충청북도",
+    "district": "충주시",
+    "lat": 36.6756,
+    "lng": 127.4423,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 785000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-16"
+  },
+  {
+    "id": 206,
+    "name": "용산구보건소(이윤미선생님)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "용산구",
+    "lat": 37.662,
+    "lng": 127.0533,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 4,
+    "purchaseAmount": 160000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-14"
+  },
+  {
+    "id": 207,
+    "name": "허예지 주임(국민건강보험공단.서귀포지사)",
+    "type": "광역시도 건강증진부서",
+    "region": "제주특별자치도",
+    "district": "서귀포시",
+    "lat": 33.5408,
+    "lng": 126.4157,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 170,
+    "purchaseAmount": 433500,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-14"
+  },
+  {
+    "id": 208,
+    "name": "박기섭(영주시보건소납품건)",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "남구",
+    "lat": 35.7811,
+    "lng": 128.4587,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-13"
+  },
+  {
+    "id": 209,
+    "name": "이창영(울산동구정신건강복지센터)",
+    "type": "정신건강복지센터",
+    "region": "울산광역시",
+    "district": "동구",
+    "lat": 35.4619,
+    "lng": 129.3039,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 230,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-10"
+  },
+  {
+    "id": 210,
+    "name": "여수시보건소(신송희)",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "여수시",
+    "lat": 34.9728,
+    "lng": 126.8628,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 930000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-09"
+  },
+  {
+    "id": 211,
+    "name": "동작구정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "동작구",
+    "lat": 37.5408,
+    "lng": 127.0169,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 501,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-07"
+  },
+  {
+    "id": 212,
+    "name": "영암군보건소",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "영암군",
+    "lat": 34.7762,
+    "lng": 127.0499,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1250000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-03"
+  },
+  {
+    "id": 213,
+    "name": "안성림(양평군보건소)",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "양평군",
+    "lat": 37.4121,
+    "lng": 127.4415,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 930000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-05-03"
+  },
+  {
+    "id": 214,
+    "name": "고윤(서울금연지원센터)",
+    "type": "금연지원센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.6133,
+    "lng": 126.8297,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 1600,
+    "purchaseAmount": 3750000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2024-05-02"
+  },
+  {
+    "id": 215,
+    "name": "강서구정신건강복지센터 강혜선 간호사님",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "강서구",
+    "lat": 37.6418,
+    "lng": 127.059,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 600,
+    "purchaseAmount": 636000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-04-25"
+  },
+  {
+    "id": 216,
+    "name": "용산구보건소(이상은)",
+    "type": "보건소",
+    "region": "기타",
+    "district": "백범로",
+    "lat": 36.382,
+    "lng": 127.4775,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-04-15"
+  },
+  {
+    "id": 217,
+    "name": "태평서울병원(이민철 행정부원장)",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "성남시",
+    "lat": 37.3166,
+    "lng": 127.6557,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 24000,
+    "purchaseAmount": 10000000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2024-04-11"
+  },
+  {
+    "id": 218,
+    "name": "건강생활팀",
+    "type": "광역시도 건강증진부서",
+    "region": "경기도",
+    "district": "남양주시",
+    "lat": 37.4192,
+    "lng": 127.3834,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 600,
+    "purchaseAmount": 1260000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-04-02"
+  },
+  {
+    "id": 219,
+    "name": "충주시보건소(조여주 주무관)",
+    "type": "보건소",
+    "region": "충청북도",
+    "district": "충주시",
+    "lat": 36.5605,
+    "lng": 127.5962,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1,
+    "purchaseAmount": 0,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-03-27"
+  },
+  {
+    "id": 220,
+    "name": "이윤미(용산보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "용산구",
+    "lat": 37.5534,
+    "lng": 127.0684,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 2300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-03-26"
+  },
+  {
+    "id": 221,
+    "name": "박선홍(광진구정신건강복지센터)",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": 37.6168,
+    "lng": 127.1244,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 900,
+    "purchaseAmount": 2048000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-03-13"
+  },
+  {
+    "id": 222,
+    "name": "박인화(서초구보건소마음건강센터)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "서초구",
+    "lat": 37.5951,
+    "lng": 127.113,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2024-02-19"
+  },
+  {
+    "id": 223,
+    "name": "권규리(제주광역 정신건강복지센터 중독통합관리팀)",
+    "type": "중독관리통합지원센터",
+    "region": "제주특별자치도",
+    "district": "제주시",
+    "lat": 33.6064,
+    "lng": 126.5321,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-12-15"
+  },
+  {
+    "id": 224,
+    "name": "서울신목초등학교",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "양천구",
+    "lat": 37.6323,
+    "lng": 126.9794,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "연간",
+    "purchaseVolume": 300,
+    "purchaseAmount": 900000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-12-05"
+  },
+  {
+    "id": 225,
+    "name": "김지선(동해시정신건강복지센터)",
+    "type": "정신건강복지센터",
+    "region": "강원특별자치도",
+    "district": "동해시",
+    "lat": 37.922,
+    "lng": 128.1699,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1800000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-11-17"
+  },
+  {
+    "id": 226,
+    "name": "민현선(광주남구보건소)",
+    "type": "보건소",
+    "region": "광주광역시",
+    "district": "남구",
+    "lat": 35.2787,
+    "lng": 126.9257,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-11-17"
+  },
+  {
+    "id": 227,
+    "name": "장재봉(전주시중독관리통합지원센터)",
+    "type": "중독관리통합지원센터",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.8127,
+    "lng": 127.0367,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 1570000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-11-16"
+  },
+  {
+    "id": 228,
+    "name": "김수진(육군사관학교 군부대)",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "서초구",
+    "lat": 37.4907,
+    "lng": 127.0193,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 301,
+    "purchaseAmount": 780000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-11-09"
+  },
+  {
+    "id": 229,
+    "name": "정겨운(한화솔루션 큐셀 음성제2사업장 건강관리실)",
+    "type": "광역시도 건강증진부서",
+    "region": "충청북도",
+    "district": "음성군",
+    "lat": 36.7154,
+    "lng": 127.4981,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-11-02"
+  },
+  {
+    "id": 230,
+    "name": "정다움(무안군보건소)",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "무안군",
+    "lat": 34.9059,
+    "lng": 126.9234,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-11-02"
+  },
+  {
+    "id": 231,
+    "name": "노혜련(한화큐셀 진천사업장 건강관리실)",
+    "type": "광역시도 건강증진부서",
+    "region": "충청북도",
+    "district": "진천군",
+    "lat": 36.5089,
+    "lng": 127.4274,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 450000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-11-02"
+  },
+  {
+    "id": 232,
+    "name": "김포시정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "경기도",
+    "district": "김포시",
+    "lat": 37.3453,
+    "lng": 127.4642,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-31"
+  },
+  {
+    "id": 233,
+    "name": "한영민(유성여자고등학교)",
+    "type": "학교/대학",
+    "region": "경상북도",
+    "district": "포항시",
+    "lat": 36.5039,
+    "lng": 128.7804,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 270,
+    "purchaseAmount": 501000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-27"
+  },
+  {
+    "id": 234,
+    "name": "정영림(함양군보건소)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "함양군",
+    "lat": 35.38,
+    "lng": 128.2714,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 3012,
+    "purchaseAmount": 3380000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2023-10-25"
+  },
+  {
+    "id": 235,
+    "name": "진은영(달서구중독관리통합지원센터)",
+    "type": "중독관리통합지원센터",
+    "region": "대구광역시",
+    "district": "달서구",
+    "lat": 35.9333,
+    "lng": 128.4707,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-23"
+  },
+  {
+    "id": 236,
+    "name": "2601부대(윤혜진)",
+    "type": "군/경/소방",
+    "region": "세종특별자치시",
+    "district": "연서면",
+    "lat": 36.4523,
+    "lng": 127.0328,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 640,
+    "purchaseAmount": 1056000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-18"
+  },
+  {
+    "id": 237,
+    "name": "이정은(함양군보건소)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "함양군",
+    "lat": 35.4353,
+    "lng": 128.1253,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 6000,
+    "purchaseAmount": 6900000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-17"
+  },
+  {
+    "id": 238,
+    "name": "곽현주(서대문구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.5425,
+    "lng": 127.0995,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-12"
+  },
+  {
+    "id": 239,
+    "name": "양준승(화순전남금연지원센터)",
+    "type": "금연지원센터",
+    "region": "전라남도",
+    "district": "화순군",
+    "lat": 34.8931,
+    "lng": 127.0497,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1250000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-05"
+  },
+  {
+    "id": 240,
+    "name": "경주시보건소(최은실)",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "경주시",
+    "lat": 36.5989,
+    "lng": 128.9686,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-10-04"
+  },
+  {
+    "id": 241,
+    "name": "서원효(이화여대 약학대학)",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.5306,
+    "lng": 126.8298,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 70,
+    "purchaseAmount": 294000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-09-25"
+  },
+  {
+    "id": 242,
+    "name": "황지유(부산 기장군보건소)",
+    "type": "보건소",
+    "region": "부산광역시",
+    "district": "기장군",
+    "lat": 35.1351,
+    "lng": 129.1516,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-09-25"
+  },
+  {
+    "id": 243,
+    "name": "5733부대 60사단 의무대(박은혜소령)",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "고양시",
+    "lat": 37.5198,
+    "lng": 127.6543,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-09-18"
+  },
+  {
+    "id": 244,
+    "name": "아산시보건소(김세연)",
+    "type": "보건소",
+    "region": "충청남도",
+    "district": "아산시",
+    "lat": 36.4941,
+    "lng": 126.8743,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-09-18"
+  },
+  {
+    "id": 245,
+    "name": "울산남구보건소(배영진)",
+    "type": "보건소",
+    "region": "울산광역시",
+    "district": "남구",
+    "lat": 35.5522,
+    "lng": 129.3424,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 1500,
+    "purchaseAmount": 3150000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2023-09-12"
+  },
+  {
+    "id": 246,
+    "name": "김해시보건소(오송은)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "김해시",
+    "lat": 35.3768,
+    "lng": 128.129,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1250000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-09-11"
+  },
+  {
+    "id": 247,
+    "name": "육군훈련소 지구병원",
+    "type": "군/경/소방",
+    "region": "충청남도",
+    "district": "논산시",
+    "lat": 36.4992,
+    "lng": 126.6587,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1200,
+    "purchaseAmount": 1680000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-09-06"
+  },
+  {
+    "id": 248,
+    "name": "조소원(영진전문대학)",
+    "type": "학교/대학",
+    "region": "대구광역시",
+    "district": "북구",
+    "lat": 35.8222,
+    "lng": 128.6551,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1320000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-08-30"
+  },
+  {
+    "id": 249,
+    "name": "이지영(강원과학고등학교 보건실)",
+    "type": "학교/대학",
+    "region": "강원특별자치도",
+    "district": "원주시",
+    "lat": 37.7941,
+    "lng": 128.055,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 135,
+    "purchaseAmount": 486000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-08-30"
+  },
+  {
+    "id": 250,
+    "name": "권유희(전주중학교)",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.8105,
+    "lng": 126.9972,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "반기",
+    "purchaseVolume": 900,
+    "purchaseAmount": 1350000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2023-08-25"
+  },
+  {
+    "id": 251,
+    "name": "윤상우(부석중학교)",
+    "type": "학교/대학",
+    "region": "충청남도",
+    "district": "서산시",
+    "lat": 36.5551,
+    "lng": 126.6581,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 71,
+    "purchaseAmount": 172200,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-08-24"
+  },
+  {
+    "id": 252,
+    "name": "신유라(계명대학교)",
+    "type": "학교/대학",
+    "region": "대구광역시",
+    "district": "달서구",
+    "lat": 35.8396,
+    "lng": 128.6207,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 400,
+    "purchaseAmount": 1000000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-08-22"
+  },
+  {
+    "id": 253,
+    "name": "김유진(울주군보건소)",
+    "type": "보건소",
+    "region": "울산광역시",
+    "district": "울주군",
+    "lat": 35.3965,
+    "lng": 129.3542,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1680000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-08-11"
+  },
+  {
+    "id": 254,
+    "name": "수도방위사령부(의무대)",
+    "type": "군/경/소방",
+    "region": "서울특별시",
+    "district": "관악구",
+    "lat": 37.4572,
+    "lng": 126.9665,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 302,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-08-10"
+  },
+  {
+    "id": 255,
+    "name": "국군양주병원(조자은)",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "양주시",
+    "lat": 37.2789,
+    "lng": 127.482,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 200,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-07-31"
+  },
+  {
+    "id": 256,
+    "name": "이지윤(익산시보건소)",
+    "type": "보건소",
+    "region": "전북특별자치도",
+    "district": "익산시",
+    "lat": 35.7338,
+    "lng": 127.057,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-07-19"
+  },
+  {
+    "id": 257,
+    "name": "김필재(송파구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "송파구",
+    "lat": 37.6449,
+    "lng": 126.9417,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-07-17"
+  },
+  {
+    "id": 258,
+    "name": "마포구보건소(이혜경)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "마포구",
+    "lat": 37.6421,
+    "lng": 127.0776,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-07-05"
+  },
+  {
+    "id": 259,
+    "name": "김포시보건소(이유리)",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "김포시",
+    "lat": 37.3395,
+    "lng": 127.3929,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 400,
+    "purchaseAmount": 1000000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-07-05"
+  },
+  {
+    "id": 260,
+    "name": "건강증진팀(강동구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "강동구",
+    "lat": 37.4223,
+    "lng": 126.9898,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-06-20"
+  },
+  {
+    "id": 261,
+    "name": "군포시정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "경기도",
+    "district": "군포시",
+    "lat": 37.5638,
+    "lng": 127.4733,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 45,
+    "purchaseAmount": 189000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-06-14"
+  },
+  {
+    "id": 262,
+    "name": "이종우(전주대학교 의과학대학 행정실)",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.8653,
+    "lng": 127.1933,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 45,
+    "purchaseAmount": 189000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-30"
+  },
+  {
+    "id": 263,
+    "name": "강원대병원 강원지역암센터(김지원)",
+    "type": "공공기관(기타)",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": 37.8683,
+    "lng": 128.2318,
+    "products": [
+      "노담패치",
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2400,
+    "purchaseAmount": 1680000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2023-05-24"
+  },
+  {
+    "id": 264,
+    "name": "박미영(강남구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "강남구",
+    "lat": 37.7014,
+    "lng": 126.8878,
+    "products": [
+      "노담패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1320,
+    "purchaseAmount": 3300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-19"
+  },
+  {
+    "id": 265,
+    "name": "서원효(이화여자대학교)",
+    "type": "학교/대학",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.4226,
+    "lng": 126.8737,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 150,
+    "purchaseAmount": 450000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-18"
+  },
+  {
+    "id": 266,
+    "name": "강남구보건소 금연클리닉(이예진)",
+    "type": "금연지원센터",
+    "region": "서울특별시",
+    "district": "강남구",
+    "lat": 37.4544,
+    "lng": 127.0288,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1097,
+    "purchaseAmount": 2301600,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-15"
+  },
+  {
+    "id": 267,
+    "name": "서예린(대구한의대학교)",
+    "type": "학교/대학",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": 36.5111,
+    "lng": 128.8043,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 200,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-15"
+  },
+  {
+    "id": 268,
+    "name": "이나미(목포대학교)",
+    "type": "학교/대학",
+    "region": "전라남도",
+    "district": "무안군",
+    "lat": 34.9277,
+    "lng": 127.0711,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-12"
+  },
+  {
+    "id": 269,
+    "name": "정소연(동대문구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": 37.4668,
+    "lng": 127.0102,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "분기",
+    "purchaseVolume": 2106,
+    "purchaseAmount": 2420000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2023-05-11"
+  },
+  {
+    "id": 270,
+    "name": "군산고등학교",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "군산시",
+    "lat": 35.8947,
+    "lng": 126.9933,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 202,
+    "purchaseAmount": 330000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-09"
+  },
+  {
+    "id": 271,
+    "name": "전주시중독관리통합지원센터(장재봉선생님)",
+    "type": "중독관리통합지원센터",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.9161,
+    "lng": 127.2483,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 785000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-05-02"
+  },
+  {
+    "id": 272,
+    "name": "대구광역정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "대구광역시",
+    "district": "동구",
+    "lat": 35.7538,
+    "lng": 128.4591,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-04-20"
+  },
+  {
+    "id": 273,
+    "name": "정혜진(기장군보건소)",
+    "type": "보건소",
+    "region": "부산광역시",
+    "district": "기장군",
+    "lat": 35.1232,
+    "lng": 129.1288,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-04-07"
+  },
+  {
+    "id": 274,
+    "name": "이혜원(국군강릉병원)",
+    "type": "공공기관(기타)",
+    "region": "강원특별자치도",
+    "district": "강릉시",
+    "lat": 37.9603,
+    "lng": 128.1245,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-03-29"
+  },
+  {
+    "id": 275,
+    "name": "울산 남구보건소",
+    "type": "보건소",
+    "region": "울산광역시",
+    "district": "남구",
+    "lat": 35.6029,
+    "lng": 129.1842,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-03-22"
+  },
+  {
+    "id": 276,
+    "name": "함평군보건소(임정민)",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "함평군",
+    "lat": 34.9251,
+    "lng": 127.0292,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-03-21"
+  },
+  {
+    "id": 277,
+    "name": "통영시보건소(박태준)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "통영시",
+    "lat": 35.3412,
+    "lng": 128.2949,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 602,
+    "purchaseAmount": 780000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-03-16"
+  },
+  {
+    "id": 278,
+    "name": "박유정(증평군보건소)",
+    "type": "보건소",
+    "region": "충청북도",
+    "district": "증평군",
+    "lat": 36.7408,
+    "lng": 127.5218,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 785000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-03-15"
+  },
+  {
+    "id": 279,
+    "name": "아산시보건소(이정은)",
+    "type": "보건소",
+    "region": "충청남도",
+    "district": "아산시",
+    "lat": 36.4047,
+    "lng": 126.9452,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-03-10"
+  },
+  {
+    "id": 280,
+    "name": "강북구보건소(박세미)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "강북구",
+    "lat": 37.6513,
+    "lng": 126.9322,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-03-03"
+  },
+  {
+    "id": 281,
+    "name": "우산건강생활지원센터(김중선)",
+    "type": "광역시도 건강증진부서",
+    "region": "광주광역시",
+    "district": "광산구",
+    "lat": 35.138,
+    "lng": 126.8138,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 10,
+    "purchaseAmount": 0,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-02-28"
+  },
+  {
+    "id": 282,
+    "name": "강남구보건소 금연클리닉(박미영)",
+    "type": "금연지원센터",
+    "region": "서울특별시",
+    "district": "강남구",
+    "lat": 37.5683,
+    "lng": 126.9304,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 3000,
+    "purchaseAmount": 3150000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-02-09"
+  },
+  {
+    "id": 283,
+    "name": "화순전남대학교병원",
+    "type": "학교/대학",
+    "region": "전라남도",
+    "district": "화순군",
+    "lat": 34.9728,
+    "lng": 127.0877,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-01-17"
+  },
+  {
+    "id": 284,
+    "name": "전주시 중독관리통합지원센터(장재봉)",
+    "type": "중독관리통합지원센터",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.702,
+    "lng": 127.2471,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 785000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-01-02"
+  },
+  {
+    "id": 285,
+    "name": "창원중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "경상남도",
+    "district": "창원시",
+    "lat": 35.5013,
+    "lng": 128.3118,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 20000,
+    "purchaseAmount": 12400000,
+    "purchaseStage": "추천",
+    "lastPurchaseDate": "2022-12-27"
+  },
+  {
+    "id": 286,
+    "name": "울산중구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "울산광역시",
+    "district": "중구",
+    "lat": 35.6006,
+    "lng": 129.292,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-12-12"
+  },
+  {
+    "id": 287,
+    "name": "나혜경(오산시보건소)",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "오산시",
+    "lat": 37.4839,
+    "lng": 127.6579,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-28"
+  },
+  {
+    "id": 288,
+    "name": "달서구중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "대구광역시",
+    "district": "달서구",
+    "lat": 35.8024,
+    "lng": 128.6939,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-23"
+  },
+  {
+    "id": 289,
+    "name": "심효진(전주대학교)",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": 35.8318,
+    "lng": 127.1039,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 50,
+    "purchaseAmount": 210000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-15"
+  },
+  {
+    "id": 290,
+    "name": "봉화군정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "경상북도",
+    "district": "봉화군",
+    "lat": 36.4726,
+    "lng": 128.9582,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 50,
+    "purchaseAmount": 210000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-15"
+  },
+  {
+    "id": 291,
+    "name": "세종특별자치시광역정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "세종특별자치시",
+    "district": "새롬로",
+    "lat": 36.4105,
+    "lng": 127.1255,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-14"
+  },
+  {
+    "id": 292,
+    "name": "김제고등학교 보건실(이영진)",
+    "type": "학교/대학",
+    "region": "전북특별자치도",
+    "district": "김제시",
+    "lat": 35.9195,
+    "lng": 126.9849,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 222,
+    "purchaseAmount": 330000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-14"
+  },
+  {
+    "id": 293,
+    "name": "장흥군정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "전라남도",
+    "district": "장흥군",
+    "lat": 34.9824,
+    "lng": 126.9142,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-14"
+  },
+  {
+    "id": 294,
+    "name": "최혜민(서대문구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": 37.5559,
+    "lng": 127.0111,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-07"
+  },
+  {
+    "id": 295,
+    "name": "김은정(제8기동사단 의무대)",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "양주시",
+    "lat": 37.3775,
+    "lng": 127.3769,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-07"
+  },
+  {
+    "id": 296,
+    "name": "허시온(화순전남대학교병원)",
+    "type": "학교/대학",
+    "region": "전라남도",
+    "district": "화순군",
+    "lat": 34.9732,
+    "lng": 126.8956,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 200,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-03"
+  },
+  {
+    "id": 297,
+    "name": "박세미(강북구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "강북구",
+    "lat": 37.4801,
+    "lng": 127.0673,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 602,
+    "purchaseAmount": 780000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-11-01"
+  },
+  {
+    "id": 298,
+    "name": "최선영(국군홍천병원)",
+    "type": "공공기관(기타)",
+    "region": "강원특별자치도",
+    "district": "홍천군",
+    "lat": 37.7749,
+    "lng": 128.2696,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 702,
+    "purchaseAmount": 710000,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2022-10-28"
+  },
+  {
+    "id": 299,
+    "name": "통영시보건소(김보영)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "통영시",
+    "lat": 35.521,
+    "lng": 128.1461,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-27"
+  },
+  {
+    "id": 300,
+    "name": "이은욱(60사단 군사경찰대대)",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "고양시",
+    "lat": 37.2668,
+    "lng": 127.6527,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 177,
+    "purchaseAmount": 371400,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-27"
+  },
+  {
+    "id": 301,
+    "name": "광주시보건소(김시영)",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "광주시",
+    "lat": 37.2895,
+    "lng": 127.5843,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 602,
+    "purchaseAmount": 780000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-27"
+  },
+  {
+    "id": 302,
+    "name": "대구달서구보건소(이정은)",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "달서구",
+    "lat": 35.868,
+    "lng": 128.6788,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1002,
+    "purchaseAmount": 1080000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-20"
+  },
+  {
+    "id": 303,
+    "name": "마포구보건소(김로사)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "마포구",
+    "lat": 37.6237,
+    "lng": 127.0218,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-11"
+  },
+  {
+    "id": 304,
+    "name": "유재은(화천군보건의료원)",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "화천군",
+    "lat": 37.82,
+    "lng": 128.2434,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "월간",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 3560000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-07"
+  },
+  {
+    "id": 305,
+    "name": "장재봉(전주시 중독관리통합지원센터)",
+    "type": "중독관리통합지원센터",
+    "region": "전북특별자치도",
+    "district": "완산구",
+    "lat": 35.6982,
+    "lng": 127.0254,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 785000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-05"
+  },
+  {
+    "id": 306,
+    "name": "이현림(성주군보건소)",
+    "type": "보건소",
+    "region": "경상북도",
+    "district": "성주군",
+    "lat": 36.5494,
+    "lng": 128.8308,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 50,
+    "purchaseAmount": 150000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-04"
+  },
+  {
+    "id": 307,
+    "name": "김희영(국립부곡병원 중독진단과)",
+    "type": "공공기관(기타)",
+    "region": "경상남도",
+    "district": "창녕군",
+    "lat": 35.4851,
+    "lng": 128.2052,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1000,
+    "purchaseAmount": 2100000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-10-04"
+  },
+  {
+    "id": 308,
+    "name": "박선화(성동구보건소)",
+    "type": "보건소",
+    "region": "서울특별시",
+    "district": "성동구",
+    "lat": 37.5758,
+    "lng": 126.9557,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 602,
+    "purchaseAmount": 780000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-09-23"
+  },
+  {
+    "id": 309,
+    "name": "이지애(삼척시정신건강복지센터)",
+    "type": "정신건강복지센터",
+    "region": "강원특별자치도",
+    "district": "삼척시",
+    "lat": 37.8966,
+    "lng": 128.1047,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 300,
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-09-23"
+  },
+  {
+    "id": 310,
+    "name": "유수정(인천중구보건소)",
+    "type": "보건소",
+    "region": "인천광역시",
+    "district": "중구",
+    "lat": 37.5172,
+    "lng": 126.6365,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1506,
+    "purchaseAmount": 867500,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2022-09-22"
+  },
+  {
+    "id": 311,
+    "name": "이정은(아산시보건소)",
+    "type": "보건소",
+    "region": "충청남도",
+    "district": "아산시",
+    "lat": 36.4438,
+    "lng": 126.6862,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 700,
+    "purchaseAmount": 1470000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-09-20"
+  },
+  {
+    "id": 312,
+    "name": "윤혜원(태백시보건소)",
+    "type": "보건소",
+    "region": "강원특별자치도",
+    "district": "태백시",
+    "lat": 37.7306,
+    "lng": 128.0414,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-09-15"
+  },
+  {
+    "id": 313,
+    "name": "박소연(대구남구보건소)",
+    "type": "보건소",
+    "region": "대구광역시",
+    "district": "남구",
+    "lat": 35.8822,
+    "lng": 128.6801,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2002,
+    "purchaseAmount": 2130000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-09-15"
+  },
+  {
+    "id": 314,
+    "name": "60사단(박은혜대위)",
+    "type": "군/경/소방",
+    "region": "경기도",
+    "district": "고양시",
+    "lat": 37.3193,
+    "lng": 127.4332,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 602,
+    "purchaseAmount": 830000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-08-29"
+  },
+  {
+    "id": 315,
+    "name": "제주서귀포시보건소(김서인)",
+    "type": "보건소",
+    "region": "제주특별자치도",
+    "district": "서귀포시",
+    "lat": 33.4843,
+    "lng": 126.5657,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2721,
+    "purchaseAmount": 2010500,
+    "purchaseStage": "만족",
+    "lastPurchaseDate": "2022-08-16"
+  },
+  {
+    "id": 316,
+    "name": "사천시보건소(주무관 이지원)",
+    "type": "보건소",
+    "region": "경상남도",
+    "district": "사천시",
+    "lat": 35.6036,
+    "lng": 128.2206,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 950,
+    "purchaseAmount": 1995000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-08-10"
+  },
+  {
+    "id": 317,
+    "name": "국군고양병원",
+    "type": "공공기관(기타)",
+    "region": "경기도",
+    "district": "파주시",
+    "lat": 37.3487,
+    "lng": 127.3985,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 200,
+    "purchaseAmount": 600000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-07-29"
+  },
+  {
+    "id": 318,
+    "name": "시흥시보건소(김서진)",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "시흥시",
+    "lat": 37.322,
+    "lng": 127.4365,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 800,
+    "purchaseAmount": 1256000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-07-28"
+  },
+  {
+    "id": 319,
+    "name": "군산시중독관리통합지원센터,전주시중독관련통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "기타",
+    "district": "전북",
+    "lat": 36.4038,
+    "lng": 127.3542,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1002,
+    "purchaseAmount": 880000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-07-27"
+  },
+  {
+    "id": 320,
+    "name": "옹진군정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "인천광역시",
+    "district": "미추홀구",
+    "lat": 37.4665,
+    "lng": 126.6375,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 1050000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-06-08"
+  },
+  {
+    "id": 321,
+    "name": "대구동부중독관리통합지원센터",
+    "type": "중독관리통합지원센터",
+    "region": "대구광역시",
+    "district": "동구",
+    "lat": 36.0137,
+    "lng": 128.6174,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 100,
+    "purchaseAmount": 300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-05-27"
+  },
+  {
+    "id": 322,
+    "name": "기프트수림(이천시보건소)",
+    "type": "보건소",
+    "region": "경기도",
+    "district": "이천시",
+    "lat": 37.473,
+    "lng": 127.4062,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 1002,
+    "purchaseAmount": 792000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-05-23"
+  },
+  {
+    "id": 323,
+    "name": "기프트수림(완주군정신건강복지센터)",
+    "type": "정신건강복지센터",
+    "region": "전북특별자치도",
+    "district": "완주군",
+    "lat": 35.9308,
+    "lng": 127.1062,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 810,
+    "purchaseAmount": 1247400,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-05-03"
+  },
+  {
+    "id": 324,
+    "name": "광진구정신건강복지센터",
+    "type": "정신건강복지센터",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": 37.6783,
+    "lng": 127.0002,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 975000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-04-22"
+  },
+  {
+    "id": 325,
+    "name": "통크기획(익산시보건소)",
+    "type": "보건소",
+    "region": "전북특별자치도",
+    "district": "익산시",
+    "lat": 35.8111,
+    "lng": 127.091,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 1300000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2022-04-01"
+  }
+]

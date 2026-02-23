@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APS제품 납품현황 대시보드</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- 헤더 -->
+  <header class="dashboard-header">
+    <h1>APS제품 납품현황 대시보드</h1>
+    <p class="subtitle">건강증진사업 기관별 구매현황 및 지역별 점유율</p>
+    <div class="sync-controls">
+      <button id="syncBtn" class="sync-btn" onclick="syncFromWebhook()">불러오기</button>
+      <span id="syncStatus" class="sync-status"></span>
+    </div>
+  </header>
+
+  <!-- 요약 카드 -->
+  <section class="summary-cards">
+    <div class="card">
+      <div class="card-label">총 기관수</div>
+      <div class="card-value" id="totalInstitutions">0</div>
+    </div>
+    <div class="card">
+      <div class="card-label">총 납품액</div>
+      <div class="card-value" id="totalAmount">0</div>
+    </div>
+    <div class="card">
+      <div class="card-label">총 구매량</div>
+      <div class="card-value" id="totalVolume">0</div>
+    </div>
+    <div class="card">
+      <div class="card-label">구매완료 기관</div>
+      <div class="card-value" id="purchasedCount">0</div>
+    </div>
+  </section>
+
+  <!-- 탭 네비게이션 -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="tab-map">지도</button>
+    <button class="tab-btn" data-tab="tab-charts">차트 분석</button>
+    <button class="tab-btn" data-tab="tab-share">점유율</button>
+    <button class="tab-btn" data-tab="tab-list">기관 목록</button>
+  </nav>
+
+  <!-- 탭 1: 지도 -->
+  <div class="tab-content active" id="tab-map">
+    <section class="main-content">
+      <!-- 필터 패널 -->
+      <aside class="filter-panel">
+        <h3>필터</h3>
+
+        <div class="filter-group">
+          <h4>기관 유형 <span class="filter-toggle" data-target="filter-type">전체해제</span></h4>
+          <label><input type="checkbox" class="filter-type" value="보건소" checked> 보건소</label>
+          <label><input type="checkbox" class="filter-type" value="전문기관" checked> 전문기관</label>
+          <label><input type="checkbox" class="filter-type" value="금연지원센터" checked> 금연지원센터</label>
+          <label><input type="checkbox" class="filter-type" value="광역시도 건강증진부서" checked> 건강증진부서</label>
+          <label><input type="checkbox" class="filter-type" value="교육기관" checked> 교육기관</label>
+          <label><input type="checkbox" class="filter-type" value="전공교육" checked> 전공교육</label>
+          <label><input type="checkbox" class="filter-type" value="군/경/소방" checked> 군/경/소방</label>
+          <label><input type="checkbox" class="filter-type" value="사업장" checked> 사업장</label>
+          <label><input type="checkbox" class="filter-type" value="복지기관" checked> 복지기관</label>
+          <label><input type="checkbox" class="filter-type" value="공공기관(기타)" checked> 공공기관(기타)</label>
+        </div>
+
+        <div class="filter-group">
+          <h4>광역시도</h4>
+          <select id="filterRegion" class="filter-select">
+            <option value="all">전체</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h4>시/군/구</h4>
+          <select id="filterDistrict" class="filter-select">
+            <option value="all">전체</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h4>구매단계 <span class="filter-toggle" data-target="filter-stage">전체해제</span></h4>
+          <label><input type="checkbox" class="filter-stage" value="인지" checked> 인지</label>
+          <label><input type="checkbox" class="filter-stage" value="관심" checked> 관심</label>
+          <label><input type="checkbox" class="filter-stage" value="고려" checked> 고려</label>
+          <label><input type="checkbox" class="filter-stage" value="구매" checked> 구매</label>
+          <label><input type="checkbox" class="filter-stage" value="만족" checked> 만족</label>
+          <label><input type="checkbox" class="filter-stage" value="추천" checked> 추천</label>
+        </div>
+
+        <div class="filter-group">
+          <h4>구매기간</h4>
+          <div class="date-range">
+            <input type="date" id="filterDateFrom" class="filter-date" />
+            <span class="date-separator">~</span>
+            <input type="date" id="filterDateTo" class="filter-date" />
+          </div>
+          <div class="date-quick-btns">
+            <button class="date-quick-btn active" data-range="1y">1년</button>
+            <button class="date-quick-btn" data-range="2y">2년</button>
+            <button class="date-quick-btn" data-range="prev">전년도</button>
+            <button class="date-quick-btn" data-range="all">전체</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>제품 유형 <span class="filter-toggle" data-target="filter-product">전체해제</span></h4>
+          <label><input type="checkbox" class="filter-product" value="알쓰패치" checked> 알쓰패치</label>
+          <label><input type="checkbox" class="filter-product" value="노담패치" checked> 노담패치</label>
+        </div>
+
+        <button id="resetFilters" class="reset-btn">필터 초기화</button>
+      </aside>
+
+      <!-- 지도 -->
+      <div class="map-container">
+        <div id="map"></div>
+      </div>
+
+      <!-- 지역 현황 패널 -->
+      <aside class="info-panel">
+        <h3>지역 현황</h3>
+        <div id="infoRegionSummary" class="info-region-summary">
+          <p class="info-hint">지도에서 지역을 클릭하세요</p>
+        </div>
+
+        <div class="info-section">
+          <h4>TOP 5 지역 (납품액)</h4>
+          <div id="infoTopRegions" class="info-top-list"></div>
+        </div>
+
+        <div class="info-section">
+          <h4>최근 구매 기관</h4>
+          <div id="infoRecentPurchases" class="info-recent-list"></div>
+        </div>
+
+        <div class="info-section">
+          <h4>상담 활발 기관 (TOP 5)</h4>
+          <div id="infoActiveConsults" class="info-recent-list"></div>
+        </div>
+
+        <!-- 지역 색상 범례 -->
+        <div class="legend">
+          <h4>지역 색상 범례</h4>
+          <div class="legend-item"><span class="legend-dot" style="background:#42A5F5"></span> 반복구매</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#66BB6A"></span> 1회 구매</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#EF5350"></span> 미구매</div>
+        </div>
+
+        <!-- 기관 유형 범례 -->
+        <div class="legend">
+          <h4>기관 유형 범례</h4>
+          <div class="legend-grid">
+            <div class="legend-item"><span class="legend-dot" style="background:#2196F3"></span> 보건소</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#9C27B0"></span> 전문기관</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#4CAF50"></span> 금연센터</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#F44336"></span> 건강증진부서</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#3F51B5"></span> 교육기관</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#E91E63"></span> 전공교육</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#795548"></span> 군/경/소방</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#FF9800"></span> 사업장</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#009688"></span> 복지기관</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#607D8B"></span> 공공기관</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <!-- 탭 2: 차트 분석 -->
+  <div class="tab-content" id="tab-charts">
+    <section class="charts-section">
+      <div class="chart-box">
+        <h3>구매단계별 현황 (퍼널)</h3>
+        <canvas id="stageChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>지역별 납품액 비율</h3>
+        <canvas id="regionChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>기관유형별 납품액</h3>
+        <canvas id="typeChart"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <!-- 탭 3: 점유율 -->
+  <div class="tab-content" id="tab-share">
+    <section class="share-section">
+      <div class="chart-box share-chart-box">
+        <h3>지역별 점유율 (구매기관 / 전체대상기관)</h3>
+        <canvas id="shareChart"></canvas>
+      </div>
+      <div class="share-table-box">
+        <h3>지역별 점유율 상세</h3>
+        <div class="table-wrapper">
+          <table id="shareTable">
+            <thead>
+              <tr>
+                <th>지역</th>
+                <th>전체 대상</th>
+                <th>구매기관</th>
+                <th>예상고객</th>
+                <th>미접촉</th>
+                <th>점유율</th>
+                <th>접촉률</th>
+              </tr>
+            </thead>
+            <tbody id="shareBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-section prospect-section">
+      <h3>예상고객 리스트 <span class="prospect-count" id="prospectCount">0개</span></h3>
+      <p class="section-desc">구매단계가 인지/관심/고려인 기관 (전환 가능성 높은 순)</p>
+      <div class="table-wrapper">
+        <table id="prospectTable">
+          <thead>
+            <tr>
+              <th>우선순위</th>
+              <th>기관명</th>
+              <th>기관유형</th>
+              <th>지역</th>
+              <th>구매단계</th>
+              <th>관심제품</th>
+              <th>예상금액</th>
+              <th>상담횟수</th>
+              <th>최근상담일</th>
+            </tr>
+          </thead>
+          <tbody id="prospectBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- 탭 4: 기관 목록 -->
+  <div class="tab-content" id="tab-list">
+    <section class="table-section">
+      <h3>전체 기관 목록</h3>
+      <div class="table-wrapper">
+        <table id="institutionTable">
+          <thead>
+            <tr>
+              <th data-sort="name">기관명 ▲▼</th>
+              <th data-sort="type">기관유형 ▲▼</th>
+              <th data-sort="region">지역 ▲▼</th>
+              <th data-sort="purchaseStage">구매단계 ▲▼</th>
+              <th data-sort="purchaseVolume">구매량 ▲▼</th>
+              <th data-sort="purchaseAmount">납품액 ▲▼</th>
+              <th data-sort="purchaseCycle">구매주기 ▲▼</th>
+              <th data-sort="lastPurchaseDate">최근구매일 ▲▼</th>
+              <th data-sort="consultCount">상담횟수 ▲▼</th>
+              <th data-sort="lastConsultDate">최근상담일 ▲▼</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- 지역 상세 모달 -->
+  <div id="regionModal" class="region-modal-overlay" onclick="if(event.target===this)closeRegionModal()">
+    <div class="region-modal">
+      <div id="regionModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/table.js"></script>
+  <script src="js/prospects.js"></script>
+  <script src="js/info-panel.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
