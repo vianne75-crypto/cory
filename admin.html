@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APS 관리자</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+
+<body>
+  <!-- 로그인 화면 -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <h1>APS 관리자</h1>
+      <p class="login-desc">건강증진사업 기관 데이터 관리</p>
+      <div class="login-form">
+        <input type="text" id="loginId" class="login-input" placeholder="아이디" autofocus>
+        <input type="password" id="loginPw" class="login-input" placeholder="비밀번호" onkeydown="if(event.key==='Enter')loginWithCredentials()">
+        <button class="login-btn" onclick="loginWithCredentials()">로그인</button>
+      </div>
+      <p id="loginError" class="login-error"></p>
+    </div>
+  </div>
+
+  <!-- 관리자 메인 -->
+  <div id="adminMain" class="admin-main" style="display:none;">
+    <!-- 헤더 -->
+    <header class="admin-header">
+      <div class="header-left">
+        <h1>APS 관리자</h1>
+        <a href="index.html" class="dashboard-link">대시보드 보기</a>
+      </div>
+      <div class="header-right">
+        <span id="userEmail" class="user-email"></span>
+        <button class="logout-btn" onclick="logout()">로그아웃</button>
+      </div>
+    </header>
+
+    <!-- 탭 네비게이션 -->
+    <nav class="admin-tabs">
+      <button class="admin-tab active" data-tab="tab-institutions">기관 관리</button>
+      <button class="admin-tab" data-tab="tab-consultations">상담 내역</button>
+      <button class="admin-tab" data-tab="tab-unmatched">미매칭</button>
+      <button class="admin-tab" data-tab="tab-orders">주문</button>
+      <button class="admin-tab" data-tab="tab-publish">게시</button>
+      <button class="admin-tab" data-tab="tab-settings">설정</button>
+      <button class="admin-tab" data-tab="tab-upload">데이터 업로드</button>
+    </nav>
+
+    <!-- 탭 1: 기관 관리 -->
+    <div class="admin-content active" id="tab-institutions">
+      <div class="content-header">
+        <h2>기관 관리</h2>
+        <div class="content-actions">
+          <input type="text" id="instSearch" class="search-input" placeholder="기관명 검색..." oninput="searchInstitutions()">
+          <select id="instTypeFilter" class="filter-select" onchange="filterInstitutions()">
+            <option value="all">전체 유형</option>
+          </select>
+          <select id="instRegionFilter" class="filter-select" onchange="filterInstitutions()">
+            <option value="all">전체 지역</option>
+          </select>
+          <select id="instStageFilter" class="filter-select" onchange="filterInstitutions()">
+            <option value="all">전체 단계</option>
+            <option value="인지">인지</option>
+            <option value="관심">관심</option>
+            <option value="고려">고려</option>
+            <option value="구매">구매</option>
+            <option value="만족">만족</option>
+            <option value="추천">추천</option>
+          </select>
+          <button class="btn btn-primary" onclick="showAddInstitutionModal()">+ 기관 추가</button>
+        </div>
+      </div>
+      <div class="stats-row" id="instStats"></div>
+      <div class="table-container">
+        <table id="instTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>기관명</th>
+              <th>기관유형</th>
+              <th>지역</th>
+              <th>구매단계</th>
+              <th>납품액</th>
+              <th>구매량</th>
+              <th>상담횟수</th>
+              <th>최근구매일</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody id="instBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="instPagination"></div>
+    </div>
+
+    <!-- 탭 2: 상담 내역 -->
+    <div class="admin-content" id="tab-consultations">
+      <div class="content-header">
+        <h2>상담 내역</h2>
+        <div class="content-actions">
+          <input type="text" id="consultSearch" class="search-input" placeholder="기관명/내용 검색..." oninput="searchConsultations()">
+          <select id="consultMdFilter" class="filter-select" onchange="filterConsultations()">
+            <option value="all">전체 MD</option>
+          </select>
+          <select id="consultMatchFilter" class="filter-select" onchange="filterConsultations()">
+            <option value="all">전체</option>
+            <option value="matched">매칭됨</option>
+            <option value="unmatched">미매칭</option>
+          </select>
+        </div>
+      </div>
+      <div class="stats-row" id="consultStats"></div>
+      <div class="table-container">
+        <table id="consultTable">
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>MD</th>
+              <th>기관명(원본)</th>
+              <th>매칭기관</th>
+              <th>태그</th>
+              <th>내용</th>
+            </tr>
+          </thead>
+          <tbody id="consultBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="consultPagination"></div>
+    </div>
+
+    <!-- 탭 3: 미매칭 -->
+    <div class="admin-content" id="tab-unmatched">
+      <div class="content-header">
+        <h2>미매칭 상담 매칭</h2>
+        <div class="content-actions">
+          <span id="unmatchedCount" class="count-badge">0건</span>
+          <button class="btn btn-secondary" onclick="autoMatchAll()">자동 매칭 실행</button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table id="unmatchedTable">
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>MD</th>
+              <th>기관명(원본)</th>
+              <th>태그</th>
+              <th>추천 기관</th>
+              <th>유사도</th>
+              <th>액션</th>
+            </tr>
+          </thead>
+          <tbody id="unmatchedBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="unmatchedPagination"></div>
+    </div>
+
+    <!-- 탭 4: 주문 -->
+    <div class="admin-content" id="tab-orders">
+      <div class="content-header">
+        <h2>주문 모니터링</h2>
+        <div class="content-actions">
+          <button class="btn btn-primary" onclick="syncOrders()">주문 동기화</button>
+          <span id="orderSyncStatus" class="sync-status-text"></span>
+        </div>
+      </div>
+      <div class="stats-row" id="orderStats"></div>
+      <div class="table-container">
+        <table id="orderTable">
+          <thead>
+            <tr>
+              <th>주문번호</th>
+              <th>주문자</th>
+              <th>상품</th>
+              <th>수량</th>
+              <th>금액</th>
+              <th>주소</th>
+              <th>매칭기관</th>
+              <th>상태</th>
+              <th>주문일</th>
+            </tr>
+          </thead>
+          <tbody id="orderBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="orderPagination"></div>
+    </div>
+
+    <!-- 탭 5: 게시 -->
+    <div class="admin-content" id="tab-publish">
+      <div class="content-header">
+        <h2>대시보드 게시</h2>
+      </div>
+      <div class="publish-panel">
+        <div class="publish-info">
+          <p>현재 DB의 기관 데이터를 대시보드용 캐시에 게시합니다.</p>
+          <p>게시 후 대시보드(index.html)에서 새로고침하면 최신 데이터가 반영됩니다.</p>
+        </div>
+        <div class="publish-status" id="publishStatus">
+          <div class="publish-stat">
+            <span class="label">마지막 게시</span>
+            <span class="value" id="lastPublishTime">-</span>
+          </div>
+          <div class="publish-stat">
+            <span class="label">게시자</span>
+            <span class="value" id="lastPublishBy">-</span>
+          </div>
+          <div class="publish-stat">
+            <span class="label">기관 수</span>
+            <span class="value" id="publishInstCount">-</span>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-lg" onclick="publishDashboard()" id="publishBtn">대시보드에 게시</button>
+        <div id="publishLog" class="publish-log"></div>
+      </div>
+    </div>
+
+    <!-- 탭 6: 설정 -->
+    <div class="admin-content" id="tab-settings">
+      <div class="content-header">
+        <h2>설정</h2>
+      </div>
+      <div class="settings-panel">
+        <div class="setting-group">
+          <h3>관리자 계정</h3>
+          <div id="adminUsersList" class="admin-users-list"></div>
+          <div class="setting-row">
+            <input type="email" id="newAdminEmail" placeholder="이메일 주소" class="input">
+            <input type="text" id="newAdminName" placeholder="이름" class="input">
+            <button class="btn btn-primary" onclick="addAdminUser()">추가</button>
+          </div>
+        </div>
+        <div class="setting-group">
+          <h3>지역별 대상기관 수</h3>
+          <div id="regionTargetsEditor" class="region-targets-editor"></div>
+          <button class="btn btn-primary" onclick="saveRegionTargets()">저장</button>
+        </div>
+        <div class="setting-group">
+          <h3>상담태그 → 구매단계 매핑</h3>
+          <div id="stageMapEditor" class="stage-map-editor"></div>
+          <button class="btn btn-primary" onclick="saveStageMap()">저장</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 탭 7: 데이터 업로드 -->
+    <div class="admin-content" id="tab-upload">
+      <div class="content-header">
+        <h2>데이터 업로드</h2>
+      </div>
+
+      <!-- 업로드 카드 그리드 -->
+      <div class="upload-grid">
+
+        <!-- 주문 데이터 (Excel) -->
+        <div class="upload-card">
+          <div class="upload-card-header">
+            <h3>주문 데이터 (Excel)</h3>
+            <span class="upload-badge">Order.xls</span>
+          </div>
+          <p class="upload-desc">애니빌드 주문 엑셀 파일을 업로드하여 기관 데이터를 업데이트합니다.</p>
+          <p class="upload-hint">지원 형식: .xls, .xlsx, .csv</p>
+          <div class="upload-area" id="orderDropZone" onclick="document.getElementById('orderFileInput').click()"
+            ondrop="handleOrderDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
+            <div class="upload-icon">+</div>
+            <p>파일을 드래그하거나 클릭하여 선택</p>
+          </div>
+          <input type="file" id="orderFileInput" accept=".xls,.xlsx,.csv" onchange="handleOrderUpload(event)" style="display:none">
+          <div class="upload-options">
+            <label><input type="checkbox" id="orderMergeMode" checked> 기존 기관과 매칭하여 업데이트</label>
+            <label><input type="checkbox" id="orderAddNew" checked> 미매칭 기관 신규 추가</label>
+          </div>
+          <div class="upload-preview" id="orderPreview"></div>
+          <button class="btn btn-primary" id="orderUploadBtn" onclick="processOrderUpload()" disabled>DB에 반영</button>
+          <div class="upload-status" id="orderUploadStatus"></div>
+        </div>
+
+        <!-- 상담내역 (CSV) -->
+        <div class="upload-card">
+          <div class="upload-card-header">
+            <h3>상담내역 (CSV)</h3>
+            <span class="upload-badge">sangdam.csv</span>
+          </div>
+          <p class="upload-desc">상담내역 CSV를 업로드하여 상담 데이터를 추가하고 구매단계를 업데이트합니다.</p>
+          <p class="upload-hint">컬럼: 날짜, 태그, 대상, 내용, MD</p>
+          <div class="upload-area" id="consultDropZone" onclick="document.getElementById('consultFileInput').click()"
+            ondrop="handleConsultDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
+            <div class="upload-icon">+</div>
+            <p>파일을 드래그하거나 클릭하여 선택</p>
+          </div>
+          <input type="file" id="consultFileInput" accept=".csv" onchange="handleConsultUpload(event)" style="display:none">
+          <div class="upload-options">
+            <label><input type="checkbox" id="consultUpdateStage" checked> 상담태그로 구매단계 업데이트</label>
+          </div>
+          <div class="upload-preview" id="consultPreview"></div>
+          <button class="btn btn-primary" id="consultUploadBtn" onclick="processConsultUpload()" disabled>DB에 반영</button>
+          <div class="upload-status" id="consultUploadStatus"></div>
+        </div>
+
+        <!-- Google Sheets -->
+        <div class="upload-card">
+          <div class="upload-card-header">
+            <h3>Google Sheets 가져오기</h3>
+            <span class="upload-badge">URL</span>
+          </div>
+          <p class="upload-desc">공개된 Google Sheets URL을 입력하여 데이터를 가져옵니다.</p>
+          <p class="upload-hint">스프레드시트를 "웹에 게시" 또는 "링크가 있는 모든 사용자" 공유 필요</p>
+          <div class="form-row">
+            <input type="text" id="gsheetsUrl" class="input" placeholder="Google Sheets URL 붙여넣기">
+          </div>
+          <div class="form-row">
+            <select id="gsheetsType" class="input">
+              <option value="orders">주문 데이터</option>
+              <option value="consultations">상담내역</option>
+              <option value="institutions">기관 데이터</option>
+            </select>
+          </div>
+          <button class="btn btn-secondary" onclick="fetchGoogleSheets()">불러오기</button>
+          <div class="upload-preview" id="gsheetsPreview"></div>
+          <button class="btn btn-primary" id="gsheetsUploadBtn" onclick="processGsheetsUpload()" disabled>DB에 반영</button>
+          <div class="upload-status" id="gsheetsUploadStatus"></div>
+        </div>
+
+        <!-- 기관 데이터 일괄 업로드 -->
+        <div class="upload-card">
+          <div class="upload-card-header">
+            <h3>기관 데이터 일괄</h3>
+            <span class="upload-badge">Excel/CSV</span>
+          </div>
+          <p class="upload-desc">기관 목록을 엑셀/CSV로 일괄 업로드합니다. 기존 data.js 초기 이관에도 사용합니다.</p>
+          <p class="upload-hint">컬럼: 기관명, 유형, 지역, 시군구, 위도, 경도, ...</p>
+          <div class="upload-area" id="instDropZone" onclick="document.getElementById('instFileInput').click()"
+            ondrop="handleInstDrop(event)" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')">
+            <div class="upload-icon">+</div>
+            <p>파일을 드래그하거나 클릭하여 선택</p>
+          </div>
+          <input type="file" id="instFileInput" accept=".xls,.xlsx,.csv" onchange="handleInstBulkUpload(event)" style="display:none">
+          <div class="upload-options">
+            <label><input type="radio" name="instMode" value="datajs" checked> data.js 이관 (기존 838개)</label>
+            <label><input type="radio" name="instMode" value="file"> 파일에서 가져오기</label>
+          </div>
+          <div class="upload-preview" id="instBulkPreview"></div>
+          <button class="btn btn-primary" id="instBulkBtn" onclick="processInstBulkUpload()" disabled>DB에 반영</button>
+          <div class="upload-status" id="instBulkStatus"></div>
+        </div>
+      </div>
+
+      <!-- 업로드 로그 -->
+      <div id="uploadLog" class="migration-log"></div>
+    </div>
+  </div>
+
+  <!-- 기관 추가/수정 모달 -->
+  <div id="instModal" class="modal-overlay" onclick="if(event.target===this)closeInstModal()">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="instModalTitle">기관 추가</h3>
+        <button class="modal-x" onclick="closeInstModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editInstId">
+        <div class="form-row">
+          <label>기관명 *</label>
+          <input type="text" id="editInstName" class="input" required>
+        </div>
+        <div class="form-row two-col">
+          <div>
+            <label>기관유형</label>
+            <select id="editInstType" class="input">
+              <option value="보건소">보건소</option>
+              <option value="전문기관">전문기관</option>
+              <option value="금연지원센터">금연지원센터</option>
+              <option value="광역시도 건강증진부서">건강증진부서</option>
+              <option value="교육기관">교육기관</option>
+              <option value="전공교육">전공교육</option>
+              <option value="군/경/소방">군/경/소방</option>
+              <option value="사업장">사업장</option>
+              <option value="복지기관">복지기관</option>
+              <option value="공공기관(기타)">공공기관(기타)</option>
+            </select>
+          </div>
+          <div>
+            <label>구매단계</label>
+            <select id="editInstStage" class="input">
+              <option value="인지">인지</option>
+              <option value="관심">관심</option>
+              <option value="고려">고려</option>
+              <option value="구매">구매</option>
+              <option value="만족">만족</option>
+              <option value="추천">추천</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row two-col">
+          <div>
+            <label>광역시도</label>
+            <select id="editInstRegion" class="input"></select>
+          </div>
+          <div>
+            <label>시/군/구</label>
+            <input type="text" id="editInstDistrict" class="input">
+          </div>
+        </div>
+        <div class="form-row two-col">
+          <div>
+            <label>위도</label>
+            <input type="number" id="editInstLat" class="input" step="0.0001">
+          </div>
+          <div>
+            <label>경도</label>
+            <input type="number" id="editInstLng" class="input" step="0.0001">
+          </div>
+        </div>
+        <div class="form-row two-col">
+          <div>
+            <label>납품액</label>
+            <input type="number" id="editInstAmount" class="input" value="0">
+          </div>
+          <div>
+            <label>구매량</label>
+            <input type="number" id="editInstVolume" class="input" value="0">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>제품</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" id="editInstProd1" value="알쓰패치"> 알쓰패치</label>
+            <label><input type="checkbox" id="editInstProd2" value="노담패치"> 노담패치</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeInstModal()">취소</button>
+        <button class="btn btn-primary" onclick="saveInstitution()">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 매칭 모달 -->
+  <div id="matchModal" class="modal-overlay" onclick="if(event.target===this)closeMatchModal()">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>기관 매칭</h3>
+        <button class="modal-x" onclick="closeMatchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="match-info" id="matchInfo"></div>
+        <div class="match-search">
+          <input type="text" id="matchSearchInput" class="input" placeholder="기관명 검색..." oninput="searchMatchCandidates()">
+        </div>
+        <div class="match-candidates" id="matchCandidates"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeMatchModal()">취소</button>
+        <button class="btn btn-danger" onclick="dismissUnmatched()">무시</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 알림 -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/admin/admin-auth.js"></script>
+  <script src="js/admin/admin-app.js"></script>
+  <script src="js/admin/admin-institutions.js"></script>
+  <script src="js/admin/admin-consultations.js"></script>
+  <script src="js/admin/admin-unmatched.js"></script>
+  <script src="js/admin/admin-orders.js"></script>
+  <script src="js/admin/admin-publish.js"></script>
+  <script src="js/admin/admin-upload.js"></script>
+  <script src="js/admin/admin-settings.js"></script>
+</body>
+
+</html>

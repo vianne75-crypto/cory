@@ -1,8 +1,45 @@
 // 공유 상태
 let filteredData = [...institutionData];
 
+// Supabase 캐시에서 데이터 로드 시도
+async function loadFromSupabase() {
+  try {
+    if (SUPABASE_URL === 'https://YOUR_PROJECT.supabase.co') return false;
+
+    const { data, error } = await supabase
+      .from('dashboard_cache')
+      .select('data')
+      .eq('id', 1)
+      .single();
+
+    if (error || !data || !data.data) return false;
+
+    const cacheData = data.data;
+    if (cacheData.institutions && cacheData.institutions.length > 0) {
+      // institutionData 교체
+      institutionData.length = 0;
+      cacheData.institutions.forEach(d => institutionData.push(d));
+
+      // 지역 대상기관 수 업데이트
+      if (cacheData.regionTargets) {
+        Object.assign(REGION_TOTAL_TARGETS, cacheData.regionTargets);
+      }
+
+      filteredData = [...institutionData];
+      console.log(`Supabase 캐시 로드: ${institutionData.length}개 기관`);
+      return true;
+    }
+  } catch (e) {
+    console.log('Supabase 캐시 로드 실패, data.js 폴백 사용:', e.message);
+  }
+  return false;
+}
+
 // 초기화
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Supabase 캐시에서 로드 시도 (실패 시 data.js 폴백)
+  await loadFromSupabase();
+
   initMap();
   populateRegionFilter();
   initDateFilter();
