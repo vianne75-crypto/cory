@@ -109,6 +109,45 @@
             <option value="matched">매칭됨</option>
             <option value="unmatched">미매칭</option>
           </select>
+          <button class="btn btn-primary" onclick="showSyncPanel()">상담 동기화</button>
+        </div>
+      </div>
+
+      <!-- 상담 동기화 패널 -->
+      <div id="syncPanel" class="sync-panel" style="display:none;">
+        <div class="sync-panel-header">
+          <h3>애니빌드 상담내역 동기화</h3>
+          <button class="modal-x" onclick="document.getElementById('syncPanel').style.display='none'">&times;</button>
+        </div>
+        <div class="sync-panel-body">
+          <p>애니빌드 관리자 페이지에 로그인 후, 아래 스크립트를 브라우저 콘솔(F12)에 붙여넣어 실행하세요.</p>
+          <div class="sync-steps">
+            <div class="sync-step">
+              <span class="step-num">1</span>
+              <span>애니빌드 관리자 페이지 로그인</span>
+            </div>
+            <div class="sync-step">
+              <span class="step-num">2</span>
+              <span>F12 → 콘솔(Console) 탭 열기</span>
+            </div>
+            <div class="sync-step">
+              <span class="step-num">3</span>
+              <span>아래 스크립트 복사 → 콘솔에 붙여넣기 → Enter</span>
+            </div>
+          </div>
+          <div class="sync-script-area">
+            <div class="sync-script-header">
+              <span>동기화 스크립트</span>
+              <div>
+                <label class="sync-pages-label">페이지 수:
+                  <input type="number" id="syncPages" value="5" min="1" max="641" class="sync-pages-input">
+                </label>
+                <button class="btn btn-sm btn-secondary" onclick="copySyncScript()">복사</button>
+              </div>
+            </div>
+            <pre id="syncScriptCode" class="sync-script-code"></pre>
+          </div>
+          <p class="sync-hint">1페이지 ≈ 30건. 최초 전체 동기화는 641 입력. 매일 업무 마감 시 5페이지면 충분합니다.</p>
         </div>
       </div>
       <div class="stats-row" id="consultStats"></div>

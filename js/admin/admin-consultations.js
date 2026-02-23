@@ -98,3 +98,26 @@ function goConsultPage(page) {
   consultPage = page;
   renderConsultTable();
 }
+
+// ─── 상담 동기화 ───
+function showSyncPanel() {
+  const panel = document.getElementById('syncPanel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  if (panel.style.display === 'block') {
+    updateSyncScript();
+  }
+}
+
+function updateSyncScript() {
+  const pages = document.getElementById('syncPages').value || 5;
+  const script = `(async function(){const W='https://aps-webhook.vianne75.workers.dev/sync-consultations';const P=${pages};const B=200;const a=[];let e=0;console.log('=== 상담내역 동기화 시작 ('+P+'페이지) ===');for(let p=1;p<=P;p++){try{const r=await fetch('/admin/sub_sale/sangdam_list.htm?ajax_yn=0&page='+p,{credentials:'same-origin'});const h=await r.text();const d=new DOMParser().parseFromString(h,'text/html');const t=d.querySelector('table.rg-hover')||d.querySelectorAll('table')[1];if(!t)continue;const rows=t.querySelectorAll('tr');for(let i=1;i<rows.length;i++){const tr=rows[i];const th=tr.querySelector('th');const tds=tr.querySelectorAll('td');if(tds.length>=3)a.push({date:th?th.textContent.trim():'',md:tds[0]?tds[0].textContent.trim():'',consultant:tds[1]?tds[1].textContent.trim():'',content:tds[2]?tds[2].textContent.trim():''})}if(p%10===0||p===P)console.log(p+'/'+P+' ('+Math.round(p/P*100)+'%) - '+a.length+'건');await new Promise(r=>setTimeout(r,80))}catch(err){console.error('p'+p+':'+err.message);e++;if(e>10)break;await new Promise(r=>setTimeout(r,500))}}console.log('스크래핑 완료: '+a.length+'건');if(!a.length)return;let s=0;for(let i=0;i<a.length;i+=B){const b=a.slice(i,i+B);try{const r=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});const j=await r.json();if(j.success){s+=j.inserted||b.length;console.log('배치'+(Math.floor(i/B)+1)+': '+j.inserted+'건, 매칭:'+j.matched+'건')}else console.error(j.error)}catch(err){console.error(err.message)}}console.log('=== 완료: '+s+'건 저장 ===')})();`;
+  document.getElementById('syncScriptCode').textContent = script;
+}
+
+function copySyncScript() {
+  updateSyncScript();
+  const script = document.getElementById('syncScriptCode').textContent;
+  navigator.clipboard.writeText(script).then(() => {
+    showToast('스크립트가 클립보드에 복사되었습니다.', 'success');
+  });
+}

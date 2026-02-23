@@ -49,9 +49,24 @@ export default {
       });
     }
 
-    // POST: 애니빌드 webhook → GAS + Supabase 동시 저장
+    // POST: 라우팅
     if (request.method === 'POST') {
+      const url = new URL(request.url);
       const body = await request.text();
+
+      // 상담내역 동기화 엔드포인트
+      if (url.pathname === '/sync-consultations') {
+        if (!SUPABASE_URL || !SUPABASE_KEY) {
+          return jsonResponse({ error: 'Supabase not configured' }, 500);
+        }
+        try {
+          const records = JSON.parse(body);
+          const result = await syncConsultations(records, SUPABASE_URL, SUPABASE_KEY);
+          return jsonResponse(result);
+        } catch (err) {
+          return jsonResponse({ error: err.message }, 500);
+        }
+      }
 
       // GAS 전달 + Supabase 저장 병렬 실행
       const results = await Promise.allSettled([
@@ -87,6 +102,133 @@ export default {
     return new Response('APS Webhook Proxy', { status: 200 });
   }
 };
+
+// ─── 응답 헬퍼 ───
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+  });
+}
+
+// ─── 상담내역 동기화 ───
+async function syncConsultations(records, supabaseUrl, supabaseKey) {
+  if (!Array.isArray(records) || records.length === 0) {
+    return { error: 'no records' };
+  }
+
+  // 기관 목록 로드 (매칭용)
+  const institutions = await supaFetch(supabaseUrl, supabaseKey,
+    '/rest/v1/institutions?select=id,name&limit=5000', 'GET'
+  );
+
+  // 태그 → 구매단계 매핑
+  const TAG_STAGE_MAP = {
+    '문의': '관심', '업체문의': '관심', '딜러문의': '관심', '단가문의': '관심', '구매문의': '관심',
+    '견적': '고려', '견적서': '고려', '시안': '고려', '참고시안': '고려', '수정시안': '고려',
+    '샘플': '고려', '샘플요청': '고려', '단가표': '고려',
+    '수주': '고려', '긴급수주': '고려', '수주예정': '고려', '카드결제': '고려'
+  };
+  const STAGE_PRIORITY = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '만족': 4, '추천': 5 };
+
+  let inserted = 0, skipped = 0, matched = 0;
+  const instUpdates = {}; // 기관별 업데이트 집계
+
+  // 배치 처리 (200건씩)
+  const batchSize = 200;
+  for (let i = 0; i < records.length; i += batchSize) {
+    const batch = records.slice(i, i + batchSize);
+    const consultRows = [];
+
+    for (const rec of batch) {
+      // 태그 추출
+      const rawTags = (rec.content || '').match(/\[([^\]]+)\]/g) || [];
+      const tags = rawTags.map(t => t.replace(/[\[\]]/g, '').trim()).filter(Boolean);
+
+      // 기관 매칭
+      const consultant = (rec.consultant || '').trim();
+      let instId = null;
+      if (consultant && institutions) {
+        const inst = institutions.find(d => d.name === consultant) ||
+          institutions.find(d => d.name.includes(consultant) || consultant.includes(d.name));
+        if (inst) {
+          instId = inst.id;
+          matched++;
+
+          // 기관별 상담 집계
+          if (!instUpdates[instId]) {
+            instUpdates[instId] = { count: 0, lastDate: '', maxStage: '관심' };
+          }
+          instUpdates[instId].count++;
+          if (rec.date > instUpdates[instId].lastDate) {
+            instUpdates[instId].lastDate = rec.date;
+          }
+          for (const tag of tags) {
+            const stage = TAG_STAGE_MAP[tag];
+            if (stage && STAGE_PRIORITY[stage] > STAGE_PRIORITY[instUpdates[instId].maxStage]) {
+              instUpdates[instId].maxStage = stage;
+            }
+          }
+        }
+      }
+
+      consultRows.push({
+        date: rec.date || null,
+        tags: tags,
+        content: rec.content || '',
+        md_name: rec.md || null,
+        raw_institution_name: consultant || null,
+        institution_id: instId,
+        matched: !!instId
+      });
+    }
+
+    // 배치 삽입
+    const result = await supaFetch(supabaseUrl, supabaseKey,
+      '/rest/v1/consultations', 'POST', consultRows
+    );
+
+    if (result && result.length) {
+      inserted += result.length;
+    } else {
+      inserted += consultRows.length;
+    }
+  }
+
+  // 매칭된 기관들의 상담횟수/단계 업데이트
+  for (const [instId, update] of Object.entries(instUpdates)) {
+    const inst = await supaFetch(supabaseUrl, supabaseKey,
+      `/rest/v1/institutions?id=eq.${instId}&select=consult_count,last_consult_date,purchase_stage`,
+      'GET'
+    );
+    if (!inst || inst.length === 0) continue;
+
+    const current = inst[0];
+    const newCount = (current.consult_count || 0) + update.count;
+    const newDate = update.lastDate > (current.last_consult_date || '') ? update.lastDate : current.last_consult_date;
+
+    const patch = { consult_count: newCount, last_consult_date: newDate };
+
+    // 단계 업그레이드 (현재보다 높으면)
+    const currentPriority = STAGE_PRIORITY[current.purchase_stage || '인지'] || 0;
+    const newPriority = STAGE_PRIORITY[update.maxStage] || 0;
+    if (newPriority > currentPriority) {
+      patch.purchase_stage = update.maxStage;
+    }
+
+    await supaFetch(supabaseUrl, supabaseKey,
+      `/rest/v1/institutions?id=eq.${instId}`, 'PATCH', patch
+    );
+  }
+
+  return {
+    success: true,
+    total: records.length,
+    inserted,
+    matched,
+    institutionsUpdated: Object.keys(instUpdates).length
+  };
+}
 
 // ─── Supabase 저장 ───
 async function saveToSupabase(rawBody, supabaseUrl, supabaseKey) {
