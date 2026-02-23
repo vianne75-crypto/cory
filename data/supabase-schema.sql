@@ -149,10 +149,31 @@ CREATE POLICY "Admin all consultations"
   ON consultations FOR ALL
   USING (is_admin());
 
--- orders: 관리자만 접근
+-- orders: 관리자만 접근 + Webhook(service_role)도 접근 허용
 CREATE POLICY "Admin all orders"
   ON orders FOR ALL
   USING (is_admin());
+
+CREATE POLICY "Service insert orders"
+  ON orders FOR INSERT
+  WITH CHECK (auth.role() = 'service_role');
+
+CREATE POLICY "Service update orders"
+  ON orders FOR UPDATE
+  USING (auth.role() = 'service_role');
+
+CREATE POLICY "Service select orders"
+  ON orders FOR SELECT
+  USING (auth.role() = 'service_role');
+
+-- institutions: Webhook에서 매칭 조회 + 구매정보 업데이트 허용
+CREATE POLICY "Service select institutions"
+  ON institutions FOR SELECT
+  USING (auth.role() = 'service_role');
+
+CREATE POLICY "Service update institutions"
+  ON institutions FOR UPDATE
+  USING (auth.role() = 'service_role');
 
 -- unmatched_consultations: 관리자만 접근
 CREATE POLICY "Admin all unmatched"
