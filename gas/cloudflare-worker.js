@@ -303,6 +303,7 @@ async function insertNewOrder(data, supabaseUrl, supabaseKey) {
         goods_name: item.goods_name || '',
         sale_price: parseFloat(item.sale_price) || 0,
         sale_cnt: parseInt(item.sale_cnt) || 0,
+        memlv: data.memlv || '',
         institution_id: institutionId,
         matched: !!institutionId
       });
@@ -317,6 +318,7 @@ async function insertNewOrder(data, supabaseUrl, supabaseKey) {
       goods_name: '',
       sale_price: parseFloat(data.app_price) || 0,
       sale_cnt: 0,
+      memlv: data.memlv || '',
       institution_id: institutionId,
       matched: !!institutionId
     });

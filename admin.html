@@ -69,9 +69,86 @@
             <option value="만족">만족</option>
             <option value="추천">추천</option>
           </select>
+          <button class="btn btn-secondary" onclick="showCleanupPanel()">데이터 정리</button>
+          <button class="btn btn-secondary" onclick="showOrderMatchPanel()">주문 매칭</button>
           <button class="btn btn-primary" onclick="showAddInstitutionModal()">+ 기관 추가</button>
         </div>
       </div>
+
+      <!-- 데이터 정리 패널 -->
+      <div id="cleanupPanel" class="sync-panel" style="display:none;">
+        <div class="sync-panel-header">
+          <h3>데이터 정리</h3>
+          <button class="modal-x" onclick="document.getElementById('cleanupPanel').style.display='none'">&times;</button>
+        </div>
+        <div class="sync-panel-body">
+          <div class="stats-row" id="cleanupStats"></div>
+          <div class="cleanup-actions">
+            <button class="btn btn-secondary" onclick="analyzeDataQuality()">분석 실행</button>
+            <button class="btn btn-primary" onclick="cleanAllNames()" id="cleanNamesBtn" disabled>이름 정리</button>
+            <button class="btn btn-primary" onclick="showDuplicatesModal()" id="showDupesBtn" disabled>중복 병합</button>
+          </div>
+          <pre class="migration-log" id="cleanupLog"></pre>
+        </div>
+      </div>
+
+      <!-- 주문 매칭 패널 -->
+      <div id="orderMatchPanel" class="sync-panel" style="display:none;">
+        <div class="sync-panel-header">
+          <h3>주문 매칭</h3>
+          <button class="modal-x" onclick="document.getElementById('orderMatchPanel').style.display='none'">&times;</button>
+        </div>
+        <div class="sync-panel-body">
+          <div class="stats-row" id="orderMatchStats"></div>
+          <div class="cleanup-actions">
+            <button class="btn btn-secondary" onclick="autoMatchOrders()">자동 매칭</button>
+            <button class="btn btn-secondary" onclick="showMemlvSetup()">등급 설정</button>
+            <button class="btn btn-primary" onclick="reMatchAllOrders()">전체 재매칭</button>
+          </div>
+          <div id="memlvConfigArea" style="display:none;"></div>
+          <pre class="migration-log" id="orderMatchLog"></pre>
+          <div id="orderMatchTableWrap" style="display:none;">
+            <h4 style="margin:12px 0 8px;">미매칭 주문 (수동 확인)</h4>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>일시</th>
+                    <th>주문자</th>
+                    <th>주소</th>
+                    <th>상품</th>
+                    <th>등급</th>
+                    <th>추천 기관</th>
+                    <th>관리</th>
+                  </tr>
+                </thead>
+                <tbody id="orderMatchBody"></tbody>
+              </table>
+            </div>
+            <div id="orderMatchPagination" class="pagination"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 주문 매칭 모달 -->
+      <div id="orderMatchModal" class="modal-overlay" style="display:none;">
+        <div class="modal" style="max-width:600px;">
+          <div class="modal-header">
+            <h3>기관 매칭</h3>
+            <button class="modal-x" onclick="closeOrderMatchModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div id="orderMatchInfo" style="margin-bottom:12px;"></div>
+            <input type="text" id="orderMatchSearch" class="filter-input" placeholder="기관명 검색..."
+              oninput="searchOrderMatchCandidates()" style="width:100%; margin-bottom:8px;">
+            <div id="orderMatchCandidates" class="match-candidates" style="max-height:300px; overflow-y:auto;"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeOrderMatchModal()">닫기</button>
+          </div>
+        </div>
+      </div>
+
       <div class="stats-row" id="instStats"></div>
       <div class="table-container">
         <table id="instTable">
@@ -378,11 +455,11 @@
           </div>
           <input type="file" id="instFileInput" accept=".xls,.xlsx,.csv" onchange="handleInstBulkUpload(event)" style="display:none">
           <div class="upload-options">
-            <label><input type="radio" name="instMode" value="datajs" checked> data.js 이관 (기존 838개)</label>
-            <label><input type="radio" name="instMode" value="file"> 파일에서 가져오기</label>
+            <label><input type="radio" name="instMode" value="datajs" checked onchange="document.getElementById('instBulkBtn').disabled=false"> data.js 이관 (기존 838개)</label>
+            <label><input type="radio" name="instMode" value="file" onchange="document.getElementById('instBulkBtn').disabled=true"> 파일에서 가져오기</label>
           </div>
           <div class="upload-preview" id="instBulkPreview"></div>
-          <button class="btn btn-primary" id="instBulkBtn" onclick="processInstBulkUpload()" disabled>DB에 반영</button>
+          <button class="btn btn-primary" id="instBulkBtn" onclick="processInstBulkUpload()">DB에 반영</button>
           <div class="upload-status" id="instBulkStatus"></div>
         </div>
       </div>
@@ -499,6 +576,24 @@
     </div>
   </div>
 
+  <!-- 중복 병합 모달 -->
+  <div id="dupeModal" class="modal-overlay" onclick="if(event.target===this)closeDupeModal()" style="display:none;">
+    <div class="modal" style="max-width:800px;">
+      <div class="modal-head">
+        <h3>중복 기관 병합</h3>
+        <button class="modal-x" onclick="closeDupeModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="max-height:60vh;overflow-y:auto;">
+        <p style="font-size:0.82rem;color:#666;margin-bottom:12px;">각 그룹에서 유지할 레코드를 선택하세요. 나머지는 삭제되고 데이터가 합산됩니다.</p>
+        <div id="dupeGroups"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="closeDupeModal()">닫기</button>
+        <button class="btn btn-primary" onclick="mergeAllDuplicates()">전체 병합</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast 알림 -->
   <div id="toast" class="toast"></div>
 
@@ -514,7 +609,9 @@
   <script src="js/admin/admin-unmatched.js"></script>
   <script src="js/admin/admin-orders.js"></script>
   <script src="js/admin/admin-publish.js"></script>
+  <script src="js/admin/admin-cleanup.js"></script>
   <script src="js/admin/admin-upload.js"></script>
+  <script src="js/admin/admin-order-match.js"></script>
   <script src="js/admin/admin-settings.js"></script>
 </body>
 

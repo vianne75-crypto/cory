@@ -111,8 +111,11 @@ for k, v in DISTRICT_TO_REGION.items():
 # 보건소/기관 이름에서 지역 추출을 위한 매핑
 # "강남구보건소" → "강남구" → "서울특별시"
 ALL_DISTRICTS = {}
+AMBIGUOUS_DISTRICTS = set()  # 여러 도시에 존재하는 구 (동구, 서구, 중구, 남구, 북구 등)
 for k, v in DISTRICT_TO_REGION.items():
     clean = k.split('_')[0]
+    if clean in ALL_DISTRICTS and ALL_DISTRICTS[clean] != v:
+        AMBIGUOUS_DISTRICTS.add(clean)
     ALL_DISTRICTS[clean] = v
 
 # ─── 3. 기관명 정제 함수 ───
@@ -211,14 +214,11 @@ def extract_district_from_name(name):
 
 
 def find_region_for_district(district):
-    """시/군/구로 광역시도 찾기"""
+    """시/군/구로 광역시도 찾기 (모호한 구 이름은 None 반환)"""
+    if district in AMBIGUOUS_DISTRICTS:
+        return None  # 동구, 서구, 중구, 남구, 북구 등 → 여러 도시에 존재
     if district in ALL_DISTRICTS:
         return ALL_DISTRICTS[district]
-    # 부분 매칭
-    for k, v in ALL_DISTRICTS.items():
-        if district.endswith('구') or district.endswith('시') or district.endswith('군'):
-            if k == district:
-                return v
     return None
 
 

@@ -49,7 +49,9 @@ CREATE TABLE orders (
   sale_cnt INTEGER DEFAULT 0,
   state_subject TEXT,
   reg_time TEXT,
+  memlv TEXT,
   matched BOOLEAN DEFAULT FALSE,
+  manual_match BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

@@ -919,3 +919,79 @@ body {
   .region-targets-editor { grid-template-columns: 1fr; }
   .publish-status { flex-direction: column; }
 }
+
+/* 데이터 정리 */
+.cleanup-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.dupe-group {
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.dupe-group-header {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  color: #1a237e;
+}
+.dupe-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 0.82rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.dupe-item:last-child { border-bottom: none; }
+.dupe-keep-radio { flex-shrink: 0; }
+
+/* 주문 매칭 */
+.match-score {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #e3f2fd;
+  color: #1565c0;
+}
+.match-individual {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  background: #fff3e0;
+  color: #e65100;
+}
+.match-candidates {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow-y: auto;
+}
+.match-candidate {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.15s;
+}
+.match-candidate:hover { background: #e3f2fd; }
+.match-candidate:last-child { border-bottom: none; }
+.match-candidate .name { font-weight: 600; margin-right: 8px; }
+.match-candidate .detail { font-size: 0.8rem; color: #888; }
+.memlv-config {
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.memlv-config h4 { margin-bottom: 8px; color: #1a237e; }
+.memlv-config .config-desc { font-size: 0.82rem; color: #666; margin-bottom: 12px; }
+.memlv-config table { width: 100%; }
+.memlv-config td, .memlv-config th { text-align: center; padding: 6px 8px; }
+.memlv-config td:first-child, .memlv-config th:first-child { text-align: left; }
+#orderMatchTableWrap .table-container { max-height: 400px; overflow-y: auto; }
+#orderMatchTableWrap td.truncate { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
