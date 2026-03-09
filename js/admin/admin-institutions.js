@@ -11,7 +11,8 @@ async function loadInstitutions() {
   const { data, error } = await supabase
     .from('institutions')
     .select('*')
-    .order('id', { ascending: true });
+    .order('id', { ascending: true })
+    .limit(10000);
 
   if (error) {
     showToast('기관 로드 실패: ' + error.message, 'error');
