@@ -115,7 +115,7 @@ function renderInstTable() {
       const dmSent = meta.dm_sent || '';
       let dmLabel = '-';
       let dmColor = '#999';
-      if (dmSent) { dmLabel = dmSent; dmColor = '#4CAF50'; }
+      if (dmSent) { dmLabel = dmSent.length > 10 ? new Date(dmSent).toLocaleDateString('ko-KR') : dmSent; dmColor = '#4CAF50'; }
       else if (dmTarget === 'Y') { dmLabel = '미발송'; dmColor = '#FF9800'; }
       else { dmLabel = '-'; dmColor = '#999'; }
       const contact = meta.contact_name || meta.contact_phone || '-';
