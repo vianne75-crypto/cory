@@ -328,7 +328,7 @@ async function loadHcSyncStats() {
 
   try {
     const { data: syncInfo } = await supabase
-      .from('settings').select('value').eq('key', 'hc_last_sync').single();
+      .from('settings').select('value').eq('key', 'hc_last_sync').maybeSingle();
     const lastSync = syncInfo?.value?.time
       ? new Date(syncInfo.value.time).toLocaleString('ko-KR')
       : '-';
@@ -363,7 +363,7 @@ async function showHcTabConfig() {
   area.style.display = area.style.display === 'none' ? 'block' : 'none';
 
   // 현재 설정 로드
-  const { data } = await supabase.from('settings').select('value').eq('key', 'hc_tab_config').single();
+  const { data } = await supabase.from('settings').select('value').eq('key', 'hc_tab_config').maybeSingle();
   const config = data?.value || { qr_gid: '', sample_gid: '' };
 
   area.innerHTML = `
@@ -403,7 +403,7 @@ async function syncHcAll() {
   await syncHcInstitutions();
 
   // 2. QR/샘플 탭 동기화 (설정된 경우)
-  const { data } = await supabase.from('settings').select('value').eq('key', 'hc_tab_config').single();
+  const { data } = await supabase.from('settings').select('value').eq('key', 'hc_tab_config').maybeSingle();
   const config = data?.value || {};
 
   if (config.qr_gid) {
