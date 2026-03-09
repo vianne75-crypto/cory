@@ -428,12 +428,18 @@ async function syncHcInstitutions(records, supabaseUrl, supabaseKey) {
 
   // 기존 HC 기관 로드
   const existing = await supaFetch(supabaseUrl, supabaseKey,
-    `/rest/v1/institutions?type=eq.${encodeURIComponent('대학보건관리자')}&select=id,name,purchase_stage,purchase_amount,purchase_volume`,
+    `/rest/v1/institutions?type=eq.${encodeURIComponent('대학보건관리자')}&select=id,name,purchase_stage,purchase_amount,purchase_volume,metadata`,
     'GET'
   );
 
-  const existingMap = {};
-  (existing || []).forEach(inst => { existingMap[inst.name] = inst; });
+  // utm_code 기준 매칭 (이름 변경 시에도 안전)
+  const utmMap = {};
+  const nameMap = {};
+  (existing || []).forEach(inst => {
+    const utm = (inst.metadata || {}).utm_code;
+    if (utm) utmMap[utm] = inst;
+    nameMap[inst.name] = inst;
+  });
 
   const STAGE_PRIORITY = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '만족': 4, '추천': 5 };
   const toInsert = [];
@@ -442,12 +448,14 @@ async function syncHcInstitutions(records, supabaseUrl, supabaseKey) {
 
   for (const rec of records) {
     if (!rec.name) continue;
-    const ex = existingMap[rec.name];
+    const recUtm = (rec.metadata || {}).utm_code;
+    const ex = (recUtm && utmMap[recUtm]) || nameMap[rec.name];
 
     if (!ex) {
       toInsert.push(rec);
     } else {
       const changes = {};
+      if (rec.name && rec.name !== ex.name) changes.name = rec.name;
       if (rec.region && rec.region !== ex.region) changes.region = rec.region;
       if (rec.district) changes.district = rec.district;
 
@@ -459,7 +467,10 @@ async function syncHcInstitutions(records, supabaseUrl, supabaseKey) {
       if ((rec.purchase_volume || 0) > (ex.purchase_volume || 0)) changes.purchase_volume = rec.purchase_volume;
       if (rec.products && rec.products.length > 0) changes.products = rec.products;
       if (rec.last_purchase_date && rec.last_purchase_date !== '-') changes.last_purchase_date = rec.last_purchase_date;
-      if (rec.metadata) changes.metadata = rec.metadata;
+      // CRM 전용 필드(status, scoring, change_log 등) 보존: 기존 metadata 머지
+      if (rec.metadata) {
+        changes.metadata = { ...(ex.metadata || {}), ...rec.metadata };
+      }
 
       if (Object.keys(changes).length > 0) {
         toUpdate.push({ id: ex.id, ...changes });
