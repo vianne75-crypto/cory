@@ -126,6 +126,7 @@ function syncInstitutionData_(ss) {
         address: addr,
         address2: row['주소2'] || '',
         dm_sent: row['DM발송여부'] || '',
+        dm_target: row['DM발송대상'] || '',
         priority: row['우선순위'] || '',
         note: row['비고'] || '',
       }
@@ -135,16 +136,31 @@ function syncInstitutionData_(ss) {
   Logger.log('기관 동기화 대상: ' + records.length + '건');
   if (records.length === 0) return null;
 
-  var resp = UrlFetchApp.fetch(SYNC_WORKER_URL + '/sync-hc-institutions', {
-    method: 'post',
-    contentType: 'application/json',
-    payload: JSON.stringify(records),
-    muteHttpExceptions: true
-  });
+  // Cloudflare Workers subrequest 제한(50회) 우회: 20건씩 배치 전송
+  var BATCH_SIZE = 20;
+  var totalResult = { success: true, total: records.length, inserted: 0, updated: 0, unchanged: 0 };
 
-  var result = JSON.parse(resp.getContentText());
-  Logger.log('기관 동기화 결과: ' + JSON.stringify(result));
-  return result;
+  for (var b = 0; b < records.length; b += BATCH_SIZE) {
+    var batch = records.slice(b, b + BATCH_SIZE);
+    var resp = UrlFetchApp.fetch(SYNC_WORKER_URL + '/sync-hc-institutions', {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(batch),
+      muteHttpExceptions: true
+    });
+
+    var result = JSON.parse(resp.getContentText());
+    if (result.error) {
+      Logger.log('배치 ' + (b / BATCH_SIZE + 1) + ' 오류: ' + result.error);
+      continue;
+    }
+    totalResult.inserted += (result.inserted || 0);
+    totalResult.updated += (result.updated || 0);
+    totalResult.unchanged += (result.unchanged || 0);
+  }
+
+  Logger.log('기관 동기화 결과: ' + JSON.stringify(totalResult));
+  return totalResult;
 }
 
 // ─── QR 클릭 + 샘플신청 응답 → purchase_stage 업데이트 ───

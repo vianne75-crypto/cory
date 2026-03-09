@@ -115,10 +115,9 @@ function renderInstTable() {
       const dmSent = meta.dm_sent || '';
       let dmLabel = '-';
       let dmColor = '#999';
-      if (dmTarget === 'Y' && dmSent === 'Y') { dmLabel = '발송완료'; dmColor = '#4CAF50'; }
+      if (dmSent) { dmLabel = dmSent; dmColor = '#4CAF50'; }
       else if (dmTarget === 'Y') { dmLabel = '미발송'; dmColor = '#FF9800'; }
-      else if (dmTarget === 'N') { dmLabel = '제외(기구매)'; dmColor = '#2196F3'; }
-      else { dmLabel = '미등록'; dmColor = '#999'; }
+      else { dmLabel = '-'; dmColor = '#999'; }
       const contact = meta.contact_name || meta.contact_phone || '-';
 
       return `<tr>
