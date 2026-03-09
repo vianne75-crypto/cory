@@ -26,9 +26,30 @@ export default {
       });
     }
 
-    // GET: 데이터 조회 (GAS 프록시)
+    // GET: 라우팅
     if (request.method === 'GET') {
       const url = new URL(request.url);
+
+      if (url.pathname === '/fetch-sheet') {
+        const sheetId = url.searchParams.get('id');
+        const gid = url.searchParams.get('gid') || '0';
+        if (!sheetId) return jsonResponse({ error: 'id parameter required' }, 400);
+
+        try {
+          const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+          const resp = await fetch(csvUrl, { redirect: 'follow' });
+          if (!resp.ok) throw new Error(`Sheet fetch failed: ${resp.status}`);
+          const text = await resp.text();
+          return new Response(text, {
+            status: 200,
+            headers: { 'Content-Type': 'text/csv; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
+          });
+        } catch (err) {
+          return jsonResponse({ error: err.message }, 500);
+        }
+      }
+
+      // 기존 GAS 프록시
       const gasUrl = new URL(GAS_URL);
       for (const [key, value] of url.searchParams) {
         gasUrl.searchParams.set(key, value);
@@ -53,6 +74,20 @@ export default {
     if (request.method === 'POST') {
       const url = new URL(request.url);
       const body = await request.text();
+
+      // HC 기관 동기화 엔드포인트
+      if (url.pathname === '/sync-hc-institutions') {
+        if (!SUPABASE_URL || !SUPABASE_KEY) {
+          return jsonResponse({ error: 'Supabase not configured' }, 500);
+        }
+        try {
+          const records = JSON.parse(body);
+          const result = await syncHcInstitutions(records, SUPABASE_URL, SUPABASE_KEY);
+          return jsonResponse(result);
+        } catch (err) {
+          return jsonResponse({ error: err.message }, 500);
+        }
+      }
 
       // 상담내역 동기화 엔드포인트
       if (url.pathname === '/sync-consultations') {
@@ -385,6 +420,85 @@ async function updateInstitutionOnOrder(supabaseUrl, supabaseKey, instId, addAmo
   );
 }
 
+// ─── HC 기관 동기화 (GAS → Worker → Supabase) ───
+async function syncHcInstitutions(records, supabaseUrl, supabaseKey) {
+  if (!Array.isArray(records) || records.length === 0) {
+    return { error: 'no records' };
+  }
+
+  // 기존 HC 기관 로드
+  const existing = await supaFetch(supabaseUrl, supabaseKey,
+    `/rest/v1/institutions?type=eq.${encodeURIComponent('대학보건관리자')}&select=id,name,purchase_stage,purchase_amount,purchase_volume`,
+    'GET'
+  );
+
+  const existingMap = {};
+  (existing || []).forEach(inst => { existingMap[inst.name] = inst; });
+
+  const STAGE_PRIORITY = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '만족': 4, '추천': 5 };
+  const toInsert = [];
+  const toUpdate = [];
+  let unchanged = 0;
+
+  for (const rec of records) {
+    if (!rec.name) continue;
+    const ex = existingMap[rec.name];
+
+    if (!ex) {
+      toInsert.push(rec);
+    } else {
+      const changes = {};
+      if (rec.region && rec.region !== ex.region) changes.region = rec.region;
+      if (rec.district) changes.district = rec.district;
+
+      // 구매 정보: 상위 방향으로만 업데이트
+      const curP = STAGE_PRIORITY[ex.purchase_stage || '인지'] || 0;
+      const newP = STAGE_PRIORITY[rec.purchase_stage] || 0;
+      if (newP > curP) changes.purchase_stage = rec.purchase_stage;
+      if ((rec.purchase_amount || 0) > (ex.purchase_amount || 0)) changes.purchase_amount = rec.purchase_amount;
+      if ((rec.purchase_volume || 0) > (ex.purchase_volume || 0)) changes.purchase_volume = rec.purchase_volume;
+      if (rec.products && rec.products.length > 0) changes.products = rec.products;
+      if (rec.last_purchase_date && rec.last_purchase_date !== '-') changes.last_purchase_date = rec.last_purchase_date;
+      if (rec.metadata) changes.metadata = rec.metadata;
+
+      if (Object.keys(changes).length > 0) {
+        toUpdate.push({ id: ex.id, ...changes });
+      } else {
+        unchanged++;
+      }
+    }
+  }
+
+  // 배치 삽입
+  let inserted = 0;
+  const batchSize = 50;
+  for (let i = 0; i < toInsert.length; i += batchSize) {
+    const batch = toInsert.slice(i, i + batchSize);
+    const result = await supaFetch(supabaseUrl, supabaseKey, '/rest/v1/institutions', 'POST', batch);
+    if (result && !result.error) inserted += batch.length;
+  }
+
+  // 개별 업데이트
+  let updated = 0;
+  for (const upd of toUpdate) {
+    const id = upd.id;
+    delete upd.id;
+    const result = await supaFetch(supabaseUrl, supabaseKey,
+      `/rest/v1/institutions?id=eq.${id}`, 'PATCH', upd
+    );
+    if (result && !result.error) updated++;
+  }
+
+  // 마지막 동기화 시간 저장
+  await supaFetch(supabaseUrl, supabaseKey, '/rest/v1/settings?key=eq.hc_last_sync', 'DELETE');
+  await supaFetch(supabaseUrl, supabaseKey, '/rest/v1/settings', 'POST', {
+    key: 'hc_last_sync',
+    value: { time: new Date().toISOString(), inserted, updated, total: records.length, source: 'gas' }
+  });
+
+  return { success: true, total: records.length, inserted, updated, unchanged };
+}
+
 // ─── Supabase REST API 헬퍼 ───
 async function supaFetch(supabaseUrl, supabaseKey, path, method, body) {
   const headers = {
@@ -401,6 +515,7 @@ async function supaFetch(supabaseUrl, supabaseKey, path, method, body) {
 
   const response = await fetch(`${supabaseUrl}${path}`, options);
 
+  if (method === 'DELETE') return { status: response.status };
   if (method === 'GET' || (method === 'POST' && headers.Prefer.includes('return'))) {
     return await response.json();
   }

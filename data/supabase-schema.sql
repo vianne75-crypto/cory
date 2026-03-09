@@ -20,6 +20,7 @@ CREATE TABLE institutions (
   last_purchase_date TEXT DEFAULT '-',
   consult_count INTEGER DEFAULT 0,
   last_consult_date TEXT,
+  metadata JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

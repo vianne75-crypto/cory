@@ -71,6 +71,7 @@
           </select>
           <button class="btn btn-secondary" onclick="showCleanupPanel()">데이터 정리</button>
           <button class="btn btn-secondary" onclick="showOrderMatchPanel()">주문 매칭</button>
+          <button class="btn btn-secondary" onclick="showHcSyncPanel()">HC 동기화</button>
           <button class="btn btn-primary" onclick="showAddInstitutionModal()">+ 기관 추가</button>
         </div>
       </div>
@@ -146,6 +147,28 @@
           <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeOrderMatchModal()">닫기</button>
           </div>
+        </div>
+      </div>
+
+      <!-- HC 동기화 패널 -->
+      <div id="hcSyncPanel" class="sync-panel" style="display:none;">
+        <div class="sync-panel-header">
+          <h3>HC (대학보건관리자) 동기화</h3>
+          <button class="modal-x" onclick="document.getElementById('hcSyncPanel').style.display='none'">&times;</button>
+        </div>
+        <div class="sync-panel-body">
+          <p class="upload-hint" style="margin-bottom:8px;">
+            Google Sheet의 HC 데이터를 Supabase와 동기화합니다.<br>
+            GAS 자동연동이 설정되어 있으면 1시간마다 자동 동기화됩니다.
+          </p>
+          <div class="stats-row" id="hcSyncStats"></div>
+          <div class="cleanup-actions">
+            <button class="btn btn-primary" onclick="syncHcInstitutions()">HC 동기화 실행</button>
+            <button class="btn btn-secondary" onclick="syncHcAll()">전체 동기화 (QR+샘플 포함)</button>
+            <button class="btn btn-secondary" onclick="showHcTabConfig()">탭 GID 설정</button>
+          </div>
+          <div id="hcTabConfigArea" style="display:none;"></div>
+          <pre class="migration-log" id="hcSyncLog"></pre>
         </div>
       </div>
 
@@ -496,6 +519,7 @@
               <option value="사업장">사업장</option>
               <option value="복지기관">복지기관</option>
               <option value="공공기관(기타)">공공기관(기타)</option>
+              <option value="대학보건관리자">대학보건관리자</option>
             </select>
           </div>
           <div>
@@ -612,6 +636,7 @@
   <script src="js/admin/admin-cleanup.js"></script>
   <script src="js/admin/admin-upload.js"></script>
   <script src="js/admin/admin-order-match.js"></script>
+  <script src="js/admin/admin-hc-sync.js"></script>
   <script src="js/admin/admin-settings.js"></script>
 </body>
 
