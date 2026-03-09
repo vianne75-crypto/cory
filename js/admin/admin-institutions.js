@@ -6,20 +6,30 @@ let instCache = [];
 let instFiltered = [];
 let instPage = 1;
 
-// 기관 목록 로드
+// 기관 목록 로드 (1000행 제한 우회: 페이지네이션)
 async function loadInstitutions() {
-  const { data, error } = await supabase
-    .from('institutions')
-    .select('*')
-    .order('id', { ascending: true })
-    .limit(10000);
+  let allData = [];
+  let from = 0;
+  const pageSize = 1000;
 
-  if (error) {
-    showToast('기관 로드 실패: ' + error.message, 'error');
-    return;
+  while (true) {
+    const { data, error } = await supabase
+      .from('institutions')
+      .select('*')
+      .order('id', { ascending: true })
+      .range(from, from + pageSize - 1);
+
+    if (error) {
+      showToast('기관 로드 실패: ' + error.message, 'error');
+      return;
+    }
+
+    allData = allData.concat(data || []);
+    if (!data || data.length < pageSize) break;
+    from += pageSize;
   }
 
-  instCache = data || [];
+  instCache = allData;
   populateInstFilters();
   filterInstitutions();
 }
