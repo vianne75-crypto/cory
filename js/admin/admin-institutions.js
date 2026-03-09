@@ -93,9 +93,51 @@ function renderInstTable() {
   const start = (instPage - 1) * PAGE_SIZE;
   const pageData = instFiltered.slice(start, start + PAGE_SIZE);
 
+  // 대학보건관리자 필터 시 DM 컬럼 표시
+  const typeFilter = document.getElementById('instTypeFilter').value;
+  const isHC = typeFilter === '대학보건관리자';
+
+  // 헤더 동적 변경
+  const thead = document.querySelector('#instTable thead tr');
+  if (isHC) {
+    thead.innerHTML = '<th>ID</th><th>기관명</th><th>지역</th><th>구매단계</th><th>납품액</th><th>구매량</th><th>DM발송</th><th>담당자</th><th>최근구매일</th><th>관리</th>';
+  } else {
+    thead.innerHTML = '<th>ID</th><th>기관명</th><th>기관유형</th><th>지역</th><th>구매단계</th><th>납품액</th><th>구매량</th><th>상담횟수</th><th>최근구매일</th><th>관리</th>';
+  }
+
   const tbody = document.getElementById('instBody');
   tbody.innerHTML = pageData.map(d => {
     const stageColor = ADMIN_STAGE_COLORS[d.purchase_stage] || '#ccc';
+
+    if (isHC) {
+      const meta = d.metadata || {};
+      const dmTarget = meta.dm_target || '';
+      const dmSent = meta.dm_sent || '';
+      let dmLabel = '-';
+      let dmColor = '#999';
+      if (dmTarget === 'Y' && dmSent === 'Y') { dmLabel = '발송완료'; dmColor = '#4CAF50'; }
+      else if (dmTarget === 'Y') { dmLabel = '미발송'; dmColor = '#FF9800'; }
+      else if (dmTarget === 'N') { dmLabel = '제외(기구매)'; dmColor = '#2196F3'; }
+      else { dmLabel = '미등록'; dmColor = '#999'; }
+      const contact = meta.contact_name || meta.contact_phone || '-';
+
+      return `<tr>
+        <td>${d.id}</td>
+        <td><strong>${d.name}</strong></td>
+        <td>${d.region}</td>
+        <td><span class="stage-badge" style="background:${stageColor}">${d.purchase_stage}</span></td>
+        <td>${adminFormatCurrency(d.purchase_amount || 0)}</td>
+        <td>${(d.purchase_volume || 0).toLocaleString()}</td>
+        <td><span style="color:${dmColor};font-weight:600;font-size:0.82rem;">${dmLabel}</span></td>
+        <td style="font-size:0.82rem;">${contact}</td>
+        <td>${d.last_purchase_date || '-'}</td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="editInstitution(${d.id})">수정</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteInstitution(${d.id}, '${d.name.replace(/'/g, "\\'")}')">삭제</button>
+        </td>
+      </tr>`;
+    }
+
     return `<tr>
       <td>${d.id}</td>
       <td><strong>${d.name}</strong></td>
