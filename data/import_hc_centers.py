@@ -18,7 +18,7 @@ import os
 # ─── 설정 ───
 SUPABASE_URL = 'https://rvqkoiqjjhlrgqitnxwt.supabase.co'
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY', 'sb_publishable_LhUYFVbX3M_8zbiBzaLgZQ_MSOfc1TU')
-CSV_PATH = '/Users/olive/Qsync/마케팅전략/farm360/대학교_학생건강센터_주소록.csv'
+CSV_PATH = '/Users/olive/Qsync/마케팅전략/farm360/주소확인용 - 학생건강센터.csv'
 
 # ─── 지역 매핑 ───
 REGION_MAP = {
@@ -118,6 +118,26 @@ def main():
 
         products = ['알쓰패치'] if has_purchase else []
 
+        # metadata: admin-hc-sync.js transformHcRow() 패턴
+        metadata = {
+            'school_type': r.get('학교유형', '').strip(),
+            'category': r.get('구분', '').strip(),
+            'target_dept': r.get('타겟부서', '').strip(),
+            'proposal_point': r.get('제안포인트', '').strip(),
+            'contact_name': r.get('담당자명', '').strip(),
+            'contact_phone': r.get('건강센터연락처', '').strip(),
+            'recipient': r.get('수신자', '').strip(),
+            'utm_code': r.get('UTM고유번호', '').strip(),
+            'website': r.get('추출url', '').strip(),
+            'postal_code': r.get('우편번호', '').strip(),
+            'address': addr,
+            'address2': r.get('주소2', '').strip(),
+            'dm_sent': r.get('DM발송여부', '').strip(),
+            'dm_target': r.get('DM발송대상', '').strip(),
+            'priority': r.get('우선순위', '').strip(),
+            'note': r.get('비고', '').strip(),
+        }
+
         institutions.append({
             'name': name,
             'type': '대학보건관리자',
@@ -128,6 +148,7 @@ def main():
             'purchase_volume': total_qty,
             'products': products,
             'last_purchase_date': r.get('최근구매일', '').strip() or '-',
+            'metadata': metadata,
         })
         existing_names.add(name)
 

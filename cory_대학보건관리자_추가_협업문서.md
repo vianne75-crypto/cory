@@ -188,7 +188,7 @@ QR 스캔                   → 관심 (유지, 상담내역 기록)
 | 문서 | 위치 |
 |------|------|
 | DM 캠페인 전체 설계 | `dm_landing/사전안내문_샘플체험가이드.md` |
-| 교육 허브 페이지 | `dm_landing/hc-dm_교육허브_초안.html` |
+| 교육 허브 페이지 | `dm_landing/hsample_교육허브_초안.html` |
 | 참여자 기록지 | `dm_landing/참여자_기록지.html` |
 | 강연 시나리오 | `dm_landing/강연_시나리오.md` |
 | 건강행태리포트 명세서 | `dm_landing/APS건강행태리포트_개발명세서.md` |

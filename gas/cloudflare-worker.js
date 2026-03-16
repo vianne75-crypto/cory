@@ -30,6 +30,10 @@ export default {
     if (request.method === 'GET') {
       const url = new URL(request.url);
 
+      if (url.pathname === '/version') {
+        return jsonResponse({ version: '2026-03-10-utm-match', deployed: new Date().toISOString() });
+      }
+
       if (url.pathname === '/fetch-sheet') {
         const sheetId = url.searchParams.get('id');
         const gid = url.searchParams.get('gid') || '0';
