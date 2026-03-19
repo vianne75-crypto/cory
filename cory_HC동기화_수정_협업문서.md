@@ -1,3 +1,11 @@
+---
+title: cory_HC동기화_수정_협업문서
+date: 2026-03-18
+type: operations
+product: [알쓰패치]
+segment: [대학_보건센터, 기업_보건관리자]
+tags: [PULSE, DM, 캠페인, CRM, 보건]
+---
 # cory — HC 동기화 Worker 수정 협업문서
 
 > Cloudflare Worker `syncHcInstitutions()` 함수 수정사항 정리
@@ -36,7 +44,7 @@
 ```javascript
 // ❌ 변경 전
 const existing = await supaFetch(supabaseUrl, supabaseKey,
-  `/rest/v1/institutions?type=eq.${encodeURIComponent('대학보건관리자')}&select=id,name,purchase_stage,purchase_amount,purchase_volume`,
+  `/rest/v1/institutions?type=eq.${encodeURIComponent('대학[[Segments/기업_보건관리자|보건관리자]]')}&select=id,name,purchase_stage,purchase_amount,purchase_volume`,
   'GET'
 );
 
@@ -224,3 +232,10 @@ LIMIT 5;
 | `js/admin/admin-hc-sync.js` | Admin 패널 동기화 (이미 머지 방식) |
 | `data/migrate_hc_metadata.sql` | DB 스키마 변경 (실행 완료) |
 | `data/update_hc_metadata.py` | CRM 필드 초기 데이터 투입 (실행 완료) |
+
+---
+
+## 관련 링크
+
+- [[Segments/대학_보건센터]]
+- [[Segments/기업_보건관리자]]

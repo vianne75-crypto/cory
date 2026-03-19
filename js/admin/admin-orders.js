@@ -2,6 +2,23 @@
 // 주문 모니터링
 // ============================================
 
+// reg_time 파싱 (YYYYMMDD·Unix timestamp·날짜 문자열 모두 처리)
+function parseRegTime(raw) {
+  if (!raw && raw !== 0) return '';
+  const s = String(raw).trim();
+  if (/^\d+$/.test(s)) {
+    const len = s.length;
+    const ts = parseInt(s);
+    if (len === 8 && ts >= 20000101 && ts <= 21001231) {
+      return `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+    }
+    const sec = ts > 9999999999 ? Math.floor(ts / 1000) : ts;
+    return new Date(sec * 1000).toISOString().slice(0, 10);
+  }
+  if (/^\d{4}[-/]/.test(s)) return s.replace(/\//g, '-').slice(0, 10);
+  return s.slice(0, 10);
+}
+
 let orderCache = [];
 let orderPage = 1;
 
@@ -90,17 +107,20 @@ async function syncOrders() {
       return;
     }
 
-    // 기존 order_idx 확인
+    // 기존 order_idx + goods_name 조합 확인 (중복 방지)
     const { data: existingOrders } = await supabase
       .from('orders')
-      .select('order_idx');
-    const existingSet = new Set((existingOrders || []).map(o => o.order_idx));
+      .select('order_idx, goods_name');
+    const existingSet = new Set(
+      (existingOrders || []).map(o => `${o.order_idx || ''}|${o.goods_name || ''}`)
+    );
 
-    // 새 주문만 필터
+    // 새 주문만 필터 (취소/환불 제외 + 중복 제외)
     const newOrders = orders.filter(o => {
       const state = String(o.state_subject || '');
       if (state.includes('취소') || state.includes('환불')) return false;
-      if (existingSet.has(o.order_idx)) return false;
+      const key = `${o.order_idx || ''}|${o.goods_name || ''}`;
+      if (existingSet.has(key)) return false;
       return true;
     });
 
@@ -132,7 +152,7 @@ async function syncOrders() {
         sale_price: parseFloat(order.sale_price) || 0,
         sale_cnt: parseInt(order.sale_cnt) || 0,
         state_subject: order.state_subject || '',
-        reg_time: order.reg_time || '',
+        reg_time: parseRegTime(order.reg_time),
         matched: !!matchedInst,
         institution_id: matchedInst ? matchedInst.id : null
       });

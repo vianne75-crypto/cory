@@ -31,7 +31,7 @@ export default {
       const url = new URL(request.url);
 
       if (url.pathname === '/version') {
-        return jsonResponse({ version: '2026-03-10-utm-match', deployed: new Date().toISOString() });
+        return jsonResponse({ version: '2026-03-18-x3-fix', deployed: new Date().toISOString() });
       }
 
       if (url.pathname === '/fetch-sheet') {
@@ -292,26 +292,50 @@ async function saveToSupabase(rawBody, supabaseUrl, supabaseKey) {
 async function insertNewOrder(data, supabaseUrl, supabaseKey) {
   const goodsInfo = data.goods_info || [];
 
-  // reg_time 변환
+  // reg_time 변환 (Unix timestamp 또는 날짜 문자열 모두 처리)
   let regTime = '';
-  if (data.reg_time) {
-    let ts = parseInt(data.reg_time);
-    if (ts > 9999999999) ts = Math.floor(ts / 1000);
-    if (ts > 0) {
-      regTime = new Date(ts * 1000).toISOString().replace('T', ' ').slice(0, 19);
+  if (data.reg_time !== null && data.reg_time !== undefined && data.reg_time !== '') {
+    const raw = String(data.reg_time).trim();
+    if (/^\d+$/.test(raw)) {
+      const len = raw.length;
+      let ts = parseInt(raw);
+      if (len === 8 && ts >= 20000101 && ts <= 21001231) {
+        // YYYYMMDD 형식 (예: 20260306) — 1970 버그 방지
+        regTime = `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)} 00:00:00`;
+      } else {
+        // Unix timestamp (초 또는 밀리초)
+        if (ts > 9999999999) ts = Math.floor(ts / 1000); // 밀리초 → 초
+        regTime = new Date(ts * 1000).toISOString().replace('T', ' ').slice(0, 19);
+      }
+    } else if (/^\d{4}[-/]/.test(raw)) {
+      // 날짜 문자열 (2026-03-10 등) → 구분자 정규화
+      regTime = raw.replace(/\//g, '-');
     } else {
-      regTime = String(data.reg_time);
+      // 기타 형식 → 원본 보존
+      regTime = raw;
     }
   }
+  if (!regTime) {
+    regTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
+  }
 
-  // 중복 체크
-  const existing = await supaFetch(supabaseUrl, supabaseKey,
-    `/rest/v1/orders?order_idx=eq.${encodeURIComponent(data.order_idx || '')}&select=id`,
-    'GET'
-  );
-
-  if (existing && existing.length > 0) {
-    return { skipped: true, reason: 'duplicate', order_idx: data.order_idx };
+  // 중복 체크 (order_idx가 유효할 때만)
+  const orderIdx = String(data.order_idx || '').trim();
+  if (orderIdx) {
+    const existing = await supaFetch(supabaseUrl, supabaseKey,
+      `/rest/v1/orders?order_idx=eq.${encodeURIComponent(orderIdx)}&select=id,goods_name`,
+      'GET'
+    );
+    if (existing && existing.length > 0) {
+      // 동일 order_idx + goods_name 조합이 이미 있으면 전체 스킵
+      const existingGoodsSet = new Set(existing.map(r => r.goods_name || ''));
+      const incomingGoods = (data.goods_info || []).map(i => i.goods_name || '');
+      const allDuplicate = incomingGoods.length === 0 ||
+        incomingGoods.every(g => existingGoodsSet.has(g));
+      if (allDuplicate) {
+        return { skipped: true, reason: 'duplicate', order_idx: orderIdx };
+      }
+    }
   }
 
   // 주문자명으로 기관 매칭 시도
