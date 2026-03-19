@@ -51,17 +51,34 @@ function populateInstFilters() {
 // 검색 + 필터
 function searchInstitutions() { filterInstitutions(); }
 
+// 기관 통합 검색 — 기관명·시군구·담당자명·연락처·UTM코드
+function matchesSearch(d, query) {
+  if (!query) return true;
+  const q = query.toLowerCase();
+  const meta = d.metadata || {};
+  const targets = [
+    d.name,
+    d.district,
+    meta.contact_name,
+    meta.contact_phone,
+    meta.utm_code,
+  ].filter(Boolean).map(v => String(v).toLowerCase());
+  return targets.some(t => t.includes(q));
+}
+
 function filterInstitutions() {
-  const search = (document.getElementById('instSearch').value || '').trim().toLowerCase();
+  const search = (document.getElementById('instSearch').value || '').trim();
   const typeFilter = document.getElementById('instTypeFilter').value;
   const regionFilter = document.getElementById('instRegionFilter').value;
   const stageFilter = document.getElementById('instStageFilter').value;
+  const eduFilter = document.getElementById('instEduFilter') ? document.getElementById('instEduFilter').value : 'all';
 
   instFiltered = instCache.filter(d => {
-    if (search && !d.name.toLowerCase().includes(search)) return false;
+    if (!matchesSearch(d, search)) return false;
     if (typeFilter !== 'all' && d.type !== typeFilter) return false;
     if (regionFilter !== 'all' && d.region !== regionFilter) return false;
     if (stageFilter !== 'all' && d.purchase_stage !== stageFilter) return false;
+    if (eduFilter !== 'all' && getEduLevel(d) !== parseInt(eduFilter)) return false;
     return true;
   });
 
@@ -128,6 +145,17 @@ function renderInstTable() {
     thead.innerHTML = '<th>ID</th><th>기관명</th><th>기관유형</th><th>지역</th><th>구매단계</th><th>교육도입</th><th>납품액</th><th>구매량</th><th>상담횟수</th><th>최근구매일</th><th>관리</th>';
   }
 
+  const searchQuery = (document.getElementById('instSearch').value || '').trim().toLowerCase();
+
+  function highlight(text) {
+    if (!searchQuery || !text) return text || '';
+    const idx = String(text).toLowerCase().indexOf(searchQuery);
+    if (idx === -1) return text;
+    return String(text).slice(0, idx) +
+      `<mark style="background:#fff59d;padding:0">${String(text).slice(idx, idx + searchQuery.length)}</mark>` +
+      String(text).slice(idx + searchQuery.length);
+  }
+
   const tbody = document.getElementById('instBody');
   tbody.innerHTML = pageData.map(d => {
     const stageColor = ADMIN_STAGE_COLORS[d.purchase_stage] || '#ccc';
@@ -141,11 +169,11 @@ function renderInstTable() {
       if (dmSent) { dmLabel = dmSent.length > 10 ? new Date(dmSent).toLocaleDateString('ko-KR') : dmSent; dmColor = '#4CAF50'; }
       else if (dmTarget === 'Y') { dmLabel = '미발송'; dmColor = '#FF9800'; }
       else { dmLabel = '-'; dmColor = '#999'; }
-      const contact = meta.contact_name || meta.contact_phone || '-';
+      const contact = highlight(meta.contact_name) || highlight(meta.contact_phone) || '-';
 
       return `<tr>
         <td>${d.id}</td>
-        <td><strong>${d.name}</strong></td>
+        <td><strong>${highlight(d.name)}</strong>${d.district ? `<br><small style="color:#999">${highlight(d.district)}</small>` : ''}</td>
         <td>${d.region}</td>
         <td><span class="stage-badge" style="background:${stageColor}">${d.purchase_stage}</span></td>
         <td>${renderEduBadge(getEduLevel(d))}</td>
@@ -163,7 +191,7 @@ function renderInstTable() {
 
     return `<tr>
       <td>${d.id}</td>
-      <td><strong>${d.name}</strong></td>
+      <td><strong>${highlight(d.name)}</strong>${d.district ? `<br><small style="color:#999">${highlight(d.district)}</small>` : ''}</td>
       <td>${d.type}</td>
       <td>${d.region}</td>
       <td><span class="stage-badge" style="background:${stageColor}">${d.purchase_stage}</span></td>

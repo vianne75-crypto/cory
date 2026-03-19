@@ -53,7 +53,7 @@
       <div class="content-header">
         <h2>기관 관리</h2>
         <div class="content-actions">
-          <input type="text" id="instSearch" class="search-input" placeholder="기관명 검색..." oninput="searchInstitutions()">
+          <input type="text" id="instSearch" class="search-input" placeholder="기관명·담당자·UTM 검색..." oninput="searchInstitutions()" style="min-width:200px;">
           <select id="instTypeFilter" class="filter-select" onchange="filterInstitutions()">
             <option value="all">전체 유형</option>
           </select>
@@ -68,6 +68,14 @@
             <option value="구매">구매</option>
             <option value="만족">만족</option>
             <option value="추천">추천</option>
+          </select>
+          <select id="instEduFilter" class="filter-select" onchange="filterInstitutions()">
+            <option value="all">전체 교육도입</option>
+            <option value="0">⚪ Lv.0 미확인</option>
+            <option value="1">🔵 Lv.1 패치단품</option>
+            <option value="2">🟡 Lv.2 교육자료</option>
+            <option value="3">🟠 Lv.3 시각물</option>
+            <option value="4">🟢 Lv.4 성과보고서</option>
           </select>
           <button class="btn btn-secondary" onclick="showCleanupPanel()">데이터 정리</button>
           <button class="btn btn-secondary" onclick="showOrderMatchPanel()">주문 매칭</button>
