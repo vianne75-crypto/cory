@@ -70,6 +70,20 @@ function filterInstitutions() {
   renderInstTable();
 }
 
+// 교육 도입 수준 헬퍼
+const EDU_LEVEL_ICONS = ['⚪', '🔵', '🟡', '🟠', '🟢'];
+const EDU_LEVEL_LABELS = ['미확인', '패치단품', '교육자료', '시각물', '성과보고서'];
+
+function getEduLevel(d) {
+  return parseInt((d.metadata || {}).edu_adoption_level) || 0;
+}
+
+function renderEduBadge(level) {
+  const icon = EDU_LEVEL_ICONS[level] || '⚪';
+  const label = EDU_LEVEL_LABELS[level] || '미확인';
+  return `<span title="Lv.${level} ${label}" style="font-size:0.82rem;">${icon} Lv.${level}</span>`;
+}
+
 // 통계
 function renderInstStats() {
   const total = instFiltered.length;
@@ -77,11 +91,20 @@ function renderInstStats() {
   const amount = instFiltered.reduce((s, d) => s + (d.purchase_amount || 0), 0);
   const withConsult = instFiltered.filter(d => d.consult_count > 0).length;
 
+  // 교육 도입 수준 분포
+  const eduCounts = [0, 0, 0, 0, 0];
+  instFiltered.forEach(d => { eduCounts[getEduLevel(d)]++; });
+  const edu2plus = eduCounts[2] + eduCounts[3] + eduCounts[4];
+
   document.getElementById('instStats').innerHTML = `
     <div class="stat-card"><span class="label">표시 기관</span><span class="value">${total}</span></div>
     <div class="stat-card"><span class="label">구매완료</span><span class="value" style="color:#4CAF50">${purchased}</span></div>
     <div class="stat-card"><span class="label">납품액 합계</span><span class="value">${adminFormatCurrency(amount)}</span></div>
     <div class="stat-card"><span class="label">상담기록 보유</span><span class="value">${withConsult}</span></div>
+    <div class="stat-card" title="⚪미확인:${eduCounts[0]} 🔵패치:${eduCounts[1]} 🟡교육자료:${eduCounts[2]} 🟠시각물:${eduCounts[3]} 🟢성과보고서:${eduCounts[4]}">
+      <span class="label">교육도입 Lv.2+</span>
+      <span class="value" style="color:#FF9800">${edu2plus}</span>
+    </div>
   `;
 }
 
@@ -100,9 +123,9 @@ function renderInstTable() {
   // 헤더 동적 변경
   const thead = document.querySelector('#instTable thead tr');
   if (isHC) {
-    thead.innerHTML = '<th>ID</th><th>기관명</th><th>지역</th><th>구매단계</th><th>납품액</th><th>구매량</th><th>DM발송</th><th>담당자</th><th>최근구매일</th><th>관리</th>';
+    thead.innerHTML = '<th>ID</th><th>기관명</th><th>지역</th><th>구매단계</th><th>교육도입</th><th>납품액</th><th>구매량</th><th>DM발송</th><th>담당자</th><th>최근구매일</th><th>관리</th>';
   } else {
-    thead.innerHTML = '<th>ID</th><th>기관명</th><th>기관유형</th><th>지역</th><th>구매단계</th><th>납품액</th><th>구매량</th><th>상담횟수</th><th>최근구매일</th><th>관리</th>';
+    thead.innerHTML = '<th>ID</th><th>기관명</th><th>기관유형</th><th>지역</th><th>구매단계</th><th>교육도입</th><th>납품액</th><th>구매량</th><th>상담횟수</th><th>최근구매일</th><th>관리</th>';
   }
 
   const tbody = document.getElementById('instBody');
@@ -125,6 +148,7 @@ function renderInstTable() {
         <td><strong>${d.name}</strong></td>
         <td>${d.region}</td>
         <td><span class="stage-badge" style="background:${stageColor}">${d.purchase_stage}</span></td>
+        <td>${renderEduBadge(getEduLevel(d))}</td>
         <td>${adminFormatCurrency(d.purchase_amount || 0)}</td>
         <td>${(d.purchase_volume || 0).toLocaleString()}</td>
         <td><span style="color:${dmColor};font-weight:600;font-size:0.82rem;">${dmLabel}</span></td>
@@ -143,6 +167,7 @@ function renderInstTable() {
       <td>${d.type}</td>
       <td>${d.region}</td>
       <td><span class="stage-badge" style="background:${stageColor}">${d.purchase_stage}</span></td>
+      <td>${renderEduBadge(getEduLevel(d))}</td>
       <td>${adminFormatCurrency(d.purchase_amount || 0)}</td>
       <td>${(d.purchase_volume || 0).toLocaleString()}</td>
       <td>${d.consult_count || 0}</td>
@@ -176,6 +201,7 @@ function showAddInstitutionModal() {
   document.getElementById('editInstVolume').value = '0';
   document.getElementById('editInstProd1').checked = false;
   document.getElementById('editInstProd2').checked = false;
+  document.getElementById('editInstEduLevel').value = '0';
 
   // 지역 옵션 채우기
   const regionSelect = document.getElementById('editInstRegion');
@@ -202,6 +228,7 @@ function editInstitution(id) {
   document.getElementById('editInstVolume').value = inst.purchase_volume || 0;
   document.getElementById('editInstProd1').checked = (inst.products || []).includes('알쓰패치');
   document.getElementById('editInstProd2').checked = (inst.products || []).includes('노담패치');
+  document.getElementById('editInstEduLevel').value = String(getEduLevel(inst));
 
   const regionSelect = document.getElementById('editInstRegion');
   const regions = Object.keys(REGION_TOTAL_TARGETS || {}).sort();
@@ -227,6 +254,13 @@ async function saveInstitution() {
   if (document.getElementById('editInstProd1').checked) products.push('알쓰패치');
   if (document.getElementById('editInstProd2').checked) products.push('노담패치');
 
+  const eduLevel = parseInt(document.getElementById('editInstEduLevel').value) || 0;
+  // 기존 metadata 보존 후 edu_adoption 필드 업데이트
+  const existingInst = id ? instCache.find(d => d.id === parseInt(id)) : null;
+  const existingMeta = (existingInst && existingInst.metadata) ? { ...existingInst.metadata } : {};
+  existingMeta.edu_adoption_level = eduLevel;
+  existingMeta.edu_adoption_updated = new Date().toISOString().slice(0, 10);
+
   const record = {
     name,
     type: document.getElementById('editInstType').value,
@@ -237,7 +271,8 @@ async function saveInstitution() {
     purchase_stage: document.getElementById('editInstStage').value,
     purchase_amount: parseFloat(document.getElementById('editInstAmount').value) || 0,
     purchase_volume: parseInt(document.getElementById('editInstVolume').value) || 0,
-    products
+    products,
+    metadata: existingMeta
   };
 
   let error;
