@@ -1163,3 +1163,74 @@ body {
   .funnel-body { flex-direction: column; }
   .funnel-kpi-card { min-width: 100px; }
 }
+
+/* ── 중요도 TOP 5 ── */
+.top5-section {
+  padding: 20px 24px 0;
+}
+.top5-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.top5-header h3 { font-size: 1rem; font-weight: 700; color: #333; }
+.top5-desc { font-size: 0.76rem; color: #aaa; }
+
+.top5-cards {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.top5-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  flex: 1;
+  min-width: 200px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.1s;
+  border-left: 3px solid #e0e0e0;
+}
+.top5-card:first-child { border-left-color: #f5a623; }
+.top5-card:nth-child(2) { border-left-color: #9b9b9b; }
+.top5-card:nth-child(3) { border-left-color: #cd7f32; }
+.top5-card:hover {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+.top5-rank { font-size: 1.2rem; min-width: 28px; text-align: center; }
+.top5-type-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.top5-info { flex: 1; min-width: 0; }
+.top5-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.top5-meta { font-size: 0.74rem; color: #999; margin-top: 2px; }
+.top5-stats { text-align: right; }
+.top5-amount { font-size: 0.82rem; font-weight: 700; color: #333; margin-top: 3px; }
+.top5-consult { font-size: 0.72rem; color: #aaa; }
+.top5-score {
+  font-size: 0.72rem;
+  color: #bbb;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* 하이라이트 */
+#tableBody tr.top5-highlight {
+  background: #fff8e1 !important;
+  outline: 2px solid #f5a623;
+}

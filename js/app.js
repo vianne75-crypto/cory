@@ -88,6 +88,7 @@ function updateDashboard() {
   updateGeoJsonStyle();
   updateCharts();
   renderFunnel();
+  renderTop5();
   renderProspects();
   renderShareTable();
   renderTable();
