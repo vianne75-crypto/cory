@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APS제품 납품현황 대시보드</title>
+  <title>APS 통합 CRM 대시보드</title>
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- Custom CSS -->
@@ -15,8 +15,8 @@
   <!-- 헤더 -->
   <header class="dashboard-header">
     <a href="admin.html" class="admin-link">관리자</a>
-    <h1>APS제품 납품현황 대시보드</h1>
-    <p class="subtitle">건강증진사업 기관별 구매현황 및 지역별 점유율</p>
+    <h1>APS 통합 CRM 대시보드</h1>
+    <p class="subtitle">B2B 기관 영업 · 퍼널 추적 · 마케팅 인사이트</p>
     <div class="sync-controls">
       <button id="syncBtn" class="sync-btn" onclick="syncFromWebhook()">불러오기</button>
       <span id="syncStatus" class="sync-status"></span>
@@ -45,14 +45,59 @@
 
   <!-- 탭 네비게이션 -->
   <nav class="tab-nav">
-    <button class="tab-btn active" data-tab="tab-map">지도</button>
+    <button class="tab-btn active" data-tab="tab-funnel">퍼널</button>
+    <button class="tab-btn" data-tab="tab-contact">
+      이달 접촉 <span id="contactBadge" class="contact-tab-badge"></span>
+    </button>
+    <button class="tab-btn" data-tab="tab-map">지도</button>
     <button class="tab-btn" data-tab="tab-charts">차트 분석</button>
     <button class="tab-btn" data-tab="tab-share">점유율</button>
     <button class="tab-btn" data-tab="tab-list">기관 목록</button>
   </nav>
 
-  <!-- 탭 1: 지도 -->
-  <div class="tab-content active" id="tab-map">
+  <!-- 탭 0: 퍼널 시각화 -->
+  <div class="tab-content active" id="tab-funnel">
+    <section class="funnel-section">
+      <!-- KPI 요약 -->
+      <div class="funnel-kpi-row" id="funnelKpi"></div>
+      <!-- 퍼널 본체 -->
+      <div class="funnel-body">
+        <div class="funnel-visual" id="funnelVisual"></div>
+        <div class="funnel-table-wrap">
+          <table class="funnel-table">
+            <thead>
+              <tr>
+                <th>단계</th>
+                <th>기관 수</th>
+                <th>비율</th>
+                <th>전환율</th>
+                <th>납품액</th>
+              </tr>
+            </thead>
+            <tbody id="funnelTableBody"></tbody>
+          </table>
+          <div class="funnel-segment-summary" id="funnelSegmentSummary"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 탭 1: 이달 접촉 -->
+  <div class="tab-content" id="tab-contact">
+    <section class="contact-section">
+      <div class="contact-header">
+        <h2>이달 접촉 필요 기관</h2>
+        <p class="contact-header-desc">
+          윙백서클 타이밍 기준 — 구매 후 D+4·14·30·60일, 이탈 감지 +8개월, 재활성화 +13개월
+        </p>
+        <button class="contact-refresh-btn" onclick="renderContactView()">새로고침</button>
+      </div>
+      <div id="contactContent"></div>
+    </section>
+  </div>
+
+  <!-- 탭 2: 지도 -->
+  <div class="tab-content" id="tab-map">
     <section class="main-content">
       <!-- 필터 패널 -->
       <aside class="filter-panel">
@@ -93,8 +138,9 @@
           <label><input type="checkbox" class="filter-stage" value="관심" checked> 관심</label>
           <label><input type="checkbox" class="filter-stage" value="고려" checked> 고려</label>
           <label><input type="checkbox" class="filter-stage" value="구매" checked> 구매</label>
-          <label><input type="checkbox" class="filter-stage" value="만족" checked> 만족</label>
-          <label><input type="checkbox" class="filter-stage" value="추천" checked> 추천</label>
+          <label><input type="checkbox" class="filter-stage" value="활용" checked> 활용 ⭐</label>
+          <label><input type="checkbox" class="filter-stage" value="재구매" checked> 재구매 ⭐</label>
+          <label><input type="checkbox" class="filter-stage" value="파트너" checked> 파트너</label>
         </div>
 
         <div class="filter-group">
@@ -294,6 +340,8 @@
   <script src="js/prospects.js"></script>
   <script src="js/info-panel.js"></script>
   <script src="js/sync.js"></script>
+  <script src="js/contact.js"></script>
+  <script src="js/funnel.js"></script>
   <script src="js/app.js"></script>
 </body>
 

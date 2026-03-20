@@ -31,7 +31,7 @@ export default {
       const url = new URL(request.url);
 
       if (url.pathname === '/version') {
-        return jsonResponse({ version: '2026-03-18-x3-fix', deployed: new Date().toISOString() });
+        return jsonResponse({ version: '2026-03-20-stage9-shipment', deployed: new Date().toISOString() });
       }
 
       if (url.pathname === '/fetch-sheet') {
@@ -107,6 +107,23 @@ export default {
         }
       }
 
+      // HC 샘플 발송 기록 엔드포인트
+      if (url.pathname === '/record-shipment') {
+        if (!SUPABASE_URL || !SUPABASE_KEY) {
+          return jsonResponse({ error: 'Supabase not configured' }, 500);
+        }
+        try {
+          const data = JSON.parse(body);
+          if (data.secret !== 'aps2026hc') return jsonResponse({ error: 'unauthorized' }, 401);
+          const { utm_code, shipped_date, tracking_number, carrier } = data;
+          if (!utm_code) return jsonResponse({ error: 'utm_code required' }, 400);
+          const result = await recordShipment({ utm_code, shipped_date, tracking_number, carrier }, SUPABASE_URL, SUPABASE_KEY);
+          return jsonResponse(result);
+        } catch (err) {
+          return jsonResponse({ error: err.message }, 500);
+        }
+      }
+
       // GAS 전달 + Supabase 저장 병렬 실행
       const results = await Promise.allSettled([
         // 1) GAS (Google Sheets)
@@ -168,7 +185,7 @@ async function syncConsultations(records, supabaseUrl, supabaseKey) {
     '샘플': '고려', '샘플요청': '고려', '단가표': '고려',
     '수주': '고려', '긴급수주': '고려', '수주예정': '고려', '카드결제': '고려'
   };
-  const STAGE_PRIORITY = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '만족': 4, '추천': 5 };
+  const STAGE_PRIORITY = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '활용': 4, '재구매': 5, '파트너': 6 };
 
   let inserted = 0, skipped = 0, matched = 0;
   const instUpdates = {}; // 기관별 업데이트 집계
@@ -290,7 +307,7 @@ async function saveToSupabase(rawBody, supabaseUrl, supabaseKey) {
 
 // ─── 신규 주문 저장 ───
 async function insertNewOrder(data, supabaseUrl, supabaseKey) {
-  const goodsInfo = data.goods_info || [];
+  let goodsInfo = data.goods_info || [];
 
   // reg_time 변환 (Unix timestamp 또는 날짜 문자열 모두 처리)
   let regTime = '';
@@ -327,12 +344,10 @@ async function insertNewOrder(data, supabaseUrl, supabaseKey) {
       'GET'
     );
     if (existing && existing.length > 0) {
-      // 동일 order_idx + goods_name 조합이 이미 있으면 전체 스킵
       const existingGoodsSet = new Set(existing.map(r => r.goods_name || ''));
-      const incomingGoods = (data.goods_info || []).map(i => i.goods_name || '');
-      const allDuplicate = incomingGoods.length === 0 ||
-        incomingGoods.every(g => existingGoodsSet.has(g));
-      if (allDuplicate) {
+      // 기존에 없는 상품만 필터링 — 부분 중복 시 중복 행 삽입 방지
+      goodsInfo = goodsInfo.filter(item => !existingGoodsSet.has(item.goods_name || ''));
+      if (goodsInfo.length === 0) {
         return { skipped: true, reason: 'duplicate', order_idx: orderIdx };
       }
     }
@@ -430,7 +445,7 @@ async function updateInstitutionOnOrder(supabaseUrl, supabaseKey, instId, addAmo
   const newAmount = (current.purchase_amount || 0) + addAmount;
 
   // 구매 단계 업그레이드 (현재가 구매 미만이면 구매로)
-  const stages = ['인지', '관심', '고려', '구매', '만족', '추천'];
+  const stages = ['인지', '관심', '고려', '구매', '활용', '재구매', '파트너'];
   const currentIdx = stages.indexOf(current.purchase_stage || '인지');
   const purchaseIdx = stages.indexOf('구매');
   const newStage = currentIdx < purchaseIdx ? '구매' : current.purchase_stage;
@@ -469,7 +484,7 @@ async function syncHcInstitutions(records, supabaseUrl, supabaseKey) {
     nameMap[inst.name] = inst;
   });
 
-  const STAGE_PRIORITY = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '만족': 4, '추천': 5 };
+  const STAGE_PRIORITY = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '활용': 4, '재구매': 5, '파트너': 6 };
   const toInsert = [];
   const toUpdate = [];
   let unchanged = 0;
@@ -560,4 +575,67 @@ async function supaFetch(supabaseUrl, supabaseKey, path, method, body) {
   }
 
   return { status: response.status };
+}
+
+// ─── HC 샘플 발송 기록 ───
+async function recordShipment({ utm_code, shipped_date, tracking_number, carrier }, supabaseUrl, supabaseKey) {
+  if (!utm_code) return { error: 'utm_code required' };
+
+  // 기관 조회 (utm_code로 매칭)
+  const getResp = await fetch(
+    `${supabaseUrl}/rest/v1/institutions?select=id,metadata&type=eq.대학보건관리자`,
+    {
+      headers: {
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  if (!getResp.ok) return { error: `Supabase fetch failed: ${getResp.status}` };
+  const insts = await getResp.json();
+
+  const target = insts.find(inst => {
+    const meta = inst.metadata || {};
+    return (meta.utm_code || '').toLowerCase() === utm_code.toLowerCase();
+  });
+
+  if (!target) return { error: `utm_code not found: ${utm_code}` };
+
+  // metadata 병합
+  const meta = { ...(target.metadata || {}) };
+  if (shipped_date) meta.sample_shipped_date = shipped_date;
+  if (tracking_number) meta.sample_tracking_number = tracking_number;
+  if (carrier) meta.sample_carrier = carrier;
+  meta.sample_updated_at = new Date().toISOString();
+
+  // 업데이트
+  const patchResp = await fetch(
+    `${supabaseUrl}/rest/v1/institutions?id=eq.${target.id}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ metadata: meta })
+    }
+  );
+
+  if (!patchResp.ok) {
+    const errText = await patchResp.text();
+    return { error: `Supabase update failed: ${patchResp.status} ${errText}` };
+  }
+
+  return {
+    result: 'ok',
+    id: target.id,
+    utm_code,
+    shipped_date,
+    tracking_number,
+    carrier
+  };
 }

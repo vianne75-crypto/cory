@@ -855,3 +855,311 @@ body {
     font-size: 1.2rem;
   }
 }
+
+/* ─── 이달 접촉 탭 ─── */
+.contact-tab-badge {
+  display: inline-block;
+  background: #E53935;
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 1px 6px;
+  margin-left: 4px;
+  min-width: 18px;
+  text-align: center;
+  vertical-align: middle;
+}
+.contact-tab-badge:empty { display: none; }
+
+.contact-section {
+  padding: 24px 30px;
+}
+.contact-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.contact-header h2 {
+  font-size: 1.2rem;
+  color: #1a237e;
+}
+.contact-header-desc {
+  font-size: 0.82rem;
+  color: #666;
+  flex: 1;
+}
+.contact-refresh-btn {
+  padding: 5px 14px;
+  background: #1a237e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.contact-refresh-btn:hover { background: #283593; }
+
+.contact-summary {
+  background: #e8eaf6;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  font-size: 0.92rem;
+  color: #333;
+}
+
+.contact-group {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.contact-group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: #fafafa;
+  flex-wrap: wrap;
+}
+.contact-group-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.contact-group-count {
+  background: #1a237e;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+.contact-group-desc {
+  font-size: 0.82rem;
+  color: #555;
+  flex: 1;
+}
+.contact-group-agent {
+  font-size: 0.78rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.contact-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.contact-table th {
+  background: #f5f5f5;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+}
+.contact-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+.contact-table tr:last-child td { border-bottom: none; }
+.contact-table tr:hover td { background: #f9f9f9; }
+
+.days-badge {
+  display: inline-block;
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.contact-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #888;
+}
+.contact-empty-sub {
+  font-size: 0.82rem;
+  margin-top: 8px;
+  color: #bbb;
+}
+
+/* ── 퍼널 시각화 ── */
+.funnel-section {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* KPI 행 */
+.funnel-kpi-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.funnel-kpi-card {
+  flex: 1;
+  min-width: 140px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.fkpi-label { font-size: 0.78rem; color: #888; margin-bottom: 6px; }
+.fkpi-value { font-size: 1.6rem; font-weight: 700; line-height: 1.2; }
+.fkpi-sub { font-size: 0.74rem; color: #aaa; margin-top: 4px; }
+
+/* 퍼널 본체 */
+.funnel-body {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+/* 비주얼 퍼널 */
+.funnel-visual {
+  flex: 1.1;
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.funnel-row {
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+.funnel-row:hover .funnel-bar-bg {
+  filter: brightness(0.92);
+}
+.funnel-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.funnel-bar-bg {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  border-radius: 6px;
+  padding: 0 12px;
+  transition: width 0.4s ease, filter 0.15s;
+  min-width: 80px;
+}
+.funnel-bar-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+.funnel-bar-count {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #333;
+  white-space: nowrap;
+}
+.funnel-bar-pct {
+  font-size: 0.78rem;
+  color: #888;
+  min-width: 38px;
+}
+.funnel-conv-arrow {
+  text-align: left;
+  font-size: 0.72rem;
+  color: #90a4ae;
+  padding-left: 14px;
+  height: 16px;
+  line-height: 16px;
+  margin-bottom: 2px;
+}
+.funnel-sep-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 6px;
+  font-size: 0.72rem;
+  color: #b0bec5;
+}
+.funnel-sep-line::before {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+/* 퍼널 테이블 */
+.funnel-table-wrap {
+  flex: 0.9;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.funnel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+.funnel-table th {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 2px solid #e0e0e0;
+  color: #666;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+.funnel-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #f5f5f5;
+}
+.funnel-table tr:hover { background: #fafafa; }
+.funnel-tr-converted td { background: #f1f8fe; }
+.funnel-stage-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* 세그먼트 요약 */
+.funnel-segment-summary {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+.funnel-seg-title {
+  font-size: 0.78rem;
+  color: #888;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.funnel-seg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 0.82rem;
+}
+.funnel-seg-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.funnel-seg-name { flex: 1; color: #555; }
+.funnel-seg-cnt { font-weight: 600; color: #333; }
+
+@media (max-width: 768px) {
+  .funnel-body { flex-direction: column; }
+  .funnel-kpi-card { min-width: 100px; }
+}

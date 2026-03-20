@@ -72,7 +72,7 @@ function updateSummaryCards() {
   const totalInst = filteredData.length;
   const totalAmt = filteredData.reduce((s, d) => s + d.purchaseAmount, 0);
   const totalVol = filteredData.reduce((s, d) => s + d.purchaseVolume, 0);
-  const purchased = filteredData.filter(d => ['구매', '만족', '추천'].includes(d.purchaseStage)).length;
+  const purchased = filteredData.filter(d => ['구매', '활용', '재구매', '파트너'].includes(d.purchaseStage)).length;
 
   document.getElementById('totalInstitutions').textContent = totalInst + '개';
   document.getElementById('totalAmount').textContent = formatCurrency(totalAmt);
@@ -87,8 +87,10 @@ function updateDashboard() {
   updateRegionMarkers();
   updateGeoJsonStyle();
   updateCharts();
+  renderFunnel();
   renderProspects();
   renderShareTable();
   renderTable();
   updateInfoPanel();
+  renderContactView();
 }
