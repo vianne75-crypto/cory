@@ -1,5 +1,6 @@
 // 공유 상태
 let filteredData = [...institutionData];
+let eliteInstIds = new Set(); // 앱스마스터·프로 기관 ID (memlv=스카우트/마스터)
 
 // Supabase 캐시에서 데이터 로드 시도
 async function loadFromSupabase() {
@@ -35,10 +36,24 @@ async function loadFromSupabase() {
   return false;
 }
 
+// 앱스마스터·프로 기관 ID 로드 (memlv=스카우트/마스터)
+async function loadEliteInstIds() {
+  try {
+    if (SUPABASE_URL === 'https://YOUR_PROJECT.supabase.co') return;
+    const { data } = await supabase
+      .from('orders')
+      .select('institution_id')
+      .in('memlv', ['스카우트', '마스터'])
+      .not('institution_id', 'is', null);
+    if (data) data.forEach(r => eliteInstIds.add(r.institution_id));
+  } catch (e) { /* 무시 */ }
+}
+
 // 초기화
 document.addEventListener('DOMContentLoaded', async () => {
   // Supabase 캐시에서 로드 시도 (실패 시 data.js 폴백)
   await loadFromSupabase();
+  await loadEliteInstIds();
 
   initMap();
   populateRegionFilter();

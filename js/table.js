@@ -1,5 +1,46 @@
+// ── 5개 그룹 정의 ──
+const TABLE_GROUPS = [
+  {
+    key: 'elite',
+    label: '앱스마스터·프로',
+    color: '#7b1fa2',
+    icon: '⭐',
+    match: d => eliteInstIds.has(d.id)
+  },
+  {
+    key: 'hc',
+    label: '대학보건센터',
+    color: '#00897b',
+    icon: '🎓',
+    match: d => d.type === '대학보건관리자'
+  },
+  {
+    key: 'clinic',
+    label: '보건소',
+    color: '#1976d2',
+    icon: '🏥',
+    match: d => d.type === '보건소'
+  },
+  {
+    key: 'pro',
+    label: '전문기관',
+    color: '#6a1b9a',
+    icon: '🔬',
+    match: d => ['전문기관', '금연지원센터', '광역시도 건강증진부서',
+                 '사업장', '복지기관', '군/경/소방', '공공기관(기타)'].includes(d.type)
+  },
+  {
+    key: 'edu',
+    label: '전공교육',
+    color: '#c62828',
+    icon: '📚',
+    match: d => ['전공교육', '교육기관'].includes(d.type)
+  }
+];
+
 // 테이블 정렬 상태
 let currentSort = { key: null, asc: true };
+let groupOpen = { elite: true, hc: true, clinic: true, pro: false, edu: false };
 
 // 테이블 정렬 이벤트 바인딩
 function bindTableSort() {
@@ -17,67 +58,51 @@ function bindTableSort() {
   });
 }
 
-// 중요도 점수 계산
+// 중요도 점수 계산 (퍼널에도 사용)
 function calcImportanceScore(d, maxAmount, maxConsult) {
   const STAGE_SCORE = { '인지': 0, '관심': 1, '고려': 2, '구매': 3, '활용': 4, '재구매': 5, '파트너': 6 };
   const amountScore = maxAmount > 0 ? (d.purchaseAmount / maxAmount) * 50 : 0;
   const stageScore = ((STAGE_SCORE[d.purchaseStage] || 0) / 6) * 30;
-  const consultScore = maxConsult > 0 ? (d.consultCount / maxConsult) * 20 : 0;
+  const consultScore = maxConsult > 0 ? ((d.consultCount || 0) / maxConsult) * 20 : 0;
   return amountScore + stageScore + consultScore;
 }
 
-// TOP 5 렌더링
-function renderTop5() {
-  const container = document.getElementById('top5Cards');
-  if (!container || filteredData.length === 0) return;
+// 그룹별 기관 분배 (한 기관은 첫 매칭 그룹에만)
+function groupInstitutions(data) {
+  const result = {};
+  TABLE_GROUPS.forEach(g => result[g.key] = []);
+  const assigned = new Set();
 
-  const maxAmount = Math.max(...filteredData.map(d => d.purchaseAmount), 1);
-  const maxConsult = Math.max(...filteredData.map(d => d.consultCount || 0), 1);
-
-  const top5 = [...filteredData]
-    .map(d => ({ ...d, _score: calcImportanceScore(d, maxAmount, maxConsult) }))
-    .sort((a, b) => b._score - a._score)
-    .slice(0, 5);
-
-  const RANK_COLORS = ['#f5a623', '#9b9b9b', '#cd7f32', '#4a90d9', '#4a90d9'];
-
-  container.innerHTML = top5.map((d, i) => {
-    const stageColor = STAGE_COLORS[d.purchaseStage] || '#ccc';
-    const typeColor = (INSTITUTION_TYPES[d.type] || {}).color || '#999';
-    return `
-      <div class="top5-card" onclick="highlightInstitution('${d.name}')">
-        <div class="top5-rank" style="color:${RANK_COLORS[i]}">
-          ${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i+1}`}
-        </div>
-        <div class="top5-type-dot" style="background:${typeColor}" title="${d.type}"></div>
-        <div class="top5-info">
-          <div class="top5-name">${d.name}</div>
-          <div class="top5-meta">${d.region} · ${d.type}</div>
-        </div>
-        <div class="top5-stats">
-          <span class="stage-badge" style="background:${stageColor}">${d.purchaseStage}</span>
-          <div class="top5-amount">${formatCurrency(d.purchaseAmount)}</div>
-          <div class="top5-consult">상담 ${d.consultCount || 0}회</div>
-        </div>
-        <div class="top5-score" title="중요도 점수">${d._score.toFixed(0)}점</div>
-      </div>
-    `;
-  }).join('');
-}
-
-// 기관명 하이라이트 (테이블 스크롤)
-function highlightInstitution(name) {
-  const rows = document.querySelectorAll('#tableBody tr');
-  rows.forEach(row => {
-    row.classList.remove('top5-highlight');
-    if (row.cells[0] && row.cells[0].textContent === name) {
-      row.classList.add('top5-highlight');
-      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+  TABLE_GROUPS.forEach(g => {
+    data.forEach(d => {
+      if (!assigned.has(d.id) && g.match(d)) {
+        result[g.key].push(d);
+        assigned.add(d.id);
+      }
+    });
   });
+
+  return result;
 }
 
-// 테이블 렌더링
+// 행 렌더링
+function renderRow(d) {
+  const stageColor = STAGE_COLORS[d.purchaseStage] || '#ccc';
+  return `<tr>
+    <td>${d.name}</td>
+    <td>${d.type}</td>
+    <td>${d.region} ${d.district || ''}</td>
+    <td><span class="stage-badge" style="background:${stageColor}">${d.purchaseStage}</span></td>
+    <td>${(d.purchaseVolume || 0).toLocaleString()}개</td>
+    <td>${formatCurrency(d.purchaseAmount)}</td>
+    <td>${d.purchaseCycle || '-'}</td>
+    <td>${d.lastPurchaseDate || '-'}</td>
+    <td>${d.consultCount || 0}</td>
+    <td>${d.lastConsultDate || '-'}</td>
+  </tr>`;
+}
+
+// 테이블 렌더링 (그룹화)
 function renderTable() {
   const tbody = document.getElementById('tableBody');
   let sorted = [...filteredData];
@@ -93,19 +118,59 @@ function renderTable() {
     });
   }
 
-  tbody.innerHTML = sorted.map(d => {
-    const stageColor = STAGE_COLORS[d.purchaseStage] || '#ccc';
-    return `<tr>
-      <td>${d.name}</td>
-      <td>${d.type}</td>
-      <td>${d.region} ${d.district}</td>
-      <td><span class="stage-badge" style="background:${stageColor}">${d.purchaseStage}</span></td>
-      <td>${d.purchaseVolume.toLocaleString()}개</td>
-      <td>${formatCurrency(d.purchaseAmount)}</td>
-      <td>${d.purchaseCycle}</td>
-      <td>${d.lastPurchaseDate || '-'}</td>
-      <td>${d.consultCount || 0}</td>
-      <td>${d.lastConsultDate || '-'}</td>
-    </tr>`;
-  }).join('');
+  const groups = groupInstitutions(sorted);
+  let html = '';
+
+  TABLE_GROUPS.forEach(g => {
+    const items = groups[g.key];
+    const isOpen = groupOpen[g.key] !== false;
+    const purchased = items.filter(d =>
+      ['구매','활용','재구매','파트너'].includes(d.purchaseStage)).length;
+
+    html += `
+      <tr class="group-header-row" onclick="toggleGroup('${g.key}')" data-group="${g.key}">
+        <td colspan="10">
+          <span class="group-icon">${isOpen ? '▼' : '▶'}</span>
+          <span class="group-icon-badge" style="background:${g.color}">${g.icon}</span>
+          <strong>${g.label}</strong>
+          <span class="group-count">${items.length}개</span>
+          <span class="group-purchased">(구매 ${purchased}개)</span>
+        </td>
+      </tr>
+    `;
+
+    if (isOpen) {
+      if (items.length === 0) {
+        html += `<tr class="group-empty-row" data-group-body="${g.key}">
+          <td colspan="10" style="color:#bbb;text-align:center;padding:12px">해당 기관 없음</td>
+        </tr>`;
+      } else {
+        html += items.map(d =>
+          `<tr data-group-body="${g.key}">${renderRow(d).replace('<tr>', '')}`
+        ).join('');
+      }
+    }
+  });
+
+  tbody.innerHTML = html;
+}
+
+// 그룹 토글
+function toggleGroup(key) {
+  groupOpen[key] = !groupOpen[key];
+  renderTable();
+}
+
+// TOP5 (퍼널에서 참조용 — 기관목록 탭에서는 제거됨)
+function renderTop5() { /* 그룹화로 대체 */ }
+
+// 하이라이트
+function highlightInstitution(name) {
+  document.querySelectorAll('#tableBody tr[data-group-body]').forEach(row => {
+    row.classList.remove('top5-highlight');
+    if (row.cells[0] && row.cells[0].textContent === name) {
+      row.classList.add('top5-highlight');
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
 }
