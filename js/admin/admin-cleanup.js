@@ -22,14 +22,19 @@ function cleanInstitutionNameJS(name) {
   const addrInstMatch = name.match(/^(?:[가-힣]+(?:도|시|군|구)\s+){1,3}(?:[가-힣]+(?:읍|면|동|로|길)\s*\d*\s+)*((?:[가-힣]+(?:보건소|센터|병원|대학교?))[가-힣]*)/);
   if (addrInstMatch) name = addrInstMatch[1];
 
+  // 부서/팀명 suffix 제거 (공백 있든 없든 붙어있는 경우 모두 처리)
+  name = name.replace(/\s*(건강증진팀|금연클리닉팀|금연팀|보건팀|건강생활팀|건강증진과|정신건강사업과|중독통합관리팀|보건사업팀|금연사업팀|건강관리팀)\s*$/, '');
+
   // 캠페인/납품 설명 제거: "기관명 + 연도/캠페인/홍보/물품/납품..."
   name = name.replace(/\s+\d{4}년\s*캠페인.*$/, '');
+  name = name.replace(/\s+금연\s*캠페인.*$/, '');
   name = name.replace(/\s+캠페인.*$/, '');
   name = name.replace(/\s+홍보\s*물품.*$/, '');
   name = name.replace(/\s+물품\s*납품.*$/, '');
   name = name.replace(/\s+납품$/, '');
   name = name.replace(/\s+포장불가$/, '');
   name = name.replace(/\s+키트\s*제작$/, '');
+  name = name.replace(/\s+프로젝트팀.*$/, '');
 
   // "->기관명으로 납품" 패턴
   const arrowMatch = name.match(/->(.+?)(?:으로|에)\s*납품/);

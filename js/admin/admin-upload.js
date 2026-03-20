@@ -245,7 +245,7 @@ async function processOrderUpload() {
     const instUpdates = {};
 
     for (const row of parsedOrderData) {
-      const optUser = String(row[nameCol] || '').trim();
+      const optUser = cleanInstitutionNameJS(String(row[nameCol] || '').trim());
       const addr = addrCol ? String(row[addrCol] || '').trim() : '';
       const goods = goodsCol ? String(row[goodsCol] || '') : '';
       const price = parseFloat(row[priceCol]) || 0;
@@ -679,7 +679,7 @@ async function processInstBulkUpload() {
       uploadLog(`컬럼 매핑: 기관명=${nameCol}, 유형=${typeCol}, 지역=${regionCol}`, 'info');
 
       records = parsedInstBulkData.map(row => ({
-        name: String(row[nameCol] || '').trim(),
+        name: cleanInstitutionNameJS(String(row[nameCol] || '').trim()),
         type: typeCol ? String(row[typeCol] || '보건소').trim() : '보건소',
         region: regionCol ? String(row[regionCol] || '').trim() : '',
         district: distCol ? String(row[distCol] || '').trim() || null : null,

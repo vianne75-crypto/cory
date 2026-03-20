@@ -132,6 +132,20 @@ def clean_institution_name(name, inst_type):
     # "(보건소로고)" 같은 주문 메모 제거
     name = re.sub(r'\(보건소로고\)', '', name)
 
+    # 부서/팀명 suffix 제거 (공백 있든 없든 붙어있는 경우 모두 처리)
+    name = re.sub(r'\s*(건강증진팀|금연클리닉팀|금연팀|보건팀|건강생활팀|건강증진과|정신건강사업과|중독통합관리팀|보건사업팀|금연사업팀|건강관리팀)\s*$', '', name)
+
+    # 캠페인/납품 설명 제거
+    name = re.sub(r'\s+\d{4}년\s*캠페인.*$', '', name)
+    name = re.sub(r'\s+금연\s*캠페인.*$', '', name)
+    name = re.sub(r'\s+캠페인.*$', '', name)
+    name = re.sub(r'\s+홍보\s*물품.*$', '', name)
+    name = re.sub(r'\s+물품\s*납품.*$', '', name)
+    name = re.sub(r'\s+납품$', '', name)
+    name = re.sub(r'\s+포장불가$', '', name)
+    name = re.sub(r'\s+키트\s*제작$', '', name)
+    name = re.sub(r'\s+프로젝트팀.*$', '', name)
+
     # 공급업체 패턴: "업체명(기관명)" → 기관명
     supplier_patterns = [
         r'^성은약품\((.+?)\)$',
