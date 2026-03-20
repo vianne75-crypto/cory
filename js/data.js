@@ -1,5 +1,5 @@
-// 구매단계 정의
-const PURCHASE_STAGES = ['인지', '관심', '고려', '구매', '만족', '추천'];
+// 구매단계 정의 (7단계 — 2026-03-19 재설계)
+const PURCHASE_STAGES = ['인지', '관심', '고려', '구매', '활용', '재구매', '파트너'];
 
 // 기관 유형 정의 및 색상
 const INSTITUTION_TYPES = {
@@ -16,10 +16,10 @@ const INSTITUTION_TYPES = {
   '공공기관(기타)': { color: '#607D8B', icon: 'C' }
 };
 
-// 구매단계별 색상
+// 구매단계별 색상 (7단계)
 const STAGE_COLORS = {
   '인지': '#e0e0e0', '관심': '#b0bec5', '고려': '#ffb74d',
-  '구매': '#4fc3f7', '만족': '#81c784', '추천': '#e57373'
+  '구매': '#4fc3f7', '활용': '#29b6f6', '재구매': '#66bb6a', '파트너': '#ab47bc'
 };
 
 // 제품 유형
@@ -151,7 +151,7 @@ const institutionData =
   },
   {
     "id": 4,
-    "name": "청주시서원보건소건강증진팀",
+    "name": "청주시서원보건소",
     "type": "보건소",
     "region": "충청북도",
     "district": "청주시",
@@ -247,7 +247,7 @@ const institutionData =
   },
   {
     "id": 9,
-    "name": "국민건강보험공단 김제지사 2026년 캠페인 홍보 물품 납품",
+    "name": "국민건강보험공단 김제지사",
     "type": "공공기관(기타)",
     "region": "전북특별자치도",
     "district": "김제시",
@@ -285,7 +285,7 @@ const institutionData =
   },
   {
     "id": 11,
-    "name": "경상북도 구미시 선산읍 선주로 121 선산보건소 건강증진팀 조윤호 T.054-480-4134",
+    "name": "선산보건소",
     "type": "보건소",
     "region": "경상북도",
     "district": "구미시",
@@ -743,7 +743,7 @@ const institutionData =
   },
   {
     "id": 35,
-    "name": "서울여자대학교 금연 캠페인 프로젝트팀 포장불가",
+    "name": "서울여자대학교",
     "type": "교육기관",
     "region": "서울특별시",
     "district": "성북구",
@@ -1471,7 +1471,7 @@ const institutionData =
   },
   {
     "id": 73,
-    "name": "국립정신건강센터 정신건강사업과 키트 제작",
+    "name": "국립정신건강센터",
     "type": "전문기관",
     "region": "경기도",
     "district": "평택시",
@@ -3742,7 +3742,7 @@ const institutionData =
   },
   {
     "id": 192,
-    "name": "서울시 통합건강증진사업지원단 금연사업팀",
+    "name": "서울시 통합건강증진사업지원단",
     "type": "공공기관(기타)",
     "region": "서울특별시",
     "district": "중구",
@@ -4009,7 +4009,7 @@ const institutionData =
   },
   {
     "id": 206,
-    "name": "제주광역 정신건강복지센터 중독통합관리팀",
+    "name": "제주광역정신건강복지센터",
     "type": "전문기관",
     "region": "제주특별자치도",
     "district": "제주시",
