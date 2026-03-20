@@ -1,4 +1,4 @@
-// ── 5개 그룹 정의 ──
+// ── 그룹 정의 ──
 const TABLE_GROUPS = [
   {
     key: 'elite',
@@ -26,8 +26,7 @@ const TABLE_GROUPS = [
     label: '전문기관',
     color: '#6a1b9a',
     icon: '🔬',
-    match: d => ['전문기관', '금연지원센터', '광역시도 건강증진부서',
-                 '사업장', '복지기관', '군/경/소방', '공공기관(기타)'].includes(d.type)
+    match: d => ['전문기관', '금연지원센터'].includes(d.type)
   },
   {
     key: 'edu',
@@ -35,12 +34,19 @@ const TABLE_GROUPS = [
     color: '#c62828',
     icon: '📚',
     match: d => ['전공교육', '교육기관'].includes(d.type)
+  },
+  {
+    key: 'etc',
+    label: '기타',
+    color: '#78909c',
+    icon: '📋',
+    match: () => true  // 위에서 미분류된 기관 전부
   }
 ];
 
 // 테이블 정렬 상태
 let currentSort = { key: null, asc: true };
-let groupOpen = { elite: true, hc: true, clinic: true, pro: false, edu: false };
+let groupOpen = { elite: true, hc: true, clinic: true, pro: false, edu: false, etc: false };
 
 // 테이블 정렬 이벤트 바인딩
 function bindTableSort() {
