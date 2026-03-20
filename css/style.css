@@ -1268,3 +1268,37 @@ body {
   color: #4CAF50;
 }
 .group-empty-row td { font-size: 0.82rem; }
+
+/* ── 그룹 네비게이션 버튼 바 ── */
+.group-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 24px 0;
+  position: sticky;
+  top: 0;
+  background: #f0f2f5;
+  z-index: 10;
+  padding-bottom: 12px;
+}
+.group-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 2px solid #ccc;
+  background: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.group-nav-btn span {
+  font-size: 0.74rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+.group-nav-btn:hover { opacity: 0.8; }
+.group-nav-btn.active { font-weight: 700; }

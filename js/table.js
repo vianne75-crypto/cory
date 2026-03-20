@@ -108,6 +108,47 @@ function renderRow(d) {
   </tr>`;
 }
 
+// 그룹 네비게이션 버튼 렌더링
+function renderGroupNav() {
+  const nav = document.getElementById('groupNav');
+  if (!nav) return;
+
+  const groups = groupInstitutions(filteredData);
+
+  const allBtn = `<button class="group-nav-btn ${activeGroupFilter === 'all' ? 'active' : ''}"
+    onclick="setGroupFilter('all')" style="border-color:#555;color:#555">
+    전체 <span>${filteredData.length}</span>
+  </button>`;
+
+  const groupBtns = TABLE_GROUPS.map(g => {
+    const cnt = groups[g.key].length;
+    const isActive = activeGroupFilter === g.key;
+    return `<button class="group-nav-btn ${isActive ? 'active' : ''}"
+      onclick="setGroupFilter('${g.key}')"
+      style="border-color:${g.color};${isActive ? `background:${g.color};color:#fff` : `color:${g.color}`}">
+      ${g.icon} ${g.label} <span>${cnt}</span>
+    </button>`;
+  }).join('');
+
+  nav.innerHTML = allBtn + groupBtns;
+}
+
+// 그룹 필터 상태
+let activeGroupFilter = 'all';
+
+function setGroupFilter(key) {
+  activeGroupFilter = key;
+  if (key === 'all') {
+    TABLE_GROUPS.forEach(g => groupOpen[g.key] = true);
+  } else {
+    TABLE_GROUPS.forEach(g => groupOpen[g.key] = g.key === key);
+  }
+  renderGroupNav();
+  renderTable();
+  // 테이블 상단으로 스크롤
+  document.getElementById('institutionTable').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 // 테이블 렌더링 (그룹화)
 function renderTable() {
   const tbody = document.getElementById('tableBody');
@@ -159,6 +200,7 @@ function renderTable() {
   });
 
   tbody.innerHTML = html;
+  renderGroupNav();
 }
 
 // 그룹 토글
