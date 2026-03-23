@@ -38,6 +38,13 @@ function onOpen() {
     .addItem('자동 동기화 설정 (1시간)', 'setupSyncTrigger')
     .addItem('자동 동기화 해제', 'removeSyncTrigger')
     .addToUi();
+
+  ui.createMenu('윙백 알림')
+    .addItem('오늘 해피콜 대상 즉시 확인', 'winbackTestRun')
+    .addSeparator()
+    .addItem('매일 자동 알림 설정 (오전 9시)', 'winbackSetupTrigger')
+    .addItem('자동 알림 해제', 'winbackRemoveTrigger')
+    .addToUi();
 }
 
 // ─── 메인: 기관 데이터 + QR/샘플 응답 → Supabase ───
