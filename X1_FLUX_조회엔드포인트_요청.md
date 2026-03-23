@@ -94,3 +94,54 @@ if (e.parameter.action === 'report' && e.parameter.secret === 'aps2026hc') {
 감사합니다!
 
 HUNTER 다래 드림
+
+---
+
+## 추가 요청 — HC_샘플신청 발송 기록 쓰기 권한 (2026-03-19)
+
+> 대표님이 쓰기 권한 부여 승인하셨습니다.
+
+### 배경
+
+샘플 발송 완료 후 구글시트 `HC_샘플신청` 탭에 발송일·송장번호·배송업체를 Claude Code가 직접 기록할 수 있도록 **쓰기 엔드포인트** 추가 요청드립니다.
+
+### 요청 사항
+
+Apps Script에 `action=update_shipment` POST 처리 추가.
+
+#### 호출 방식
+
+```
+POST {배포URL}
+Content-Type: application/json
+
+{
+  "action": "update_shipment",
+  "secret": "aps2026hc",
+  "utm": "h272",
+  "shipped_date": "2026-03-19",
+  "tracking_number": "44019611090",
+  "carrier": "로젠택배"
+}
+```
+
+#### 동작
+
+- `HC_샘플신청` 시트에서 UTM코드 일치 행 검색
+- 해당 행의 발송일 / 송장번호 / 배송업체 컬럼 업데이트
+- 성공 시 `{"result": "ok"}` 반환
+
+#### 시트 컬럼 (현재 없으면 추가)
+
+| 컬럼명 | 내용 |
+|--------|------|
+| 발송일 | YYYY-MM-DD |
+| 송장번호 | 숫자 문자열 |
+| 배송업체 | 로젠택배 등 |
+
+### 보안
+
+- `secret=aps2026hc` 일치 시만 허용
+- UTM코드 기준 단건 업데이트만 허용 (전체 삭제·덮어쓰기 불가)
+
+감사합니다!

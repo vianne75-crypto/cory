@@ -44,7 +44,7 @@ function renderShareTable() {
   const rows = regions.map(region => {
     const total = REGION_TOTAL_TARGETS[region];
     const allInRegion = institutionData.filter(d => d.region === region);
-    const purchased = allInRegion.filter(d => ['구매', '만족', '추천'].includes(d.purchaseStage)).length;
+    const purchased = allInRegion.filter(d => ['구매', '활용', '재구매', '파트너'].includes(d.purchaseStage)).length;
     const prospects = allInRegion.filter(d => ['인지', '관심', '고려'].includes(d.purchaseStage)).length;
     const untouched = total - allInRegion.length;
     const sharePercent = total > 0 ? ((purchased / total) * 100).toFixed(1) : '0.0';

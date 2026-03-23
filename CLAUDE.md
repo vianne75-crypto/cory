@@ -1,6 +1,27 @@
 # cory — B2B 기관 영업 CRM
 
-> APS 고객관리 대시보드. 기관별 구매현황, 리드 관리, 퍼널 추적.
+> APS B2B 기관 CRM 대시보드. 기관별 구매현황, 리드 퍼널 추적, 주문 동기화.
+> **cory = 데이터 추적 전용.** DM 발송·팔로업 캠페인·넛지 메시지 실행은 cory 범위 밖이다.
+
+---
+
+## 업무 범위 (명시적 경계)
+
+**범위 (cory가 하는 것)**
+- 기관 DB 관리 (등록·수정·삭제)
+- 퍼널 단계 추적 (인지→관심→고려→구매→만족→추천)
+- 주문 동기화 (wcolive → Supabase)
+- 이탈 위험 감지 및 SAGE 보고
+- 기관별 교육 프로그램 도입 수준 추적
+- 행정서류 관리 (견적서·납품서·세금계산서)
+- B2G 납품 프로세스 관리
+
+**범위 밖 (cory가 하지 않는 것)**
+- ❌ DM 발송·팔로업 → **farm360 (HUNTER+MUSE)** 담당
+- ❌ 넛지 메시지·알림톡 제작 및 발송 → **farm360 (MUSE)** 담당
+- ❌ 신규 리드 발굴·접촉 → **farm360 (HUNTER)** 담당
+- ❌ 얼라이언스 온보딩·자격 관리 → **얼라이언스CS (BOND)** 담당
+- ❌ 마케팅 전략·채널 설계 → **aps_marketing** 담당
 
 ---
 
@@ -25,6 +46,27 @@ aps_marketing (전략·기획) ← /Users/olive/Qsync/마케팅전략/aps_market
 
 ---
 
+## 정보 접근 권한
+
+| 시스템 / 데이터 | 권한 | 비고 |
+|---------------|------|------|
+| **Supabase** `institutions` 테이블 | READ / WRITE | 주업무 DB — 전체 기관 데이터 |
+| **구글시트** (HC_클릭로그, HC_샘플신청, 학생건강센터) | READ | farm360 원본. 리드 수신 확인만 |
+| **wcolive.com** 주문 데이터 | READ | 주문 동기화 원본 |
+| **Cloudflare Worker** (aps-webhook) | 운영 권한 | 파이프라인 모니터링·배포 |
+| **aps7.net** 회원 등급·구매 기관 연계 정보 | READ | 퍼널 기관-회원 매칭 확인용 |
+| **Order.xls** | READ | 주문 이력 분석 |
+
+**접근 금지 (cory 에이전트가 직접 열람·수정하지 않는 것)**
+
+| 데이터 | 이유 |
+|--------|------|
+| aps7.net 회원 상세·퀴즈·온보딩 이수 데이터 | 얼라이언스CS(BOND) 영역 |
+| 구글시트 DM 캠페인 발송 로그·문안 | farm360(HUNTER/MUSE) 영역 |
+| 재무·원가·예산 데이터 | 경영지원(SAGE) 영역 |
+
+---
+
 ## 데이터 흐름
 
 ```
@@ -35,15 +77,54 @@ farm360 DM 발송 → QR 스캔 → Apps Script → 구글시트
 
 ---
 
-## 인프라
+## 시스템 접속 정보 (PULSE·FLUX 전용)
 
-| 시스템 | 값 |
-|--------|-----|
-| Supabase URL | `https://rvqkoiqjjhlrgqitnxwt.supabase.co` |
-| Supabase Anon Key | `sb_publishable_LhUYFVbX3M_8zbiBzaLgZQ_MSOfc1TU` |
-| Cloudflare Worker | `https://aps-webhook.vianne75.workers.dev` |
-| 구글시트 | `1wdfX6X_PcKKwQBiD3x2uungtqyyMhsewsX0buOAHst4` |
-| Apps Script 배포 | `https://script.google.com/macros/s/AKfycbxm1ejrKxkqO1Q6Pi0R8LWswwm0jEPJJ60Qv6a0c4k3U74La7ceZNApZElFpf7VvobCXw/exec` |
+> 이 섹션은 cory 담당 에이전트(PULSE·FLUX)만 사용. 타 에이전트 공유 금지.
+
+### Supabase (기관 DB 주계정)
+
+| 항목 | 값 |
+|------|-----|
+| URL | `https://rvqkoiqjjhlrgqitnxwt.supabase.co` |
+| Anon Key | `sb_publishable_LhUYFVbX3M_8zbiBzaLgZQ_MSOfc1TU` |
+| 설정 파일 | `/Users/olive/Qsync/cory/js/supabase-config.js` |
+| 대시보드 접근 | `https://supabase.com` → GitHub OAuth → Google 계정(`vianne75@gmail.com`)으로 로그인 |
+
+### Cloudflare Worker (데이터 파이프라인)
+
+| 항목 | 값 |
+|------|-----|
+| Worker URL | `https://aps-webhook.vianne75.workers.dev` |
+| 소스 파일 | `/Users/olive/Qsync/cory/gas/cloudflare-worker.js` |
+| 이메일 | `vianne75@gmail.com` |
+| 비밀번호 | `uAUPYM.nkD$u.Y4` |
+| 대시보드 | `https://cloudflare.com` → 위 계정으로 로그인 |
+
+### 구글시트 (리드 데이터 수신용, READ만)
+
+| 항목 | 값 |
+|------|-----|
+| 시트 ID | `1wdfX6X_PcKKwQBiD3x2uungtqyyMhsewsX0buOAHst4` |
+| 직접 URL | `https://docs.google.com/spreadsheets/d/1wdfX6X_PcKKwQBiD3x2uungtqyyMhsewsX0buOAHst4` |
+| 접근 방식 | farm360 Apps Script 엔드포인트 통해 수신 |
+
+### wcolive.com (주문 동기화용, READ)
+
+| 항목 | 값 |
+|------|-----|
+| 관리자 URL | `https://wcolive.com/wp-admin` |
+| 상점 아이디 | `wco7` |
+| 관리자 아이디 | `aiagent` |
+| 비밀번호 | `as137200**zx` |
+
+### 인프라 요약
+
+| 시스템 | URL | 권한 |
+|--------|-----|------|
+| Supabase | `https://rvqkoiqjjhlrgqitnxwt.supabase.co` | R/W (Anon Key) |
+| Cloudflare Worker | `https://aps-webhook.vianne75.workers.dev` | 운영 |
+| 구글시트 | `1wdfX6X_PcKKwQBiD3x2uungtqyyMhsewsX0buOAHst4` | R |
+| Apps Script | `https://script.google.com/macros/s/AKfycbxm1ejrKxkqO1Q6Pi0R8LWswwm0jEPJJ60Qv6a0c4k3U74La7ceZNApZElFpf7VvobCXw/exec` | 실행 |
 
 ---
 
@@ -140,24 +221,25 @@ farm360 DM 발송 → QR 스캔 → Apps Script → 구글시트
 
 | 코드네임 | 별명 | 역할 | 관여 범위 |
 |---------|------|------|----------|
-| **HUNTER** | 다래 | 리드헌터 | farm360에서 발굴한 리드 이관 수신 |
-| **MUSE** | 나래 | 콘텐츠 | 재구매 넛지 메시지, 알림톡 문안 제작 |
-| **BOND** | 가온 | 얼라이언스+CS | 회원 등급 연동, 인증 자동화, VOC 수집 |
+| **HUNTER** | 다래 | 리드헌터 | farm360에서 발굴·검증한 리드 이관 수신 (읽기 전용 인터페이스) |
+| **BOND** | 가온 | 얼라이언스+CS | 구매 후 얼라이언스 온보딩 연계, VOC 수집 공유 |
 | **SAGE** | 슬기 | 전략참모 | CRM 전략 자문, KPI 분석 |
 
 ### 에이전트 간 흐름 (cory 내)
 
 ```
-HUNTER 다래 (farm360에서 리드 수신)
-    ↓
-PULSE 다온 (기관 등록 + 퍼널 추적 + 이탈 예측)
-    ↓
-FLUX 이음 (자동 팔로업 실행 + 시스템 동기화)
-    ↓
-MUSE 나래 (넛지 메시지 제작) → FLUX 이음 (발송)
-    ↓
-BOND 가온 (얼라이언스 회원 승급 이벤트 연동)
+[farm360] HUNTER 다래 → 리드 이관 → PULSE 다온 (기관 등록 + 등급 산정)
+                                          ↓
+                              FLUX 이음 (DB 동기화 + 시스템 자동화)
+                                          ↓
+                              PULSE 다온 (퍼널 추적 + 이탈 예측 + SAGE 보고)
+                                          ↓
+                     이탈 위험 감지 → [farm360] HUNTER에게 재접촉 요청 (읽기 전용 알림)
+                                          ↓
+                     구매 전환 → [얼라이언스CS] BOND에게 온보딩 연계
 ```
+
+> **중요**: cory는 데이터 추적과 퍼널 관리만 담당. 메시지 발송·DM·팔로업 캠페인 실행은 farm360이 담당한다.
 
 ---
 
@@ -351,3 +433,26 @@ BOND 가온 (얼라이언스 회원 승급 이벤트 연동)
 - 한국어로 대화
 - 분석 결과는 표와 수치로 명확하게 제시
 - 가설과 검증된 사실을 명확히 구분
+
+---
+
+## 세션 운영 프로토콜 — 연속 운영
+
+> 대기 없는 연속 실행. 완전 자율화 전까지 **대표 승인 후 착수** 원칙을 지킨다.
+
+### 세션 시작 즉시
+1. `TODO.md` 미완료 항목 + `INBOX.md` OPEN 항목 동시 스캔
+2. INBOX OPEN 항목 → 참조 파일 읽고 즉시 처리 (선행 조건 없는 경우), 처리 후 DONE 이동
+3. 🔴 즉시 과제 → 🟡 착수 가능 순으로 우선순위 정리
+4. **번호 선택지로 제시** — 대표가 번호만 입력해도 진행되도록
+
+### 작업 루프
+1. 대표 승인 (번호 or 지시) → 즉시 착수
+2. 완료 → 결과 한 줄 보고 + `TODO.md` `[x]` 체크
+3. **다음 착수 가능 과제 번호 선택지 자동 제시** (대기 없이 연속)
+4. 블로커 없는 최우선 과제는 착수 후 결과 보고
+
+### 중단·보고 기준
+- 의사결정 필요 시에만 중단하고 보고
+- 진행 중 블로커 발생 → 즉시 보고 + 다음 과제로 전환
+- 세션 종료 전 → 완료 항목 + 미완료 현황 한 줄 요약

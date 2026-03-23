@@ -992,6 +992,44 @@ body {
   color: #bbb;
 }
 
+.contact-updated {
+  float: right;
+  font-size: 0.78rem;
+  color: #888;
+}
+
+/* 기관명 클릭 링크 */
+.contact-inst-link {
+  color: #1a237e;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(26,35,126,0.3);
+}
+.contact-inst-link:hover {
+  color: #0d47a1;
+  text-decoration-color: #0d47a1;
+}
+
+/* 마지막 접촉 날짜 셀 */
+.contact-date-cell {
+  font-size: 0.82rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+/* 접촉 없음 배지 */
+.no-contact-badge {
+  display: inline-block;
+  background: #9e9e9e;
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 1px 7px;
+}
+
 /* ── 퍼널 시각화 ── */
 .funnel-section {
   padding: 24px;
