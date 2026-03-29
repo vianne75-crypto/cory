@@ -54,31 +54,39 @@ def calc_vat(total: int) -> tuple[int, int]:
 
 
 def get_order_from_supabase(order_no: str) -> dict | None:
-    """Supabase orders 테이블에서 주문 조회"""
+    """Supabase orders 테이블에서 주문 조회 + 기관 정보 자동 연결"""
     print(f"\n  Supabase 조회 중 (주문번호: {order_no})...")
     rows = supabase_get("orders", {
         "order_idx": f"eq.{order_no}",
-        "limit": "1",
+        "select": "order_idx,goods_name,sale_price,sale_cnt,reg_time,addr,option_user,institution_id",
+        "limit": "10",
     })
     if not rows:
         print("  ⚠ 주문 미발견. 수동 입력으로 전환합니다.")
         return None
 
+    # 상품별 행 합산 (동일 주문번호 여러 행 가능)
     row = rows[0]
-    print(f"  ✓ 주문 발견: {row}")
+    total_cnt = sum(int(r.get("sale_cnt") or 1) for r in rows)
+    total_price = sum(int(r.get("sale_price") or 0) * int(r.get("sale_cnt") or 1) for r in rows)
+    goods = rows[0].get("goods_name", "APS알쓰패치")
+    print(f"  ✓ 주문 발견: {goods} × {total_cnt}개 = {total_price:,}원")
 
-    # 기관 정보 조회
-    inst_name = row.get("institution_name") or row.get("name") or ""
+    # 기관 정보 조회 (institution_id 기반)
     inst_info = {}
-    if inst_name:
+    inst_id = row.get("institution_id")
+    if inst_id:
         insts = supabase_get("institutions", {
-            "name": f"eq.{inst_name}",
+            "id": f"eq.{inst_id}",
+            "select": "id,name,region,district,metadata",
             "limit": "1",
         })
         if insts:
             inst_info = insts[0]
-            print(f"  ✓ 기관 정보: {inst_name}")
+            print(f"  ✓ 기관 연결: {inst_info.get('name', '')} (ID:{inst_id})")
 
+    row["_total_price"] = total_price
+    row["_total_cnt"] = total_cnt
     return {"row": row, "inst": inst_info}
 
 
@@ -176,19 +184,35 @@ def build_hometax_invoice(order: dict):
     }
 
 
-def run_hometax(order: dict):
-    """hometax_cu.py 실행"""
+def run_hometax(order: dict, inst_meta: dict = None):
+    """hometax_cu.py 실행 — DB에 정보 있으면 자동 입력, 없을 때만 수동"""
     invoice = build_hometax_invoice(order)
+    meta = inst_meta or {}
 
-    # 기관 정보 확인/보완
-    print("\n[홈택스 발행 정보 확인]")
-    reg_no = input(f"  고유번호/사업자번호: ").strip()
-    ceo = input(f"  대표자명: ").strip()
-    addr = input(f"  소재지 (간략 입력 가능): ").strip()
+    # DB에서 reg_no/ceo/addr 자동 추출
+    reg_no = meta.get("reg_no", "").strip()
+    ceo    = meta.get("ceo", "").strip()
+    addr   = meta.get("address", "").strip()
+
+    print("\n[홈택스 발행 정보]")
+    if reg_no:
+        print(f"  고유번호: {reg_no} (DB 자동)")
+    else:
+        reg_no = input("  고유번호/사업자번호: ").strip()
+
+    if ceo:
+        print(f"  대표자명: {ceo} (DB 자동)")
+    else:
+        ceo = input("  대표자명: ").strip()
+
+    if addr:
+        print(f"  소재지: {addr} (DB 자동)")
+    else:
+        addr = input("  소재지 (간략 입력 가능): ").strip()
 
     invoice["receiver"]["reg_no"] = reg_no
-    invoice["receiver"]["ceo"] = ceo
-    invoice["receiver"]["addr"] = addr
+    invoice["receiver"]["ceo"]    = ceo
+    invoice["receiver"]["addr"]   = addr
 
     # hometax_cu.py에 INVOICE 주입 후 실행
     import hometax_cu
@@ -214,22 +238,32 @@ def main():
     # 1. 주문 정보 조회
     db_result = get_order_from_supabase(order_no)
 
+    inst_meta = {}
     if db_result:
-        # Supabase에서 가져온 경우 — 필드 매핑 (실제 스키마에 맞게 조정 필요)
-        row = db_result["row"]
+        # Supabase 실제 스키마 기반 필드 매핑
+        row  = db_result["row"]
         inst = db_result["inst"]
+        inst_meta = inst.get("metadata") or {}
 
+        # 날짜: reg_time (YYYYMMDD or ISO string)
         try:
-            order_date_str = row.get("created_at", "")[:10]
-            y, m, d = order_date_str.split("-")
-            order_date = date(int(y), int(m), int(d))
+            reg_time = str(row.get("reg_time", ""))
+            if len(reg_time) == 8 and reg_time.isdigit():
+                order_date = date(int(reg_time[:4]), int(reg_time[4:6]), int(reg_time[6:8]))
+            else:
+                order_date = date.fromisoformat(reg_time[:10])
         except Exception:
             order_date = date.today()
 
-        total = int(row.get("total_price", 0) or row.get("amount", 0) or 0)
-        qty = int(row.get("quantity", 0) or row.get("qty", 1))
-        product = row.get("product_name", "") or row.get("item_name", "APS알쓰패치")
-        receiver = row.get("institution_name", "") or inst.get("name", "")
+        total   = row.get("_total_price", 0)
+        qty     = row.get("_total_cnt", 1)
+        product = row.get("goods_name", "APS알쓰패치")
+        # 기관명: institutions 테이블 우선, 없으면 option_user 파싱
+        receiver = inst.get("name", "")
+        if not receiver:
+            import re
+            m = re.search(r"사용처명\(필수\)\s*:\s*([^\n<]+)", row.get("option_user", ""))
+            receiver = m.group(1).strip() if m else row.get("addr", "")[:20]
 
         if total == 0:
             total = int(input(f"  총금액 (VAT포함, 원): ").strip())
@@ -238,8 +272,8 @@ def main():
         unit_price = math.floor(supply_amt / qty) if qty > 0 else 0
 
         order = {
-            "date":      order_date,
-            "receiver":  receiver,
+            "date":     order_date,
+            "receiver": receiver,
             "items": [{
                 "name":       product,
                 "qty":        qty,
@@ -250,24 +284,22 @@ def main():
             "order_no": order_no,
         }
 
-        print(f"\n  [조회 결과]")
-        print(f"  기관: {receiver}")
-        print(f"  품목: {product} × {qty}개")
-        print(f"  금액: {fmt(total)}원 (공급가 {fmt(supply_amt)} + 세액 {fmt(tax_amt)})")
-        ok = input("\n  이 정보로 진행하시겠습니까? (y/n): ").strip().lower()
-        if ok != "y":
-            order = build_order_manual(order_no)
+        print(f"\n  ┌─ 조회 결과 ─────────────────────")
+        print(f"  │ 기관: {receiver}")
+        print(f"  │ 품목: {product} × {qty}개")
+        print(f"  │ 금액: {fmt(total)}원 (공급가 {fmt(supply_amt)} + 세액 {fmt(tax_amt)})")
+        print(f"  └────────────────────────────────")
     else:
         order = build_order_manual(order_no)
 
-    # 2. 거래명세서 PDF 생성
+    # 2. 거래명세서 PDF 생성 (확인 없이 자동 진행)
     pdf_path = run_invoice(order)
 
     # 3. 홈택스 세금계산서 발행
     print("\n" + "─"*40)
-    hometax_yn = input("홈택스 세금계산서 자동 발행하시겠습니까? (y/n): ").strip().lower()
+    hometax_yn = input("홈택스 세금계산서 자동 발행하시겠습니까? (y/n) [기본=n]: ").strip().lower()
     if hometax_yn == "y":
-        run_hometax(order)
+        run_hometax(order, inst_meta)
     else:
         print("\n[홈택스 수동 발행 정보]")
         item = order["items"][0]

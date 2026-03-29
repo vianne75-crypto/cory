@@ -1,12 +1,20 @@
 /**
- * Cloudflare Worker - 애니빌드 → Google Apps Script + Supabase 동시 저장
+ * aps-webhook Worker — HC 동기화 / QR 추적 / 교육허브 프록시 전용
  *
- * 애니빌드 webhook 수신 → GAS(Google Sheets) + Supabase DB 동시 저장
+ * 역할:
+ *   GET /*               → GAS 프록시 (QR 스캔 / 교육허브) ← 절대 건드리지 않음
+ *   GET /fetch-sheet     → Google Sheets CSV 프록시
+ *   POST /sync-hc-institutions → HC 기관 동기화
+ *   POST /sync-consultations   → 상담내역 동기화
+ *   POST /record-shipment      → HC 샘플 발송 기록
  *
- * 환경변수 설정 (Cloudflare Dashboard → Worker → Settings → Variables):
+ * ⚠️  애니빌드 주문 처리(POST /*)는 aps-order Worker로 분리됨
+ *     애니빌드 webhook URL → aps-order.vianne75.workers.dev
+ *
+ * 환경변수 (Cloudflare Dashboard → Worker → Settings → Variables):
  *   GAS_URL       = https://script.google.com/macros/s/...생략.../exec
- *   SUPABASE_URL  = https://YOUR_PROJECT.supabase.co
- *   SUPABASE_KEY  = eyJ... (service_role key, anon key 아님!)
+ *   SUPABASE_URL  = https://rvqkoiqjjhlrgqitnxwt.supabase.co
+ *   SUPABASE_KEY  = eyJ... (service_role key)
  */
 
 export default {
@@ -124,35 +132,8 @@ export default {
         }
       }
 
-      // GAS 전달 + Supabase 저장 병렬 실행
-      const results = await Promise.allSettled([
-        // 1) GAS (Google Sheets)
-        fetch(GAS_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: body,
-          redirect: 'follow'
-        }).then(r => r.text()),
-
-        // 2) Supabase
-        SUPABASE_URL && SUPABASE_KEY
-          ? saveToSupabase(body, SUPABASE_URL, SUPABASE_KEY)
-          : Promise.resolve({ skipped: true })
-      ]);
-
-      const gasResult = results[0].status === 'fulfilled' ? results[0].value : results[0].reason?.message;
-      const supaResult = results[1].status === 'fulfilled' ? results[1].value : { error: results[1].reason?.message };
-
-      return new Response(JSON.stringify({
-        gas: gasResult,
-        supabase: supaResult
-      }), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
+      // 주문 처리는 aps-order Worker로 이전됨
+      return jsonResponse({ error: 'Order processing moved to aps-order Worker' }, 404);
     }
 
     return new Response('APS Webhook Proxy', { status: 200 });
@@ -286,183 +267,6 @@ async function syncConsultations(records, supabaseUrl, supabaseKey) {
   };
 }
 
-// ─── Supabase 저장 ───
-async function saveToSupabase(rawBody, supabaseUrl, supabaseKey) {
-  try {
-    // json_data 파라미터 추출 (URL-encoded body)
-    const params = new URLSearchParams(rawBody);
-    const jsonStr = params.get('json_data') || rawBody;
-    const payload = JSON.parse(jsonStr);
-
-    // 주문상태변경 vs 신규주문 구분
-    if (!payload.goods_info) {
-      return await updateOrderStatus(payload, supabaseUrl, supabaseKey);
-    } else {
-      return await insertNewOrder(payload, supabaseUrl, supabaseKey);
-    }
-  } catch (err) {
-    return { error: err.message };
-  }
-}
-
-// ─── 신규 주문 저장 ───
-async function insertNewOrder(data, supabaseUrl, supabaseKey) {
-  let goodsInfo = data.goods_info || [];
-
-  // reg_time 변환 (Unix timestamp 또는 날짜 문자열 모두 처리)
-  let regTime = '';
-  if (data.reg_time !== null && data.reg_time !== undefined && data.reg_time !== '') {
-    const raw = String(data.reg_time).trim();
-    if (/^\d+$/.test(raw)) {
-      const len = raw.length;
-      let ts = parseInt(raw);
-      if (len === 8 && ts >= 20000101 && ts <= 21001231) {
-        // YYYYMMDD 형식 (예: 20260306) — 1970 버그 방지
-        regTime = `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)} 00:00:00`;
-      } else {
-        // Unix timestamp (초 또는 밀리초)
-        if (ts > 9999999999) ts = Math.floor(ts / 1000); // 밀리초 → 초
-        regTime = new Date(ts * 1000).toISOString().replace('T', ' ').slice(0, 19);
-      }
-    } else if (/^\d{4}[-/]/.test(raw)) {
-      // 날짜 문자열 (2026-03-10 등) → 구분자 정규화
-      regTime = raw.replace(/\//g, '-');
-    } else {
-      // 기타 형식 → 원본 보존
-      regTime = raw;
-    }
-  }
-  if (!regTime) {
-    regTime = new Date().toISOString().replace('T', ' ').slice(0, 19);
-  }
-
-  // 중복 체크 (order_idx가 유효할 때만)
-  const orderIdx = String(data.order_idx || '').trim();
-  if (orderIdx) {
-    const existing = await supaFetch(supabaseUrl, supabaseKey,
-      `/rest/v1/orders?order_idx=eq.${encodeURIComponent(orderIdx)}&select=id,goods_name`,
-      'GET'
-    );
-    if (existing && existing.length > 0) {
-      const existingGoodsSet = new Set(existing.map(r => r.goods_name || ''));
-      // 기존에 없는 상품만 필터링 — 부분 중복 시 중복 행 삽입 방지
-      goodsInfo = goodsInfo.filter(item => !existingGoodsSet.has(item.goods_name || ''));
-      if (goodsInfo.length === 0) {
-        return { skipped: true, reason: 'duplicate', order_idx: orderIdx };
-      }
-    }
-  }
-
-  // 주문자명으로 기관 매칭 시도
-  const buyerName = (data.j_name || data.s_name || '').trim();
-  let institutionId = null;
-
-  if (buyerName) {
-    const matchResult = await supaFetch(supabaseUrl, supabaseKey,
-      `/rest/v1/institutions?name=ilike.*${encodeURIComponent(buyerName)}*&select=id,name&limit=1`,
-      'GET'
-    );
-    if (matchResult && matchResult.length > 0) {
-      institutionId = matchResult[0].id;
-    }
-  }
-
-  // 주문 레코드 생성 (상품별 1행)
-  const records = [];
-
-  if (goodsInfo.length > 0) {
-    for (const item of goodsInfo) {
-      records.push({
-        order_idx: data.order_idx || '',
-        reg_time: regTime,
-        state_subject: data.state_subject || data.state || '',
-        option_user: item.option_user || data.j_name || '',
-        addr: data.addr || '',
-        goods_name: item.goods_name || '',
-        sale_price: parseFloat(item.sale_price) || 0,
-        sale_cnt: parseInt(item.sale_cnt) || 0,
-        memlv: data.memlv || '',
-        institution_id: institutionId,
-        matched: !!institutionId
-      });
-    }
-  } else {
-    records.push({
-      order_idx: data.order_idx || '',
-      reg_time: regTime,
-      state_subject: data.state_subject || data.state || '',
-      option_user: data.j_name || '',
-      addr: data.addr || '',
-      goods_name: '',
-      sale_price: parseFloat(data.app_price) || 0,
-      sale_cnt: 0,
-      memlv: data.memlv || '',
-      institution_id: institutionId,
-      matched: !!institutionId
-    });
-  }
-
-  // 주문 삽입
-  const insertResult = await supaFetch(supabaseUrl, supabaseKey,
-    '/rest/v1/orders',
-    'POST',
-    records
-  );
-
-  // 매칭된 기관이 있으면 구매금액/단계 업데이트
-  if (institutionId) {
-    const totalAmount = records.reduce((s, r) => s + (r.sale_price * r.sale_cnt), 0);
-    await updateInstitutionOnOrder(supabaseUrl, supabaseKey, institutionId, totalAmount);
-  }
-
-  return { success: true, count: records.length, matched: !!institutionId };
-}
-
-// ─── 주문 상태 변경 ───
-async function updateOrderStatus(data, supabaseUrl, supabaseKey) {
-  if (!data.order_idx) return { error: 'no order_idx' };
-
-  const result = await supaFetch(supabaseUrl, supabaseKey,
-    `/rest/v1/orders?order_idx=eq.${encodeURIComponent(data.order_idx)}`,
-    'PATCH',
-    { state_subject: data.state_subject || data.state || '' }
-  );
-
-  return { success: true, order_idx: data.order_idx, updated: true };
-}
-
-// ─── 기관 구매정보 업데이트 ───
-async function updateInstitutionOnOrder(supabaseUrl, supabaseKey, instId, addAmount) {
-  // 현재 기관 정보 조회
-  const inst = await supaFetch(supabaseUrl, supabaseKey,
-    `/rest/v1/institutions?id=eq.${instId}&select=purchase_amount,purchase_stage`,
-    'GET'
-  );
-
-  if (!inst || inst.length === 0) return;
-
-  const current = inst[0];
-  const newAmount = (current.purchase_amount || 0) + addAmount;
-
-  // 구매 단계 업그레이드 (현재가 구매 미만이면 구매로)
-  const stages = ['인지', '관심', '고려', '구매', '활용', '재구매', '파트너'];
-  const currentIdx = stages.indexOf(current.purchase_stage || '인지');
-  const purchaseIdx = stages.indexOf('구매');
-  const newStage = currentIdx < purchaseIdx ? '구매' : current.purchase_stage;
-
-  const today = new Date().toISOString().slice(0, 10);
-
-  await supaFetch(supabaseUrl, supabaseKey,
-    `/rest/v1/institutions?id=eq.${instId}`,
-    'PATCH',
-    {
-      purchase_amount: newAmount,
-      purchase_stage: newStage,
-      last_purchase_date: today
-    }
-  );
-}
-
 // ─── HC 기관 동기화 (GAS → Worker → Supabase) ───
 async function syncHcInstitutions(records, supabaseUrl, supabaseKey) {
   if (!Array.isArray(records) || records.length === 0) {
@@ -471,7 +275,7 @@ async function syncHcInstitutions(records, supabaseUrl, supabaseKey) {
 
   // 기존 HC 기관 로드
   const existing = await supaFetch(supabaseUrl, supabaseKey,
-    `/rest/v1/institutions?type=eq.${encodeURIComponent('대학보건관리자')}&select=id,name,purchase_stage,purchase_amount,purchase_volume,metadata`,
+    `/rest/v1/institutions?type=eq.${encodeURIComponent('대학보건센터')}&select=id,name,purchase_stage,purchase_amount,purchase_volume,metadata`,
     'GET'
   );
 
@@ -583,7 +387,7 @@ async function recordShipment({ utm_code, shipped_date, tracking_number, carrier
 
   // 기관 조회 (utm_code로 매칭)
   const getResp = await fetch(
-    `${supabaseUrl}/rest/v1/institutions?select=id,metadata&type=eq.대학보건관리자`,
+    `${supabaseUrl}/rest/v1/institutions?select=id,metadata&type=eq.대학보건센터`,
     {
       headers: {
         'apikey': supabaseKey,

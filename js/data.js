@@ -13,7 +13,8 @@ const INSTITUTION_TYPES = {
   '사업장': { color: '#FF9800', icon: 'B' },
   '복지기관': { color: '#009688', icon: 'W' },
   '대학보건관리자': { color: '#00897b', icon: 'HC' },
-  '공공기관(기타)': { color: '#607D8B', icon: 'C' }
+  '공공기관(기타)': { color: '#607D8B', icon: 'C' },
+  '강사·대행사': { color: '#FF6F00', icon: 'T' }
 };
 
 // 구매단계별 색상 (7단계)

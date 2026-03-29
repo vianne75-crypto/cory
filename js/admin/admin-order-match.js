@@ -26,15 +26,35 @@ async function saveMemlvClassification() {
   if (error) showToast('등급 설정 저장 실패: ' + error.message, 'error');
 }
 
+// ─── option_user에서 기관명 파싱 ───
+// 패턴: <br>사용처명(필수) : 기관명<br>... 또는 <br>인쇄기관명 : 기관명 또는 plain text
+
+function parseInstName(optionUser) {
+  if (!optionUser) return '';
+  const s = optionUser.replace(/<br\s*\/?>/gi, '\n');
+  // 사용처명 추출
+  const m1 = s.match(/사용처명[^:：\n]*[:：]\s*([^\n]+)/);
+  if (m1 && m1[1].trim()) return m1[1].trim();
+  // 인쇄기관명 추출
+  const m2 = s.match(/인쇄기관명[^:：\n]*[:：]\s*([^\n]+)/);
+  if (m2 && m2[1].trim()) return m2[1].trim();
+  // HTML 태그 제거 후 첫 번째 비어있지 않은 줄
+  const clean = s.replace(/<[^>]+>/g, '').trim();
+  const firstLine = clean.split('\n').map(l => l.trim()).find(l => l);
+  return firstLine || clean;
+}
+
 // ─── 스마트 매칭 엔진 ───
 
 function smartMatchOrder(order, institutions) {
   if (!institutions || institutions.length === 0) return null;
 
-  const buyerName = (order.option_user || '').trim();
-  const addr = (order.addr || '').trim();
+  const memId     = (order.mem_id     || '').trim();
+  const zipcode   = (order.zipcode    || '').trim();
+  const buyerName = parseInstName(order.option_user || '');
+  const addr      = (order.addr       || '').trim();
   const goodsName = (order.goods_name || '').trim();
-  const memlv = (order.memlv || '').trim();
+  const memlv     = (order.memlv      || '').trim();
 
   // 회원등급이 개인이면 매칭 제외
   if (memlvClassification && memlvClassification.individual.length > 0) {
@@ -43,7 +63,19 @@ function smartMatchOrder(order, institutions) {
     }
   }
 
-  // 주소에서 지역/구 추출 (uploadParseAddress 재사용)
+  // [1순위] wco_mem_id 정확 매칭 → 즉시 확정 (score 1.0)
+  if (memId) {
+    const hit = institutions.find(i => i.metadata && i.metadata.wco_mem_id === memId);
+    if (hit) return { inst: hit, score: 1.0, reason: 'mem_id' };
+  }
+
+  // [2순위] 우편번호 단독 매칭 → 1건일 때만 확정 (score 0.9)
+  if (zipcode) {
+    const hits = institutions.filter(i => i.metadata && i.metadata.zipcode === zipcode);
+    if (hits.length === 1) return { inst: hits[0], score: 0.9, reason: 'zipcode' };
+  }
+
+  // [3순위] 복합 점수 매칭 (이름 + 주소 + 등급 + 상품)
   const addrInfo = typeof uploadParseAddress === 'function'
     ? uploadParseAddress(addr)
     : { region: null, district: null };
@@ -54,21 +86,24 @@ function smartMatchOrder(order, institutions) {
   for (const inst of institutions) {
     let score = 0;
 
-    // 1) 이름 매칭 (가중치 0.4)
+    // 이름 매칭 (0.4)
     const nameScore = calcNameScore(buyerName, inst.name);
     score += nameScore * 0.4;
 
-    // 2) 주소 매칭 (가중치 0.35)
-    const addrScore = calcAddrScore(addrInfo, addr, inst);
+    // 주소 매칭 (0.35) — addr ↔ metadata.address 직접 비교 추가
+    let addrScore = calcAddrScore(addrInfo, addr, inst);
+    if (inst.metadata && inst.metadata.address && addr) {
+      if (addr === inst.metadata.address) addrScore = Math.max(addrScore, 1.0);
+      else if (addr.includes(inst.metadata.address) || inst.metadata.address.includes(addr))
+        addrScore = Math.max(addrScore, 0.85);
+    }
     score += addrScore * 0.35;
 
-    // 3) 회원등급 (가중치 0.15)
-    const gradeScore = calcGradeScore(memlv);
-    score += gradeScore * 0.15;
+    // 회원등급 (0.15)
+    score += calcGradeScore(memlv) * 0.15;
 
-    // 4) 상품 유형 (가중치 0.1)
-    const productScore = calcProductScore(goodsName);
-    score += productScore * 0.1;
+    // 상품 키워드 (0.1)
+    score += calcProductScore(goodsName) * 0.1;
 
     if (score > bestScore) {
       bestScore = score;
@@ -76,9 +111,8 @@ function smartMatchOrder(order, institutions) {
     }
   }
 
-  if (!bestMatch || bestScore < 0.2) return null;
-
-  return { inst: bestMatch, score: bestScore };
+  if (!bestMatch || bestScore < 0.3) return null;
+  return { inst: bestMatch, score: bestScore, reason: 'fuzzy' };
 }
 
 // 이름 점수 계산
@@ -283,8 +317,9 @@ function renderOrderMatchTable() {
 
   tbody.innerHTML = pageData.map(order => {
     const result = smartMatchOrder(order, instCache);
+    const reasonLabel = { mem_id: '🔑회원ID', zipcode: '📮우편번호', fuzzy: '🔍유사도' };
     const suggested = result && result.inst
-      ? `${result.inst.name} <span class="match-score">${(result.score * 100).toFixed(0)}%</span>`
+      ? `${result.inst.name} <span class="match-score">${reasonLabel[result.reason]||''} ${(result.score * 100).toFixed(0)}%</span>`
       : (result && result.reason === 'individual_grade'
         ? '<span class="match-individual">개인</span>'
         : '-');
@@ -364,8 +399,8 @@ function openOrderMatchModal(orderId) {
     <p><strong>일시:</strong> ${order.reg_time || '-'} | <strong>상태:</strong> ${order.state_subject || '-'}</p>
   `;
 
-  // 검색 초기값: 주문자명 또는 주소에서 추출
-  const searchInit = order.option_user || '';
+  // 검색 초기값: 파싱된 기관명
+  const searchInit = parseInstName(order.option_user || '');
   document.getElementById('orderMatchSearch').value = searchInit;
   searchOrderMatchCandidates();
   document.getElementById('orderMatchModal').style.display = 'flex';

@@ -5,6 +5,7 @@
 let instCache = [];
 let instFiltered = [];
 let instPage = 1;
+let instSearchIds = null; // null=일반검색, Set=주문번호·태그 검색 결과
 
 // 기관 목록 로드 (1000행 제한 우회: 페이지네이션)
 async function loadInstitutions() {
@@ -48,8 +49,84 @@ function populateInstFilters() {
     regions.map(r => `<option value="${r}">${r}</option>`).join('');
 }
 
-// 검색 + 필터
-function searchInstitutions() { filterInstitutions(); }
+// 검색 + 필터 (G1: 주문번호, G2: #태그, 기본: 기관명·담당자 등)
+async function searchInstitutions() {
+  const search = (document.getElementById('instSearch').value || '').trim();
+
+  // G1: 주문번호 — 6자리 이상 숫자
+  if (/^\d{6,}$/.test(search)) {
+    await _applyOrderSearch(search);
+    return;
+  }
+
+  // G2: 태그 검색 — #태그
+  if (search.startsWith('#') && search.length > 1) {
+    await _applyTagSearch(search.slice(1).trim());
+    return;
+  }
+
+  // 기본 검색: 오버라이드 해제
+  instSearchIds = null;
+  filterInstitutions();
+}
+
+// G1: 주문번호 → 기관 역추적
+async function _applyOrderSearch(orderIdx) {
+  const { data } = await supabase
+    .from('orders')
+    .select('institution_id')
+    .eq('order_idx', orderIdx)
+    .eq('matched', true)
+    .limit(1);
+
+  const instId = data?.[0]?.institution_id;
+  if (!instId) {
+    showToast(`주문 ${orderIdx}: 매칭 기관 없음`, 'error');
+    instSearchIds = new Set();
+  } else {
+    instSearchIds = new Set([instId]);
+  }
+  _applySearchIds();
+}
+
+// G2: #태그 → 상담내역 기반 기관 목록
+async function _applyTagSearch(tag) {
+  const { data } = await supabase
+    .from('consultations')
+    .select('institution_id')
+    .contains('tags', [tag])
+    .not('institution_id', 'is', null);
+
+  if (!data || data.length === 0) {
+    showToast(`#${tag}: 해당 기관 없음`, 'error');
+    instSearchIds = new Set();
+  } else {
+    instSearchIds = new Set(data.map(r => r.institution_id));
+    showToast(`#${tag} → ${instSearchIds.size}개 기관`, 'success');
+  }
+  _applySearchIds();
+}
+
+// G1/G2 결과 적용 (필터 드롭다운과 조합)
+function _applySearchIds() {
+  const typeFilter = document.getElementById('instTypeFilter').value;
+  const regionFilter = document.getElementById('instRegionFilter').value;
+  const stageFilter = document.getElementById('instStageFilter').value;
+  const eduFilter = document.getElementById('instEduFilter') ? document.getElementById('instEduFilter').value : 'all';
+
+  instFiltered = instCache.filter(d => {
+    if (!instSearchIds.has(d.id)) return false;
+    if (typeFilter !== 'all' && d.type !== typeFilter) return false;
+    if (regionFilter !== 'all' && d.region !== regionFilter) return false;
+    if (stageFilter !== 'all' && d.purchase_stage !== stageFilter) return false;
+    if (eduFilter !== 'all' && getEduLevel(d) !== parseInt(eduFilter)) return false;
+    return true;
+  });
+
+  instPage = 1;
+  renderInstStats();
+  renderInstTable();
+}
 
 // 기관 통합 검색 — 기관명·시군구·담당자명·연락처·UTM코드
 function matchesSearch(d, query) {
@@ -67,6 +144,12 @@ function matchesSearch(d, query) {
 }
 
 function filterInstitutions() {
+  // G1/G2 오버라이드 활성 시: 드롭다운 필터만 재적용
+  if (instSearchIds !== null) {
+    _applySearchIds();
+    return;
+  }
+
   const search = (document.getElementById('instSearch').value || '').trim();
   const typeFilter = document.getElementById('instTypeFilter').value;
   const regionFilter = document.getElementById('instRegionFilter').value;
@@ -223,8 +306,11 @@ function showAddInstitutionModal() {
   document.getElementById('editInstType').value = '보건소';
   document.getElementById('editInstStage').value = '인지';
   document.getElementById('editInstDistrict').value = '';
-  document.getElementById('editInstLat').value = '';
-  document.getElementById('editInstLng').value = '';
+  document.getElementById('editInstAddress').value = '';
+  document.getElementById('editInstAddressDetail').value = '';
+  document.getElementById('editInstRecipient').value = '';
+  document.getElementById('editInstZipcode').value = '';
+  document.getElementById('editInstWcoMemId').value = '';
   document.getElementById('editInstAmount').value = '0';
   document.getElementById('editInstVolume').value = '0';
   document.getElementById('editInstProd1').checked = false;
@@ -236,6 +322,8 @@ function showAddInstitutionModal() {
   const regions = Object.keys(REGION_TOTAL_TARGETS || {}).sort();
   regionSelect.innerHTML = regions.map(r => `<option value="${r}">${r}</option>`).join('');
 
+  document.getElementById('instModalTabs').style.display = 'none';
+  switchInstTab('info');
   document.getElementById('instModal').classList.add('active');
 }
 
@@ -250,8 +338,14 @@ function editInstitution(id) {
   document.getElementById('editInstType').value = inst.type;
   document.getElementById('editInstStage').value = inst.purchase_stage;
   document.getElementById('editInstDistrict').value = inst.district || '';
-  document.getElementById('editInstLat').value = inst.lat || '';
-  document.getElementById('editInstLng').value = inst.lng || '';
+  document.getElementById('editInstAddress').value = (inst.metadata && inst.metadata.address) || '';
+  document.getElementById('editInstAddressDetail').value = (inst.metadata && inst.metadata.address_detail) || '';
+  document.getElementById('editInstRecipient').value = (inst.metadata && inst.metadata.recipient) || '';
+  document.getElementById('editInstZipcode').value = (inst.metadata && inst.metadata.zipcode) || '';
+  document.getElementById('editInstWcoMemId').value = (inst.metadata && inst.metadata.wco_mem_id) || '';
+  const hon = (inst.metadata && inst.metadata.honorific) || '귀하';
+  const honEl = document.querySelector(`input[name="honorific"][value="${hon}"]`);
+  if (honEl) honEl.checked = true;
   document.getElementById('editInstAmount').value = inst.purchase_amount || 0;
   document.getElementById('editInstVolume').value = inst.purchase_volume || 0;
   document.getElementById('editInstProd1').checked = (inst.products || []).includes('알쓰패치');
@@ -263,10 +357,207 @@ function editInstitution(id) {
   regionSelect.innerHTML = regions.map(r => `<option value="${r}" ${r === inst.region ? 'selected' : ''}>${r}</option>`).join('');
 
   document.getElementById('instModal').classList.add('active');
+  // 탭 표시 + 기본정보 탭으로 초기화
+  document.getElementById('instModalTabs').style.display = 'block';
+  switchInstTab('info');
+  loadInstHistory(inst.id);
 }
 
 function closeInstModal() {
   document.getElementById('instModal').classList.remove('active');
+}
+
+// ── 기관 상세 탭 ──────────────────────────────────────────
+function switchInstTab(tab) {
+  // 탭 버튼 active 토글
+  document.querySelectorAll('#instModalTabs .inst-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  document.getElementById('instTabInfo').style.display    = tab === 'info'     ? '' : 'none';
+  document.getElementById('instTabConsults').style.display = tab === 'consults' ? '' : 'none';
+  document.getElementById('instTabOrders').style.display   = tab === 'orders'   ? '' : 'none';
+  // 저장 버튼은 기본정보 탭에서만 표시
+  document.getElementById('instModalFoot').style.display = tab === 'info' ? '' : 'none';
+}
+
+async function loadInstHistory(instId) {
+  const [consultRes, orderRes] = await Promise.all([
+    supabase.from('consultations')
+      .select('id, date, content, tags, md_name')
+      .eq('institution_id', instId)
+      .order('date', { ascending: false })
+      .limit(50),
+    supabase.from('orders')
+      .select('id, order_idx, goods_name, sale_price, sale_cnt, reg_time, state_subject, option_user, addr')
+      .eq('institution_id', instId)
+      .order('reg_time', { ascending: false })
+      .limit(100),
+  ]);
+
+  const orders = orderRes.data || [];
+
+  // 주소 자동 채우기: 비어있으면 가장 최근 주문의 addr 사용
+  const addrEl = document.getElementById('editInstAddress');
+  if (addrEl && !addrEl.value.trim() && orders.length) {
+    const firstAddr = orders.find(o => o.addr)?.addr || '';
+    if (firstAddr) addrEl.value = firstAddr;
+  }
+
+  renderInstConsults(consultRes.data || [], consultRes.error);
+  renderInstOrders(orders);
+}
+
+function renderInstConsults(rows, error) {
+  const el = document.getElementById('instDetailConsults');
+  if (error) {
+    el.innerHTML = `<p class="inst-history-empty" style="color:#c62828;">조회 오류: ${error.message}<br><small>Supabase 콘솔에서 consultations anon SELECT 정책 확인 필요</small></p>`;
+    return;
+  }
+  if (!rows.length) {
+    el.innerHTML = '<p class="inst-history-empty">상담 내역이 없습니다.</p>';
+    return;
+  }
+  el.innerHTML = rows.map(r => {
+    const date = r.date ? String(r.date).slice(0, 10) : '날짜미상';
+    const tags = (r.tags || []).map(t => `<span class="inst-history-tag">${t}</span>`).join('');
+    const md   = r.md_name ? `<span class="card-meta">담당: ${r.md_name}</span>` : '';
+    return `<div class="inst-history-card">
+      <div class="card-date">${date}</div>
+      <div class="card-body">${(r.content || '').replace(/</g,'&lt;')}</div>
+      ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+      ${md}
+    </div>`;
+  }).join('');
+}
+
+function _parseRegTime(val) {
+  if (!val) return '날짜미상';
+  const s = String(val);
+  // YYYYMMDD
+  if (/^\d{8}$/.test(s)) return `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+  // Unix ms (13자리)
+  if (/^\d{13}$/.test(s)) return new Date(Number(s)).toISOString().slice(0, 10);
+  // Unix s (10자리)
+  if (/^\d{10}$/.test(s)) return new Date(Number(s) * 1000).toISOString().slice(0, 10);
+  // ISO 문자열
+  return s.slice(0, 10);
+}
+
+function renderInstOrders(rows) {
+  const el = document.getElementById('instDetailOrders');
+  if (!rows.length) {
+    el.innerHTML = '<p class="inst-history-empty">납품 이력이 없습니다.</p>';
+    return;
+  }
+  el.innerHTML = rows.map(r => {
+    const date    = _parseRegTime(r.reg_time);
+    const price   = r.sale_price ? Number(r.sale_price).toLocaleString() + '원' : '-';
+    const cnt     = r.sale_cnt ? r.sale_cnt + '개' : '';
+    const stateBg = { '배송완료': '#e8f5e9', '입금대기': '#fff8e1', '배송대기': '#e3f2fd', '취소': '#fce4ec' };
+    const stateCl = { '배송완료': '#2e7d32', '입금대기': '#f57f17', '배송대기': '#1565c0', '취소': '#c62828' };
+    const st = r.state_subject || '';
+    const stateBadge = st
+      ? `<span style="background:${stateBg[st]||'#f3f4f6'};color:${stateCl[st]||'#555'};font-size:0.75rem;padding:2px 8px;border-radius:10px;font-weight:600;">${st}</span>`
+      : '';
+    const rows2 = [
+      r.option_user ? `<tr><td>주문자</td><td>${r.option_user}</td></tr>` : '',
+      r.addr        ? `<tr><td>배송지</td><td>${r.addr}</td></tr>` : '',
+    ].filter(Boolean).join('');
+    return `<div class="inst-history-card" style="padding:14px 16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-weight:700;color:#1a237e;font-size:0.92rem;">${r.goods_name || '(상품명 없음)'}</span>
+        ${stateBadge}
+      </div>
+      <table style="width:100%;font-size:0.81rem;color:#555;border-collapse:collapse;">
+        <tr><td style="width:56px;color:#888;padding:2px 0;">주문번호</td><td>#${r.order_idx || '-'}</td></tr>
+        <tr><td style="color:#888;padding:2px 0;">주문일</td><td>${date}</td></tr>
+        <tr><td style="color:#888;padding:2px 0;">금액</td><td><strong style="color:#333;">${price}</strong> · ${cnt}</td></tr>
+        ${rows2}
+      </table>
+    </div>`;
+  }).join('');
+}
+
+// 다음 우편번호 검색
+function openAddressSearch() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      document.getElementById('editInstAddress').value = data.roadAddress || data.jibunAddress;
+      document.getElementById('editInstZipcode').value = data.zonecode;
+    }
+  }).open();
+}
+
+// 우편라벨 출력
+function printPostLabel() {
+  const name      = document.getElementById('editInstName').value.trim();
+  const address   = document.getElementById('editInstAddress').value.trim();
+  const detail    = document.getElementById('editInstAddressDetail').value.trim();
+  const recipient = document.getElementById('editInstRecipient').value.trim();
+  const zipcode   = document.getElementById('editInstZipcode').value.trim();
+  const honorific = document.querySelector('input[name="honorific"]:checked')?.value || '';
+
+  if (!name || !address) {
+    showToast('기관명과 주소를 입력하세요. (주소검색 버튼 이용)', 'error');
+    return;
+  }
+
+  const toName = recipient ? `${recipient}${honorific ? ' ' + honorific : ''}` : name;
+
+  // 폼텍 LQ-3117 기준: A4, 2열×8행=16칸, 라벨 1개당 99×42mm
+  const labelHTML = `
+    <div class="lbl-inner">
+      <div class="lbl-from">보내는 분 : APS 주식회사</div>
+      <div class="lbl-name">${name}${recipient ? '<br><span style="font-size:9pt;">' + toName + '</span>' : ''}</div>
+      <div class="lbl-addr">${address}${detail ? '<br>' + detail : ''}</div>
+      ${zipcode ? `<div class="lbl-zip">${zipcode}</div>` : ''}
+    </div>`;
+
+  const cells = Array.from({ length: 16 }, (_, i) =>
+    `<div class="lbl-cell">${i === 0 ? labelHTML : ''}</div>`
+  ).join('');
+
+  const win = window.open('', '_blank', 'width=900,height=700');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <title>우편라벨 — ${name}</title>
+    <style>
+      @page { size: A4 portrait; margin: 13mm 4.5mm 13mm 4.5mm; }
+      @media print { .no-print { display:none; } body { background:#fff; padding:0; } }
+      * { box-sizing: border-box; }
+      body { font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; background: #eee; padding: 16px; }
+      .sheet {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(8, 42.3mm);
+        width: 201mm;
+        background: #fff;
+      }
+      .lbl-cell {
+        width: 100%;
+        height: 42.3mm;
+        border: 0.4px dashed #bbb;
+        position: relative;
+        overflow: hidden;
+      }
+      .lbl-inner {
+        padding: 5px 8px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .lbl-from  { font-size: 7pt; color: #888; }
+      .lbl-name  { font-size: 10pt; font-weight: 700; color: #1a237e; margin-top: 2px; }
+      .lbl-addr  { font-size: 8.5pt; color: #333; line-height: 1.5; flex: 1; margin-top: 3px; }
+      .lbl-zip   { font-size: 11pt; font-weight: 900; color: #000; text-align: right; letter-spacing: 2px; }
+      button { margin: 14px 0; padding: 9px 28px; font-size: 0.9rem; cursor: pointer; border: none; background: #1a237e; color: #fff; border-radius: 6px; }
+    </style>
+  </head><body>
+    <button class="no-print" onclick="window.print()">🖨 인쇄 (A4 폼텍 16칸)</button>
+    <div class="sheet">${cells}</div>
+  </body></html>`);
+  win.document.close();
 }
 
 // 기관 저장
@@ -288,14 +579,24 @@ async function saveInstitution() {
   const existingMeta = (existingInst && existingInst.metadata) ? { ...existingInst.metadata } : {};
   existingMeta.edu_adoption_level = eduLevel;
   existingMeta.edu_adoption_updated = new Date().toISOString().slice(0, 10);
+  const addrVal = document.getElementById('editInstAddress').value.trim();
+  if (addrVal) existingMeta.address = addrVal;
+  const addrDetail = document.getElementById('editInstAddressDetail').value.trim();
+  if (addrDetail) existingMeta.address_detail = addrDetail;
+  const recipient = document.getElementById('editInstRecipient').value.trim();
+  if (recipient) existingMeta.recipient = recipient;
+  const zipcode = document.getElementById('editInstZipcode').value.trim();
+  if (zipcode) existingMeta.zipcode = zipcode;
+  const honorific = document.querySelector('input[name="honorific"]:checked')?.value || '귀하';
+  existingMeta.honorific = honorific;
+  const wcoMemId = document.getElementById('editInstWcoMemId').value.trim();
+  if (wcoMemId) existingMeta.wco_mem_id = wcoMemId;
 
   const record = {
     name,
     type: document.getElementById('editInstType').value,
     region: document.getElementById('editInstRegion').value,
     district: document.getElementById('editInstDistrict').value || null,
-    lat: parseFloat(document.getElementById('editInstLat').value) || null,
-    lng: parseFloat(document.getElementById('editInstLng').value) || null,
     purchase_stage: document.getElementById('editInstStage').value,
     purchase_amount: parseFloat(document.getElementById('editInstAmount').value) || 0,
     purchase_volume: parseInt(document.getElementById('editInstVolume').value) || 0,
@@ -332,4 +633,69 @@ async function deleteInstitution(id, name) {
 
   showToast('기관 삭제 완료', 'success');
   loadInstitutions();
+}
+
+// ─── 교육도입수준 초기 배치 (X2) ───
+// 구매 이력 기반으로 edu_adoption_level이 없는 기관에 초기값 설정
+// Lv.3: 재구매·파트너·만족·추천 / Lv.2: 구매+500개↑ / Lv.1: 구매 / Lv.0: 그 외(null 유지)
+async function runEduAdoptionBatch() {
+  const targets = instCache.filter(d => {
+    const level = (d.metadata || {}).edu_adoption_level;
+    return level === undefined || level === null || level === '';
+  });
+
+  if (targets.length === 0) {
+    showToast('모든 기관에 이미 교육도입수준이 설정되어 있습니다.', 'success');
+    return;
+  }
+
+  // Lv.1 이상 대상만 필터 (Lv.0은 null과 동일 — 업데이트 불필요)
+  const toUpdate = targets
+    .map(inst => {
+      const stage = inst.purchase_stage;
+      const volume = inst.purchase_volume || 0;
+      let level = 0;
+      if (['재구매', '파트너', '만족', '추천'].includes(stage)) level = 3;
+      else if (stage === '구매' && volume >= 500) level = 2;
+      else if (stage === '구매') level = 1;
+      return { inst, level };
+    })
+    .filter(({ level }) => level > 0);
+
+  if (toUpdate.length === 0) {
+    showToast('초기 배치 대상 없음 (구매 기관 없음)', 'success');
+    return;
+  }
+
+  if (!confirm(`교육도입수준 초기 배치를 실행합니다.\n\n대상: ${toUpdate.length}건 (Lv.1~3)\n구매 이력 기반 추정값입니다.\n\n계속하시겠습니까?`)) return;
+
+  let updated = 0, failed = 0;
+  const today = new Date().toISOString().slice(0, 10);
+
+  for (const { inst, level } of toUpdate) {
+    const newMeta = {
+      ...(inst.metadata || {}),
+      edu_adoption_level: level,
+      edu_adoption_updated: today,
+      edu_adoption_note: '초기 배치 (구매 이력 기반 추정)',
+    };
+
+    const { error } = await supabase
+      .from('institutions')
+      .update({ metadata: newMeta })
+      .eq('id', inst.id);
+
+    if (error) { failed++; }
+    else { updated++; }
+
+    if ((updated + failed) % 30 === 0) {
+      showToast(`진행 중... ${updated + failed}/${toUpdate.length}건`, 'success');
+    }
+  }
+
+  showToast(
+    `교육도입 초기 배치 완료: ${updated}건 설정, ${failed > 0 ? failed + '건 실패' : '오류 없음'}`,
+    failed > 0 ? 'error' : 'success'
+  );
+  await loadInstitutions();
 }

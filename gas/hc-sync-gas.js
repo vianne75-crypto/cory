@@ -19,6 +19,7 @@ var SYNC_WORKER_URL = 'https://aps-webhook.vianne75.workers.dev';
 var SYNC_HC_SHEET = '학생건강센터';       // HC 기관 데이터 탭 (gid=1088038092)
 var SYNC_HC_CLICK = 'HC_클릭로그';        // QR 스캔 로그 탭
 var SYNC_HC_SAMPLE = 'HC_샘플신청';       // 샘플 신청 로그 탭
+var SYNC_HC_FOLLOWUP = 'HC_팔로업';       // HC 팔로업 메모 탭 (HUNTER 다래 입력)
 
 var SYNC_REGION_MAP = {
   '서울': '서울특별시', '부산': '부산광역시', '대구': '대구광역시',
@@ -37,6 +38,13 @@ function onOpen() {
     .addSeparator()
     .addItem('자동 동기화 설정 (1시간)', 'setupSyncTrigger')
     .addItem('자동 동기화 해제', 'removeSyncTrigger')
+    .addToUi();
+
+  ui.createMenu('HC 팔로업')
+    .addItem('팔로업 동기화 실행 (신규만)', 'syncHcFollowups')
+    .addSeparator()
+    .addItem('자동 동기화 설정 (매일 오전 9시)', 'setupFollowupTrigger')
+    .addItem('자동 동기화 해제', 'removeFollowupTrigger')
     .addToUi();
 
   ui.createMenu('윙백 알림')
@@ -111,7 +119,7 @@ function syncInstitutionData_(ss) {
 
     records.push({
       name: name,
-      type: '대학보건관리자',
+      type: '대학보건센터',
       region: region,
       district: district,
       purchase_stage: (hasPurchase && totalQty > 0) ? '구매' : '관심',
@@ -273,6 +281,120 @@ function removeSyncTrigger() {
   var triggers = ScriptApp.getProjectTriggers();
   for (var i = 0; i < triggers.length; i++) {
     if (triggers[i].getHandlerFunction() === 'syncHcToSupabase') {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+}
+
+// ─── HC 팔로업 동기화 (HC_팔로업 탭 → Supabase consultations) ───
+// 컬럼 구조 (A~H): utm_code | 기관명 | 담당자 | 통화일 | 반응온도 | 교육일정 | 다음연락 | 메모
+function syncHcFollowups() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SYNC_HC_FOLLOWUP);
+  if (!sheet) {
+    Logger.log('HC_팔로업 시트 없음');
+    try { SpreadsheetApp.getUi().alert('HC_팔로업 탭이 없습니다.\nHUNTER 다래에게 탭 추가를 요청하세요.'); } catch (e) {}
+    return;
+  }
+
+  var data = sheet.getDataRange().getValues();
+  if (data.length < 2) {
+    Logger.log('HC_팔로업 데이터 없음 (헤더만 존재)');
+    try { SpreadsheetApp.getUi().alert('팔로업 데이터가 없습니다.'); } catch (e) {}
+    return;
+  }
+
+  // 마지막 동기화 행 확인 (중복 삽입 방지)
+  var props = PropertiesService.getScriptProperties();
+  var lastSyncedRow = parseInt(props.getProperty('HC_FOLLOWUP_LAST_ROW') || '1');
+
+  // 헤더(0번)를 제외하고 lastSyncedRow 이후 새 행만 처리
+  var newRows = data.slice(Math.max(1, lastSyncedRow));
+  if (newRows.length === 0) {
+    Logger.log('HC_팔로업 새 데이터 없음 (lastSyncedRow=' + lastSyncedRow + ')');
+    try { SpreadsheetApp.getUi().alert('새 팔로업 데이터가 없습니다.\n이미 모두 동기화되었습니다.'); } catch (e) {}
+    return;
+  }
+
+  var records = [];
+  for (var i = 0; i < newRows.length; i++) {
+    var r = newRows[i];
+    var instName = String(r[1] || '').trim();  // B열: 기관명
+    var callDate = String(r[3] || '').trim();  // D열: 통화일
+    if (!instName || !callDate) continue;       // 필수 필드 없으면 건너뜀
+
+    var reaction = String(r[4] || '').trim();
+    var reactionTag = reaction === '긍정' ? '긍정반응' : reaction === '부정' ? '부정반응' : '보통반응';
+    var schedule = String(r[5] || '없음').trim() || '없음';
+    var nextContact = String(r[6] || '불필요').trim() || '불필요';
+    var memo = String(r[7] || '').trim();
+
+    // CF Worker syncConsultations는 content의 [태그] 문자열에서 tags를 추출
+    var content = '[HC팔로업][' + reactionTag + '] 반응:' + (reaction || '-')
+      + ' | 교육일정:' + schedule
+      + ' | 다음연락:' + nextContact
+      + (memo ? ' | ' + memo : '');
+
+    records.push({
+      consultant: instName,                              // CF Worker 기관 매칭 필드
+      md: String(r[2] || 'HUNTER 다래').trim(),         // CF Worker md_name 필드
+      date: callDate,
+      content: content,
+    });
+  }
+
+  if (records.length === 0) {
+    Logger.log('유효한 HC_팔로업 레코드 없음 (기관명·통화일 필수)');
+    try { SpreadsheetApp.getUi().alert('유효한 데이터가 없습니다.\n기관명(B열)과 통화일(D열)을 확인하세요.'); } catch (e) {}
+    return;
+  }
+
+  Logger.log('HC_팔로업 동기화 대상: ' + records.length + '건');
+
+  var resp = UrlFetchApp.fetch(SYNC_WORKER_URL + '/sync-consultations', {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify(records),
+    muteHttpExceptions: true,
+  });
+
+  var result = JSON.parse(resp.getContentText());
+  Logger.log('HC_팔로업 동기화 결과: ' + JSON.stringify(result));
+
+  if (result.error) {
+    Logger.log('동기화 오류: ' + result.error);
+    try { SpreadsheetApp.getUi().alert('동기화 오류: ' + result.error); } catch (e) {}
+    return;
+  }
+
+  // 성공 시 처리된 마지막 행 번호 저장 (다음 실행에서 중복 방지)
+  props.setProperty('HC_FOLLOWUP_LAST_ROW', String(data.length));
+
+  var msg = 'HC 팔로업 동기화 완료\n\n'
+    + '신규 행: ' + newRows.length + '건\n'
+    + '저장: ' + (result.inserted || 0) + '건\n'
+    + '기관 매칭: ' + (result.matched || 0) + '건';
+  try { SpreadsheetApp.getUi().alert(msg); } catch (e) {}
+
+  return result;
+}
+
+// ─── 팔로업 자동 동기화 트리거 (매일 오전 9시) ───
+function setupFollowupTrigger() {
+  removeFollowupTrigger();
+  ScriptApp.newTrigger('syncHcFollowups')
+    .timeBased()
+    .everyDays(1)
+    .atHour(9)
+    .create();
+  Logger.log('팔로업 자동 동기화 트리거 설정 (매일 오전 9시)');
+  try { SpreadsheetApp.getUi().alert('팔로업 자동 동기화 설정 완료\n매일 오전 9시에 실행됩니다.'); } catch (e) {}
+}
+
+function removeFollowupTrigger() {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === 'syncHcFollowups') {
       ScriptApp.deleteTrigger(triggers[i]);
     }
   }

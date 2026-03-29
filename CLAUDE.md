@@ -436,6 +436,45 @@ farm360 DM 발송 → QR 스캔 → Apps Script → 구글시트
 
 ---
 
+## PM Skills 호출 커맨드 — PULSE 다온 + FLUX 이음
+
+> PM Skills 기본 경로: `~/Library/Mobile Documents/com~apple~CloudDocs/PM Skills/`
+> 산출물 저장: `PM Skills/09-running-log/`
+
+### ▶ 즉시 — 현재 과제 직결
+
+#### PULSE 다온
+
+| 커맨드 | 적용 시점 | 기존 산출물 |
+|--------|---------|-----------|
+| `/dummy-dataset` | CRM 테스트 데이터 생성 (X3 수정 검증) | — |
+| `/outcome-roadmap` | 영업 성과 로드맵 시각화 | — |
+
+**SAGE 수신 (PULSE):** I2(재구매 전환율)·I5(기관당 ACV) 측정 인프라 = NSM 직결. S1 판정 결과 (3/30): ✅지지 시 교육 콘텐츠 활용 기관 퍼널 가속 / ⚠️전환 시 편의성 구매 기관 팔로업 수정
+
+#### FLUX 이음
+
+| 커맨드 | 적용 시점 | 기존 산출물 |
+|--------|---------|-----------|
+| `/pre-mortem` | 파이프라인 배포 전 Tiger 리스크 점검 | [[PM Skills/09-running-log/2026-03-23-pre-mortem-D1디자인]] 형식 참조 |
+| `/sql-queries` | Supabase 쿼리 작성·최적화 시 | — |
+| `/test-scenarios` | 자동화 시스템 테스트 시나리오 | — |
+
+**SAGE 수신 (FLUX):** X3 배포 완료 즉시 "NSM 측정 인프라 준비 완료" 보고. Supabase 데이터 정합성 = I2·I5 측정 기반
+
+### ⏳ 향후 1년 내 — 호출 대기
+
+| 커맨드 | 담당 | 예상 적용 시점 | 설명 |
+|--------|------|-------------|------|
+| `/customer-journey-map` | PULSE | 리드 → 기관 구매 여정 고도화 | 퍼널 단계별 전환 시각화 |
+| `/user-personas` | PULSE | 보건소·기업 보건관리자 CRM 세분화 | 기관 유형별 페르소나 정의 |
+| `/cohort-analysis` | PULSE | 기관 재구매 코호트 90일 데이터 누적 후 | 재구매 전환 코호트 분석 |
+| `/sprint-plan` | PULSE | 분기 영업 스프린트 계획 | 기관별 팔로업 스프린트 설계 |
+| `/ab-test-analysis` | FLUX | 자동화 알림 A/B 테스트 | 스티비 발송 시간·제목 A/B |
+| `/growth-loops` | FLUX | 리드→온보딩→재구매 자동화 루프 | Make.com 플로우 루프 설계 |
+
+---
+
 ## 세션 운영 프로토콜 — 연속 운영
 
 > 대기 없는 연속 실행. 완전 자율화 전까지 **대표 승인 후 착수** 원칙을 지킨다.

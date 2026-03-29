@@ -53,7 +53,7 @@
       <div class="content-header">
         <h2>기관 관리</h2>
         <div class="content-actions">
-          <input type="text" id="instSearch" class="search-input" placeholder="기관명·담당자·UTM 검색..." oninput="searchInstitutions()" style="min-width:200px;">
+          <input type="text" id="instSearch" class="search-input" placeholder="기관명·담당자·UTM·주문번호(6자리)·#태그 검색..." oninput="searchInstitutions()" style="min-width:200px;">
           <select id="instTypeFilter" class="filter-select" onchange="filterInstitutions()">
             <option value="all">전체 유형</option>
           </select>
@@ -80,6 +80,7 @@
           <button class="btn btn-secondary" onclick="showCleanupPanel()">데이터 정리</button>
           <button class="btn btn-secondary" onclick="showOrderMatchPanel()">주문 매칭</button>
           <button class="btn btn-secondary" onclick="showHcSyncPanel()">HC 동기화</button>
+          <button class="btn btn-secondary" onclick="runEduAdoptionBatch()" title="구매 이력 기반 교육도입수준 초기값 일괄 설정">교육도입 초기배치</button>
           <button class="btn btn-primary" onclick="showAddInstitutionModal()">+ 기관 추가</button>
         </div>
       </div>
@@ -502,12 +503,19 @@
 
   <!-- 기관 추가/수정 모달 -->
   <div id="instModal" class="modal-overlay" onclick="if(event.target===this)closeInstModal()">
-    <div class="modal">
+    <div class="modal" style="max-width:760px;">
       <div class="modal-head">
         <h3 id="instModalTitle">기관 추가</h3>
         <button class="modal-x" onclick="closeInstModal()">&times;</button>
       </div>
-      <div class="modal-body">
+      <!-- 상세보기 탭 (수정 시에만 표시) -->
+      <div id="instModalTabs" style="display:none;border-bottom:2px solid #e8eaf6;padding:0 24px;">
+        <button class="inst-tab active" data-tab="info" onclick="switchInstTab('info')">기본정보</button>
+        <button class="inst-tab" data-tab="consults" onclick="switchInstTab('consults')">상담내역</button>
+        <button class="inst-tab" data-tab="orders" onclick="switchInstTab('orders')">납품이력</button>
+      </div>
+      <!-- 기본정보 탭 -->
+      <div id="instTabInfo" class="modal-body">
         <input type="hidden" id="editInstId">
         <div class="form-row">
           <label>기관명 *</label>
@@ -520,14 +528,12 @@
               <option value="보건소">보건소</option>
               <option value="전문기관">전문기관</option>
               <option value="금연지원센터">금연지원센터</option>
-              <option value="광역시도 건강증진부서">건강증진부서</option>
-              <option value="교육기관">교육기관</option>
+              <option value="광역시도 및 중앙기관">광역시도 및 중앙기관</option>
+              <option value="산업보건">산업보건</option>
+              <option value="대학보건센터">대학보건센터</option>
+              <option value="초중고">초중고</option>
               <option value="전공교육">전공교육</option>
-              <option value="군/경/소방">군/경/소방</option>
-              <option value="사업장">사업장</option>
-              <option value="복지기관">복지기관</option>
-              <option value="공공기관(기타)">공공기관(기타)</option>
-              <option value="대학보건관리자">대학보건관리자</option>
+              <option value="강사·대행사">강사·대행사</option>
             </select>
           </div>
           <div>
@@ -552,15 +558,33 @@
             <input type="text" id="editInstDistrict" class="input">
           </div>
         </div>
+        <div class="form-row">
+          <label>도로명 주소</label>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="editInstAddress" class="input" placeholder="주소검색 버튼으로 자동입력" readonly style="flex:1;background:#f8f9fc;">
+            <input type="text" id="editInstZipcode" class="input" placeholder="우편번호" readonly style="width:90px;background:#f8f9fc;">
+            <button type="button" class="btn btn-secondary" onclick="openAddressSearch()" style="white-space:nowrap;">주소검색</button>
+          </div>
+        </div>
         <div class="form-row two-col">
           <div>
-            <label>위도</label>
-            <input type="number" id="editInstLat" class="input" step="0.0001">
+            <label>세부주소</label>
+            <input type="text" id="editInstAddressDetail" class="input" placeholder="예) 3층 보건교육실">
           </div>
           <div>
-            <label>경도</label>
-            <input type="number" id="editInstLng" class="input" step="0.0001">
+            <label>수취인</label>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input type="text" id="editInstRecipient" class="input" placeholder="예) 김건강" style="flex:1;min-width:80px;">
+              <label style="font-size:0.83rem;white-space:nowrap;cursor:pointer;"><input type="radio" name="honorific" value="귀하" checked> 귀하</label>
+              <label style="font-size:0.83rem;white-space:nowrap;cursor:pointer;"><input type="radio" name="honorific" value="귀중"> 귀중</label>
+              <label style="font-size:0.83rem;white-space:nowrap;cursor:pointer;"><input type="radio" name="honorific" value=""> 없음</label>
+              <button type="button" class="btn btn-secondary" onclick="printPostLabel()" title="우편라벨 출력" style="white-space:nowrap;padding:0 10px;">🖨</button>
+            </div>
           </div>
+        </div>
+        <div class="form-row">
+          <label>wcolive 회원 ID <span style="font-size:0.78rem;color:#888;font-weight:400;">(주문 자동매칭 기준키)</span></label>
+          <input type="text" id="editInstWcoMemId" class="input" placeholder="예) 기관 담당자 wcolive 로그인 아이디">
         </div>
         <div class="form-row two-col">
           <div>
@@ -590,7 +614,19 @@
           </select>
         </div>
       </div>
-      <div class="modal-foot">
+      <!-- 상담내역 탭 -->
+      <div id="instTabConsults" class="modal-body inst-history-tab" style="display:none;">
+        <div id="instDetailConsults" class="inst-history-list">
+          <p class="inst-history-empty">불러오는 중...</p>
+        </div>
+      </div>
+      <!-- 납품이력 탭 -->
+      <div id="instTabOrders" class="modal-body inst-history-tab" style="display:none;">
+        <div id="instDetailOrders" class="inst-history-list">
+          <p class="inst-history-empty">불러오는 중...</p>
+        </div>
+      </div>
+      <div id="instModalFoot" class="modal-foot">
         <button class="btn btn-secondary" onclick="closeInstModal()">취소</button>
         <button class="btn btn-primary" onclick="saveInstitution()">저장</button>
       </div>
@@ -646,7 +682,8 @@
   <script src="js/data.js"></script>
   <script src="js/admin/admin-auth.js"></script>
   <script src="js/admin/admin-app.js"></script>
-  <script src="js/admin/admin-institutions.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="js/admin/admin-institutions.js?v=4"></script>
   <script src="js/admin/admin-consultations.js"></script>
   <script src="js/admin/admin-unmatched.js"></script>
   <script src="js/admin/admin-orders.js"></script>
