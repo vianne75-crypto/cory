@@ -13,6 +13,7 @@ async function loadConsultations() {
     .order('date', { ascending: false })
     .limit(5000);
 
+
   if (error) {
     showToast('상담 로드 실패: ' + error.message, 'error');
     return;
@@ -36,16 +37,20 @@ function filterConsultations() {
   const search = (document.getElementById('consultSearch').value || '').trim().toLowerCase();
   const mdFilter = document.getElementById('consultMdFilter').value;
   const matchFilter = document.getElementById('consultMatchFilter').value;
+  const sourceFilter = document.getElementById('consultSourceFilter')?.value || 'all';
 
   consultFiltered = consultCache.filter(d => {
     if (search) {
-      const matchName = (d.raw_institution_name || '').toLowerCase().includes(search);
+      const instName = d.institutions ? d.institutions.name : '';
+      const matchName = (d.raw_institution_name || instName).toLowerCase().includes(search);
       const matchContent = (d.content || '').toLowerCase().includes(search);
-      if (!matchName && !matchContent) return false;
+      const matchPerson = (d.contact_person || '').toLowerCase().includes(search);
+      if (!matchName && !matchContent && !matchPerson) return false;
     }
     if (mdFilter !== 'all' && d.md_name !== mdFilter) return false;
     if (matchFilter === 'matched' && !d.matched) return false;
     if (matchFilter === 'unmatched' && d.matched) return false;
+    if (sourceFilter !== 'all' && (d.source || '애니빌드') !== sourceFilter) return false;
     return true;
   });
 
@@ -58,11 +63,15 @@ function renderConsultStats() {
   const total = consultFiltered.length;
   const matched = consultFiltered.filter(d => d.matched).length;
   const unmatched = total - matched;
+  const followups = consultFiltered.filter(d => d.source === '팔로업').length;
+  const pending = consultFiltered.filter(d => d.next_followup_date && d.next_followup_date >= new Date().toISOString().slice(0,10)).length;
 
   document.getElementById('consultStats').innerHTML = `
     <div class="stat-card"><span class="label">전체</span><span class="value">${total}</span></div>
     <div class="stat-card"><span class="label">매칭됨</span><span class="value" style="color:#4CAF50">${matched}</span></div>
     <div class="stat-card"><span class="label">미매칭</span><span class="value" style="color:#F44336">${unmatched}</span></div>
+    <div class="stat-card"><span class="label">팔로업</span><span class="value" style="color:#1976D2">${followups}</span></div>
+    <div class="stat-card"><span class="label">팔로업 예정</span><span class="value" style="color:#F57C00">${pending}</span></div>
   `;
 }
 
@@ -76,18 +85,25 @@ function renderConsultTable() {
   const tbody = document.getElementById('consultBody');
   tbody.innerHTML = pageData.map(d => {
     const tags = (d.tags || []).map(t => `<span class="tag-badge">${t}</span>`).join('');
-    const instName = d.institutions ? d.institutions.name : '-';
+    const instName = d.institutions ? d.institutions.name : (d.raw_institution_name || '-');
     const matchClass = d.matched ? 'matched' : 'unmatched';
     const matchText = d.matched ? '매칭' : '미매칭';
-    const content = (d.content || '').substring(0, 80) + ((d.content || '').length > 80 ? '...' : '');
+    const content = (d.content || '').substring(0, 60) + ((d.content || '').length > 60 ? '...' : '');
+    const source = d.source || '애니빌드';
+    const sourceColor = source === '팔로업' ? '#1976D2' : '#757575';
+    const resultBadge = d.result
+      ? `<span class="tag-badge" style="background:${d.result==='통화성공'?'#e8f5e9':'#fff3e0'};color:${d.result==='통화성공'?'#2e7d32':'#e65100'}">${d.result}</span>`
+      : '';
+    const nextDate = d.next_followup_date
+      ? `<span style="color:#F57C00;font-size:0.82rem">→ ${d.next_followup_date}</span>` : '';
 
     return `<tr>
       <td>${d.date || '-'}</td>
-      <td>${d.md_name || '-'}</td>
-      <td class="truncate">${d.raw_institution_name || '-'}</td>
-      <td><span class="match-badge ${matchClass}">${matchText}</span> ${instName}</td>
-      <td>${tags}</td>
+      <td><span style="color:${sourceColor};font-size:0.8rem">${source}</span><br>${d.md_name || d.contact_person || '-'}</td>
+      <td class="truncate">${instName}</td>
+      <td>${resultBadge} ${tags}</td>
       <td class="truncate">${content}</td>
+      <td>${nextDate}</td>
     </tr>`;
   }).join('');
 
@@ -97,6 +113,83 @@ function renderConsultTable() {
 function goConsultPage(page) {
   consultPage = page;
   renderConsultTable();
+}
+
+// ─── 팔로업 직접 입력 ───
+
+function openFollowupModal(instId, instName) {
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('followupInstId').value = instId || '';
+  document.getElementById('followupInstSearch').value = instName || '';
+  document.getElementById('followupDate').value = today;
+  document.getElementById('followupContactType').value = '전화';
+  document.getElementById('followupResult').value = '';
+  document.getElementById('followupPerson').value = '';
+  document.getElementById('followupCampaign').value = '';
+  document.getElementById('followupMemo').value = '';
+  document.getElementById('followupNextDate').value = '';
+  document.getElementById('followupModal').style.display = 'flex';
+}
+
+function closeFollowupModal() {
+  document.getElementById('followupModal').style.display = 'none';
+}
+
+async function searchFollowupInst() {
+  const q = document.getElementById('followupInstSearch').value.trim();
+  if (!q) return;
+  const { data } = await supabase.from('institutions').select('id,name').ilike('name', `%${q}%`).limit(10);
+  const list = document.getElementById('followupInstList');
+  list.innerHTML = (data || []).map(i =>
+    `<div class="inst-suggest" onclick="selectFollowupInst(${i.id},'${i.name.replace(/'/g,"\\'")}')">` +
+    `${i.name}</div>`
+  ).join('');
+}
+
+function selectFollowupInst(id, name) {
+  document.getElementById('followupInstId').value = id;
+  document.getElementById('followupInstSearch').value = name;
+  document.getElementById('followupInstList').innerHTML = '';
+}
+
+async function saveFollowup() {
+  const instId = document.getElementById('followupInstId').value;
+  const date = document.getElementById('followupDate').value;
+  const contactType = document.getElementById('followupContactType').value;
+  const result = document.getElementById('followupResult').value;
+  const person = document.getElementById('followupPerson').value.trim();
+  const campaign = document.getElementById('followupCampaign').value.trim();
+  const memo = document.getElementById('followupMemo').value.trim();
+  const nextDate = document.getElementById('followupNextDate').value || null;
+
+  if (!date) { showToast('접촉일시는 필수입니다.', 'error'); return; }
+
+  const record = {
+    source: '팔로업',
+    date,
+    contact_type: contactType,
+    result: result || null,
+    contact_person: person || null,
+    campaign: campaign || null,
+    content: memo || null,
+    next_followup_date: nextDate,
+    matched: !!instId,
+    institution_id: instId ? parseInt(instId) : null,
+    raw_institution_name: document.getElementById('followupInstSearch').value.trim() || null,
+  };
+
+  const { error } = await supabase.from('consultations').insert([record]);
+  if (error) { showToast('저장 실패: ' + error.message, 'error'); return; }
+
+  // 기관 consult_count 업데이트
+  if (instId) {
+    await supabase.rpc('increment_consult_count', { inst_id: parseInt(instId) })
+      .catch(() => {}); // rpc 없으면 무시
+  }
+
+  showToast('팔로업 기록 저장 완료', 'success');
+  closeFollowupModal();
+  await loadConsultations();
 }
 
 // ─── 상담 동기화 ───

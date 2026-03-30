@@ -1034,3 +1034,7 @@ body {
 .memlv-config td:first-child, .memlv-config th:first-child { text-align: left; }
 #orderMatchTableWrap .table-container { max-height: 400px; overflow-y: auto; }
 #orderMatchTableWrap td.truncate { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ─── 팔로업 모달 ─── */
+.inst-suggest { padding: 8px 12px; cursor: pointer; font-size: 0.9rem; }
+.inst-suggest:hover { background: #f0f4ff; }
