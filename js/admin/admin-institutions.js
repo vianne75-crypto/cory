@@ -595,8 +595,8 @@ async function openInstConsultModal(instId, instName) {
           ${inst.last_purchase_date ? `<span>🛒 최근구매 ${inst.last_purchase_date}</span>` : ''}
         </div>
         <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-          <span style="font-size:0.82rem;color:#888;">📝 메모:</span>
-          <input type="text" id="icmNote" class="input" value="${(note || '').replace(/"/g, '&quot;')}" placeholder="예) 9월 예산편성 확인, 담당자 변경됨" style="flex:1;font-size:0.82rem;padding:4px 8px;">
+          <span style="font-size:0.82rem;color:#888;white-space:nowrap">📌 기관 메모:</span>
+          <input type="text" id="icmNote" class="input" value="${(note || '').replace(/"/g, '&quot;')}" placeholder="이 기관에 대한 영구 메모 (예: 9월 예산확인, 담당자 변경)" style="flex:1;font-size:0.82rem;padding:4px 8px;">
           <button class="btn btn-secondary btn-sm" onclick="saveInstNote(${instId})" style="white-space:nowrap">저장</button>
         </div>
       </div>
