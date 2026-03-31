@@ -49,7 +49,12 @@ function filterConsultations() {
   const sourceFilter = document.getElementById('consultSourceFilter')?.value || 'all';
 
   consultFiltered = consultCache.filter(d => {
-    if (consultTodayMode && d.next_followup_date !== today) return false;
+    if (consultTodayMode) {
+      // 오늘 팔로업: 오늘 이전 날짜 + result 미입력(미처리)만 표시
+      if (!d.next_followup_date) return false;
+      if (d.next_followup_date > today) return false;  // 미래 일정 제외
+      if (d.result) return false;  // 이미 처리된 건 제외
+    }
     if (search) {
       const instName = d.institutions ? d.institutions.name : '';
       const matchName = (d.raw_institution_name || instName).toLowerCase().includes(search);
@@ -64,6 +69,11 @@ function filterConsultations() {
     return true;
   });
 
+  // 팔로업 모드: 지연(오래된 것 먼저) → 오늘 순 정렬
+  if (consultTodayMode) {
+    consultFiltered.sort((a, b) => (a.next_followup_date || '').localeCompare(b.next_followup_date || ''));
+  }
+
   consultPage = 1;
   renderConsultStats();
   renderConsultTable();
@@ -73,15 +83,18 @@ function renderConsultStats() {
   const total = consultFiltered.length;
   const matched = consultFiltered.filter(d => d.matched).length;
   const unmatched = total - matched;
+  const today = new Date().toISOString().slice(0, 10);
   const followups = consultFiltered.filter(d => d.source === '팔로업').length;
-  const pending = consultFiltered.filter(d => d.next_followup_date && d.next_followup_date >= new Date().toISOString().slice(0,10)).length;
+  const todayDue = consultCache.filter(d => d.next_followup_date && d.next_followup_date <= today && !d.result).length;
+  const overdue = consultCache.filter(d => d.next_followup_date && d.next_followup_date < today && !d.result).length;
+  const upcoming = consultCache.filter(d => d.next_followup_date && d.next_followup_date > today && !d.result).length;
 
   document.getElementById('consultStats').innerHTML = `
     <div class="stat-card"><span class="label">전체</span><span class="value">${total}</span></div>
     <div class="stat-card"><span class="label">매칭됨</span><span class="value" style="color:#4CAF50">${matched}</span></div>
     <div class="stat-card"><span class="label">미매칭</span><span class="value" style="color:#F44336">${unmatched}</span></div>
-    <div class="stat-card"><span class="label">팔로업</span><span class="value" style="color:#1976D2">${followups}</span></div>
-    <div class="stat-card"><span class="label">팔로업 예정</span><span class="value" style="color:#F57C00">${pending}</span></div>
+    <div class="stat-card"><span class="label">📞 오늘+지연</span><span class="value" style="color:#e65100">${todayDue}${overdue ? ' <small style="color:#c62828">(지연 ' + overdue + ')</small>' : ''}</span></div>
+    <div class="stat-card"><span class="label">예정</span><span class="value" style="color:#1976D2">${upcoming}</span></div>
   `;
 }
 
