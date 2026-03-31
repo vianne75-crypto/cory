@@ -243,6 +243,11 @@ body {
   color: white;
 }
 .btn-danger:hover { background: #D32F2F; }
+.btn-warning {
+  background: #F57C00;
+  color: white;
+}
+.btn-warning:hover { background: #e65100; }
 .btn-sm {
   padding: 4px 10px;
   font-size: 0.78rem;

@@ -77,6 +77,7 @@
             <option value="3">🟠 Lv.3 시각물</option>
             <option value="4">🟢 Lv.4 성과보고서</option>
           </select>
+          <button class="btn btn-warning" onclick="filterNewInflows()" id="newInflowBtn" title="farm360에서 유입된 신규 기관 (인지/관심/고려)">🆕 신규 유입</button>
           <button class="btn btn-secondary" onclick="showCleanupPanel()">데이터 정리</button>
           <button class="btn btn-secondary" onclick="showOrderMatchPanel()">주문 매칭</button>
           <button class="btn btn-secondary" onclick="showHcSyncPanel()">HC 동기화</button>
@@ -223,6 +224,7 @@
             <option value="matched">매칭됨</option>
             <option value="unmatched">미매칭</option>
           </select>
+          <button class="btn btn-warning" onclick="filterTodayFollowups()" id="todayFollowupBtn">📞 오늘 팔로업</button>
           <button class="btn btn-primary" onclick="openFollowupModal()">+ 팔로업 기록</button>
           <button class="btn btn-secondary" onclick="showSyncPanel()">상담 동기화</button>
         </div>

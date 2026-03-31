@@ -143,6 +143,16 @@ function matchesSearch(d, query) {
   return targets.some(t => t.includes(q));
 }
 
+let instNewInflowMode = false;
+
+function filterNewInflows() {
+  instNewInflowMode = !instNewInflowMode;
+  instSearchIds = null;
+  const btn = document.getElementById('newInflowBtn');
+  if (btn) btn.style.background = instNewInflowMode ? '#e65100' : '';
+  filterInstitutions();
+}
+
 function filterInstitutions() {
   // G1/G2 오버라이드 활성 시: 드롭다운 필터만 재적용
   if (instSearchIds !== null) {
@@ -156,7 +166,14 @@ function filterInstitutions() {
   const stageFilter = document.getElementById('instStageFilter').value;
   const eduFilter = document.getElementById('instEduFilter') ? document.getElementById('instEduFilter').value : 'all';
 
+  const NEW_INFLOW_SOURCES = ['hc_dm_qr','hc_dm_sample','hunter_manual','campaign_dm','consult_discovery'];
+  const NEW_INFLOW_STAGES = ['인지','관심','고려'];
+
   instFiltered = instCache.filter(d => {
+    if (instNewInflowMode) {
+      if (!NEW_INFLOW_SOURCES.includes(d.sourced_by)) return false;
+      if (!NEW_INFLOW_STAGES.includes(d.purchase_stage)) return false;
+    }
     if (!matchesSearch(d, search)) return false;
     if (typeFilter !== 'all' && d.type !== typeFilter) return false;
     if (regionFilter !== 'all' && d.region !== regionFilter) return false;

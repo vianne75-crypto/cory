@@ -5,6 +5,7 @@
 let consultCache = [];
 let consultFiltered = [];
 let consultPage = 1;
+let consultTodayMode = false;
 
 async function loadConsultations() {
   const { data, error } = await supabase
@@ -33,13 +34,22 @@ function populateConsultFilters() {
 
 function searchConsultations() { filterConsultations(); }
 
+function filterTodayFollowups() {
+  consultTodayMode = !consultTodayMode;
+  const btn = document.getElementById('todayFollowupBtn');
+  if (btn) btn.style.background = consultTodayMode ? '#e65100' : '';
+  filterConsultations();
+}
+
 function filterConsultations() {
+  const today = new Date().toISOString().slice(0, 10);
   const search = (document.getElementById('consultSearch').value || '').trim().toLowerCase();
   const mdFilter = document.getElementById('consultMdFilter').value;
   const matchFilter = document.getElementById('consultMatchFilter').value;
   const sourceFilter = document.getElementById('consultSourceFilter')?.value || 'all';
 
   consultFiltered = consultCache.filter(d => {
+    if (consultTodayMode && d.next_followup_date !== today) return false;
     if (search) {
       const instName = d.institutions ? d.institutions.name : '';
       const matchName = (d.raw_institution_name || instName).toLowerCase().includes(search);
