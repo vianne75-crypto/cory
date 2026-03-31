@@ -26,6 +26,23 @@ const STAGE_COLORS = {
 // 제품 유형
 const PRODUCT_TYPES = ['알쓰패치', '노담패치'];
 
+// 전문센터 키워드 (P0-C — 2026-03-30)
+const EXPERT_CENTER_KEYWORDS = [
+  '암센터', '암병원', '중독관리', '알코올상담', '정신건강복지',
+  '근로자건강센터', '금연지원센터', '한국건강증진개발원', '중독관리통합'
+];
+
+// 세그먼트 분류 함수 (P0-C)
+function getSegment(name, type) {
+  if (EXPERT_CENTER_KEYWORDS.some(kw => name.includes(kw))) return '전문센터';
+  if (type === '금연지원센터') return '전문센터';
+  if (['보건소', '광역시도 건강증진부서'].includes(type)) return '보건소';
+  if (['교육기관', '전공교육', '대학보건관리자'].includes(type)) return '학교';
+  if (type === '사업장') return '사업장';
+  if (type === '군/경/소방') return '군경';
+  return '기타';
+}
+
 // 지역별 전체 대상기관 수 (추정)
 const REGION_TOTAL_TARGETS = {
   '강원특별자치도': 64,

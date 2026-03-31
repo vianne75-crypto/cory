@@ -55,6 +55,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadFromSupabase();
   await loadEliteInstIds();
 
+  // 세그먼트 필드 자동 설정 (P0-C)
+  institutionData.forEach(d => {
+    if (!d.segment) d.segment = getSegment(d.name, d.type);
+  });
+  filteredData = [...institutionData];
+
   initMap();
   populateRegionFilter();
   initDateFilter();
@@ -63,8 +69,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   bindDateQuickBtns();
   bindTableSort();
   bindTabs();
+  bindRepurchaseCard();
   updateDashboard();
 });
+
+// 재구매율 카드 클릭 → 재구매·파트너 필터링 (P0-A)
+function bindRepurchaseCard() {
+  const card = document.getElementById('repurchaseCard');
+  if (!card) return;
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.filter-stage').forEach(cb => {
+      cb.checked = ['재구매', '파트너'].includes(cb.value);
+    });
+    applyFilters();
+    // 퍼널/목록 탭으로 이동
+    const listTab = document.querySelector('.tab-btn[data-tab="tab-list"]');
+    if (listTab) listTab.click();
+  });
+}
 
 // 탭 전환
 function bindTabs() {
@@ -82,17 +104,40 @@ function bindTabs() {
   });
 }
 
+// 재구매율 계산 (P0-A)
+function calcRepurchaseRate(data) {
+  const purchased = data.filter(d => ['구매', '활용', '재구매', '파트너'].includes(d.purchaseStage));
+  const repurchased = data.filter(d => ['재구매', '파트너'].includes(d.purchaseStage));
+  if (purchased.length === 0) return { rate: 0, repurchased: 0, purchased: 0 };
+  return {
+    rate: (repurchased.length / purchased.length * 100).toFixed(1),
+    repurchased: repurchased.length,
+    purchased: purchased.length
+  };
+}
+
 // 요약 카드 업데이트
 function updateSummaryCards() {
   const totalInst = filteredData.length;
   const totalAmt = filteredData.reduce((s, d) => s + d.purchaseAmount, 0);
   const totalVol = filteredData.reduce((s, d) => s + d.purchaseVolume, 0);
   const purchased = filteredData.filter(d => ['구매', '활용', '재구매', '파트너'].includes(d.purchaseStage)).length;
+  const rr = calcRepurchaseRate(filteredData);
+  const gaugeWidth = Math.min(parseFloat(rr.rate) / 25 * 100, 100).toFixed(0);
 
   document.getElementById('totalInstitutions').textContent = totalInst + '개';
   document.getElementById('totalAmount').textContent = formatCurrency(totalAmt);
   document.getElementById('totalVolume').textContent = totalVol.toLocaleString() + '개';
   document.getElementById('purchasedCount').textContent = purchased + '개';
+
+  const rrEl = document.getElementById('repurchaseRate');
+  if (rrEl) {
+    rrEl.textContent = rr.rate + '%';
+    const gauge = document.getElementById('repurchaseGauge');
+    if (gauge) gauge.style.width = gaugeWidth + '%';
+    const rrSub = document.getElementById('repurchaseSub');
+    if (rrSub) rrSub.textContent = '재구매(' + rr.repurchased + ') / 구매기관(' + rr.purchased + ')';
+  }
 }
 
 // 전체 대시보드 업데이트

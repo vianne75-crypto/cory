@@ -41,6 +41,14 @@
       <div class="card-label">구매완료 기관</div>
       <div class="card-value" id="purchasedCount">0</div>
     </div>
+    <div class="card card-repurchase" id="repurchaseCard" style="cursor:pointer;" title="클릭: 재구매·파트너 기관 필터링">
+      <div class="card-label">재구매율 <span style="font-size:10px;color:#aaa;">목표 25%</span></div>
+      <div class="card-value" id="repurchaseRate" style="color:#66bb6a;">0%</div>
+      <div style="background:#e8f5e9;border-radius:4px;height:6px;margin:4px 0 2px;overflow:hidden;">
+        <div id="repurchaseGauge" style="background:#66bb6a;height:100%;width:0%;transition:width 0.4s;"></div>
+      </div>
+      <div class="card-sub" id="repurchaseSub" style="font-size:11px;color:#888;">재구매(0) / 구매기관(0)</div>
+    </div>
   </section>
 
   <!-- 탭 네비게이션 -->
@@ -102,6 +110,16 @@
       <!-- 필터 패널 -->
       <aside class="filter-panel">
         <h3>필터</h3>
+
+        <div class="filter-group">
+          <h4>세그먼트 <span class="filter-toggle" data-target="filter-segment">전체해제</span></h4>
+          <label><input type="checkbox" class="filter-segment" value="전문센터" checked> 전문센터 🏥</label>
+          <label><input type="checkbox" class="filter-segment" value="보건소" checked> 보건소</label>
+          <label><input type="checkbox" class="filter-segment" value="학교" checked> 학교</label>
+          <label><input type="checkbox" class="filter-segment" value="사업장" checked> 사업장</label>
+          <label><input type="checkbox" class="filter-segment" value="군경" checked> 군/경/소방</label>
+          <label><input type="checkbox" class="filter-segment" value="기타" checked> 기타</label>
+        </div>
 
         <div class="filter-group">
           <h4>기관 유형 <span class="filter-toggle" data-target="filter-type">전체해제</span></h4>

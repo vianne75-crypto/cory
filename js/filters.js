@@ -118,7 +118,7 @@ function bindFilterToggles() {
   });
 
   // 개별 체크박스 변경 시 토글 버튼 텍스트 동기화
-  document.querySelectorAll('.filter-type, .filter-stage, .filter-product').forEach(cb => {
+  document.querySelectorAll('.filter-type, .filter-stage, .filter-product, .filter-segment').forEach(cb => {
     cb.addEventListener('change', () => {
       updateToggleLabels();
     });
@@ -162,6 +162,8 @@ function applyFilters() {
   const selectedTypes = [...document.querySelectorAll('.filter-type:checked')].map(cb => cb.value);
   const selectedStages = [...document.querySelectorAll('.filter-stage:checked')].map(cb => cb.value);
   const selectedProducts = [...document.querySelectorAll('.filter-product:checked')].map(cb => cb.value);
+  const selectedSegments = [...document.querySelectorAll('.filter-segment:checked')].map(cb => cb.value);
+  const allSegments = selectedSegments.length === document.querySelectorAll('.filter-segment').length;
   const selectedRegion = document.getElementById('filterRegion').value;
   const selectedDistrict = document.getElementById('filterDistrict').value;
   const dateFrom = document.getElementById('filterDateFrom').value;
@@ -171,6 +173,10 @@ function applyFilters() {
     if (!selectedTypes.includes(d.type)) return false;
     if (!selectedStages.includes(d.purchaseStage)) return false;
     if (!d.products.some(p => selectedProducts.includes(p))) return false;
+    if (!allSegments) {
+      const seg = d.segment || getSegment(d.name, d.type);
+      if (!selectedSegments.includes(seg)) return false;
+    }
     if (selectedRegion !== 'all' && d.region !== selectedRegion) return false;
     if (selectedDistrict !== 'all' && d.district !== selectedDistrict) return false;
     if (dateFrom && d.lastPurchaseDate && d.lastPurchaseDate !== '-' && d.lastPurchaseDate < dateFrom) return false;
