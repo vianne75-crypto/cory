@@ -722,6 +722,16 @@ async function saveInstConsult() {
   const { error } = await supabase.from('consultations').insert([record]);
   if (error) { showToast('저장 실패: ' + error.message, 'error'); return; }
 
+  // 같은 기관의 미처리 팔로업(result=null) 자동 완료 처리
+  if (instId && result) {
+    await supabase.from('consultations')
+      .update({ result: '후속기록으로_대체' })
+      .eq('institution_id', parseInt(instId))
+      .is('result', null)
+      .not('id', 'eq', 0) // 방금 넣은 건 제외 (result 있으므로 해당 안 됨)
+      .lt('date', date); // 이전 날짜 건만
+  }
+
   showToast('상담 기록 저장 완료', 'success');
   // 새로고침 — 이력 다시 로드
   openInstConsultModal(parseInt(instId), instName);
