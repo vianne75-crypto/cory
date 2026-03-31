@@ -706,9 +706,12 @@ async function saveInstConsult() {
 
   if (!date) { showToast('접촉일은 필수입니다.', 'error'); return; }
 
+  // 날짜 형식 통일 (애니빌드 호환: YYYY/MM/DD)
+  const dateFormatted = date.replace(/-/g, '/');
+
   const record = {
     source: '팔로업',
-    date,
+    date: dateFormatted,
     contact_type: contactType,
     result: result || null,
     contact_person: person || null,

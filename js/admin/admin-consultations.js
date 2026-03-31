@@ -41,6 +41,8 @@ function filterTodayFollowups() {
   filterConsultations();
 }
 
+function _normDate(d) { return d ? d.replace(/\//g, '-').slice(0, 10) : ''; }
+
 function filterConsultations() {
   const today = new Date().toISOString().slice(0, 10);
   const search = (document.getElementById('consultSearch').value || '').trim().toLowerCase();
@@ -50,10 +52,10 @@ function filterConsultations() {
 
   consultFiltered = consultCache.filter(d => {
     if (consultTodayMode) {
-      // 오늘 팔로업: 오늘 이전 날짜 + result 미입력(미처리)만 표시
-      if (!d.next_followup_date) return false;
-      if (d.next_followup_date > today) return false;  // 미래 일정 제외
-      if (d.result) return false;  // 이미 처리된 건 제외
+      const nfd = _normDate(d.next_followup_date);
+      if (!nfd) return false;
+      if (nfd > today) return false;
+      if (d.result) return false;
     }
     if (search) {
       const instName = d.institutions ? d.institutions.name : '';
@@ -85,9 +87,9 @@ function renderConsultStats() {
   const unmatched = total - matched;
   const today = new Date().toISOString().slice(0, 10);
   const followups = consultFiltered.filter(d => d.source === '팔로업').length;
-  const todayDue = consultCache.filter(d => d.next_followup_date && d.next_followup_date <= today && !d.result).length;
-  const overdue = consultCache.filter(d => d.next_followup_date && d.next_followup_date < today && !d.result).length;
-  const upcoming = consultCache.filter(d => d.next_followup_date && d.next_followup_date > today && !d.result).length;
+  const todayDue = consultCache.filter(d => { const n = _normDate(d.next_followup_date); return n && n <= today && !d.result; }).length;
+  const overdue = consultCache.filter(d => { const n = _normDate(d.next_followup_date); return n && n < today && !d.result; }).length;
+  const upcoming = consultCache.filter(d => { const n = _normDate(d.next_followup_date); return n && n > today && !d.result; }).length;
 
   document.getElementById('consultStats').innerHTML = `
     <div class="stat-card"><span class="label">전체</span><span class="value">${total}</span></div>
@@ -193,7 +195,7 @@ async function saveFollowup() {
 
   const record = {
     source: '팔로업',
-    date,
+    date: date.replace(/-/g, '/'),
     contact_type: contactType,
     result: result || null,
     contact_person: person || null,
