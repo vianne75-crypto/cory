@@ -513,17 +513,22 @@ async function openInstConsultModal(instId, instName) {
   document.getElementById('icmMemo').value = '';
   modal.style.display = 'flex';
 
-  // 기관 정보 + 상담 이력 동시 조회
-  const [instRes, consultRes] = await Promise.all([
+  // 기관 정보 + 상담 이력 + 주문 이력 동시 조회
+  const [instRes, consultRes, orderRes] = await Promise.all([
     supabase.from('institutions').select('*').eq('id', instId).single(),
     supabase.from('consultations')
       .select('id, date, content, tags, md_name, source, contact_type, result, contact_person, next_followup_date, campaign')
       .eq('institution_id', instId)
       .order('date', { ascending: false })
       .limit(50),
+    supabase.from('orders')
+      .select('id, order_idx, goods_name, sale_price, sale_cnt, reg_time, state_subject, option_user, addr')
+      .eq('institution_id', instId)
+      .order('reg_time', { ascending: false })
+      .limit(20),
   ]);
 
-  // 기관 정보 카드 (연락처 + 주소 + 샘플)
+  // 기관 정보 카드
   const inst = instRes.data;
   if (inst) {
     const m = inst.metadata || {};
@@ -539,32 +544,98 @@ async function openInstConsultModal(instId, instName) {
     const stage = inst.purchase_stage || '';
     const stageColor = ADMIN_STAGE_COLORS[stage] || '#ccc';
 
+    // 교육 도입 수준
+    const eduLevel = getEduLevel(inst);
+    const eduLabels = ['—', '패치 구매', '교육자료 활용', '시각물 활용', '성과보고서'];
+    const eduText = eduLabels[eduLevel] || '—';
+
+    // 마지막 접촉일 계산
+    const consultRows = consultRes.data || [];
+    const lastContactDate = consultRows.length ? consultRows[0].date : null;
+    const today = new Date().toISOString().slice(0, 10);
+    let contactDays = '';
+    if (lastContactDate) {
+      const diff = Math.floor((new Date(today) - new Date(lastContactDate)) / 86400000);
+      contactDays = diff === 0 ? '오늘' : `D+${diff}`;
+    }
+
+    // 리드 경로
+    const leadSrcMap = { 'hc_dm_qr': 'HC DM → QR', 'hc_dm_sample': 'HC DM → 샘플신청', 'hunter_manual': 'HUNTER 수동', 'campaign_dm': '캠페인 DM', 'consult_discovery': '상담 발견', 'order_discovery': '주문 발견' };
+    const leadSrc = inst.sourced_by ? (leadSrcMap[inst.sourced_by] || inst.sourced_by) : '';
+    const dmCampaign = m.dm_campaign || '';
+    const utmCode = m.utm_code || '';
+    const leadGrade = m.lead_grade || '';
+
+    // 메모
+    const note = m.note || m.edu_adoption_note || '';
+
     // 담당자명 자동 채우기
     if (contact) document.getElementById('icmPerson').value = contact;
 
     document.getElementById('icmInfo').innerHTML = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px;background:#f8f9fa;border-radius:8px;margin-bottom:12px;font-size:0.85rem;">
-        <div>
-          <span class="stage-badge" style="background:${stageColor};margin-right:6px">${stage}</span>
-          <strong>${inst.type || ''}</strong>
+      <div style="padding:12px 16px;background:#f8f9fa;border-radius:8px;margin:0 24px 8px;font-size:0.85rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div>
+            <span class="stage-badge" style="background:${stageColor};margin-right:6px">${stage}</span>
+            <strong>${inst.type || ''}</strong>
+            ${eduLevel ? ` · 교육도입 <strong>${eduText}</strong>` : ''}
+          </div>
+          <div style="text-align:right;color:#555">
+            ${inst.purchase_amount ? '납품 <strong>' + Number(inst.purchase_amount).toLocaleString() + '원</strong>' : ''}
+            ${inst.purchase_volume ? ' · ' + inst.purchase_volume + '개' : ''}
+          </div>
         </div>
-        <div style="text-align:right">
-          ${inst.purchase_amount ? '납품 ' + Number(inst.purchase_amount).toLocaleString() + '원' : ''}
-          ${inst.purchase_volume ? ' · ' + inst.purchase_volume + '개' : ''}
+        ${contact || phone || mobile ? `<div style="margin-bottom:4px;">👤 <strong>${contact}</strong> ${phone ? '<a href="tel:' + phone + '" style="color:#1976D2;font-weight:600">' + phone + '</a>' : ''} ${mobile ? '<a href="tel:' + mobile + '" style="color:#1976D2;font-weight:600">' + mobile + '</a>' : ''}</div>` : ''}
+        ${address ? `<div style="margin-bottom:4px;">📍 ${zipcode ? '[' + zipcode + '] ' : ''}${address}${address2 ? ' ' + address2 : ''}</div>` : ''}
+        <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:0.82rem;">
+          ${leadSrc ? `<span>🔗 ${leadSrc}${utmCode ? ' (' + utmCode + ')' : ''}${leadGrade ? ' · ' + leadGrade : ''}</span>` : ''}
+          ${dmCampaign ? `<span>📨 ${dmCampaign}</span>` : ''}
+          ${sample ? `<span>${sample}</span>` : ''}
+          ${lastContactDate ? `<span>📞 마지막 접촉 ${lastContactDate} <strong style="color:${contactDays.startsWith('D+') && parseInt(contactDays.slice(2)) > 14 ? '#c62828' : '#555'}">(${contactDays})</strong></span>` : '<span style="color:#c62828">📞 접촉 이력 없음</span>'}
+          ${inst.last_purchase_date ? `<span>🛒 최근구매 ${inst.last_purchase_date}</span>` : ''}
         </div>
-        ${contact || phone || mobile ? `<div>👤 ${contact} ${phone ? '<a href="tel:' + phone + '" style="color:#1976D2">' + phone + '</a>' : ''} ${mobile ? '<a href="tel:' + mobile + '" style="color:#1976D2">' + mobile + '</a>' : ''}</div>` : ''}
-        ${address ? `<div>📍 ${zipcode ? '[' + zipcode + '] ' : ''}${address}${address2 ? ' ' + address2 : ''}</div>` : ''}
-        ${sample ? `<div style="grid-column:1/-1">${sample}</div>` : ''}
+        <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+          <span style="font-size:0.82rem;color:#888;">📝 메모:</span>
+          <input type="text" id="icmNote" class="input" value="${(note || '').replace(/"/g, '&quot;')}" placeholder="예) 9월 예산편성 확인, 담당자 변경됨" style="flex:1;font-size:0.82rem;padding:4px 8px;">
+          <button class="btn btn-secondary btn-sm" onclick="saveInstNote(${instId})" style="white-space:nowrap">저장</button>
+        </div>
       </div>
     `;
   }
 
-  // 상담 이력 렌더링
-  const rows = consultRes.data || [];
-  if (!rows.length) {
-    document.getElementById('icmHistory').innerHTML = '<p style="color:#999;text-align:center;padding:24px 0">상담 내역이 없습니다.</p>';
+  // 주문 이력 + 상담 이력 통합 타임라인
+  const consultRows = consultRes.data || [];
+  const orders = orderRes.data || [];
+
+  let historyHtml = '';
+
+  // 주문 이력 섹션
+  if (orders.length) {
+    historyHtml += `<div style="padding:8px 0;border-bottom:2px solid #e3f2fd;">
+      <strong style="color:#1565c0;font-size:0.82rem;">🛒 주문 이력 (${orders.length}건)</strong>
+    </div>`;
+    historyHtml += orders.map(r => {
+      const date = _parseRegTime(r.reg_time);
+      const price = r.sale_price ? Number(r.sale_price).toLocaleString() + '원' : '-';
+      const cnt = r.sale_cnt ? r.sale_cnt + '개' : '';
+      const st = r.state_subject || '';
+      const stColors = { '배송완료': '#2e7d32', '입금대기': '#f57f17', '배송대기': '#1565c0', '취소': '#c62828' };
+      return `<div style="padding:6px 0;border-bottom:1px solid #f5f5f5;display:flex;justify-content:space-between;align-items:center;font-size:0.83rem;">
+        <div><strong>${date}</strong> · ${(r.goods_name || '').substring(0, 30)}${r.option_user ? ' (' + r.option_user + ')' : ''}</div>
+        <div style="text-align:right"><strong>${price}</strong> ${cnt} ${st ? `<span style="color:${stColors[st] || '#555'};font-weight:600">${st}</span>` : ''}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // 상담 이력 섹션
+  historyHtml += `<div style="padding:8px 0;border-bottom:2px solid #e8f5e9;margin-top:${orders.length ? '12px' : '0'};">
+    <strong style="color:#2e7d32;font-size:0.82rem;">💬 상담 이력 (${consultRows.length}건)</strong>
+  </div>`;
+
+  if (!consultRows.length) {
+    historyHtml += '<p style="color:#999;text-align:center;padding:16px 0;font-size:0.85rem;">상담 내역이 없습니다.</p>';
   } else {
-    document.getElementById('icmHistory').innerHTML = rows.map(r => {
+    historyHtml += consultRows.map(r => {
       const date = r.date ? String(r.date).slice(0, 10) : '';
       const tags = (r.tags || []).map(t => `<span class="tag-badge">${t}</span>`).join('');
       const src = r.source || '애니빌드';
@@ -590,6 +661,19 @@ async function openInstConsultModal(instId, instName) {
       </div>`;
     }).join('');
   }
+
+  document.getElementById('icmHistory').innerHTML = historyHtml;
+}
+
+async function saveInstNote(instId) {
+  const note = document.getElementById('icmNote').value.trim();
+  // 기존 metadata 가져와서 note만 업데이트
+  const { data } = await supabase.from('institutions').select('metadata').eq('id', instId).single();
+  const meta = data?.metadata || {};
+  meta.note = note;
+  const { error } = await supabase.from('institutions').update({ metadata: meta }).eq('id', instId);
+  if (error) { showToast('메모 저장 실패: ' + error.message, 'error'); return; }
+  showToast('메모 저장 완료', 'success');
 }
 
 function closeInstConsultModal() {
