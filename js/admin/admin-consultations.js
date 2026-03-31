@@ -107,10 +107,14 @@ function renderConsultTable() {
     const nextDate = d.next_followup_date
       ? `<span style="color:#F57C00;font-size:0.82rem">→ ${d.next_followup_date}</span>` : '';
 
+    const instClick = d.institution_id
+      ? `onclick="openInstConsultModal(${d.institution_id},'${instName.replace(/'/g, "\\'")}')" style="color:#1976D2;cursor:pointer;text-decoration:underline"`
+      : '';
+
     return `<tr>
       <td>${d.date || '-'}</td>
       <td><span style="color:${sourceColor};font-size:0.8rem">${source}</span><br>${d.md_name || d.contact_person || '-'}</td>
-      <td class="truncate">${instName}</td>
+      <td class="truncate" ${instClick}>${instName}</td>
       <td>${resultBadge} ${tags}</td>
       <td class="truncate">${content}</td>
       <td>${nextDate}</td>
