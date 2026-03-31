@@ -283,8 +283,8 @@ function renderInstTable() {
         <td style="font-size:0.82rem;">${contact}</td>
         <td>${d.last_purchase_date || '-'}</td>
         <td>
+          <button class="btn btn-primary btn-sm" onclick="openInstConsultModal(${d.id},'${d.name.replace(/'/g, "\\'")}')">상담</button>
           <button class="btn btn-secondary btn-sm" onclick="editInstitution(${d.id})">수정</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteInstitution(${d.id}, '${d.name.replace(/'/g, "\\'")}')">삭제</button>
         </td>
       </tr>`;
     }
@@ -298,11 +298,11 @@ function renderInstTable() {
       <td>${renderEduBadge(getEduLevel(d))}</td>
       <td>${adminFormatCurrency(d.purchase_amount || 0)}</td>
       <td>${(d.purchase_volume || 0).toLocaleString()}</td>
-      <td>${d.consult_count || 0}</td>
+      <td><a href="#" onclick="openInstConsultModal(${d.id},'${d.name.replace(/'/g, "\\'")}');return false" style="color:#1976D2;text-decoration:underline;cursor:pointer">${d.consult_count || 0}</a></td>
       <td>${d.last_purchase_date || '-'}</td>
       <td>
+        <button class="btn btn-primary btn-sm" onclick="openInstConsultModal(${d.id},'${d.name.replace(/'/g, "\\'")}')">상담</button>
         <button class="btn btn-secondary btn-sm" onclick="editInstitution(${d.id})">수정</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteInstitution(${d.id}, '${d.name.replace(/'/g, "\\'")}')">삭제</button>
       </td>
     </tr>`;
   }).join('');
@@ -493,6 +493,156 @@ function renderInstOrders(rows) {
       </table>
     </div>`;
   }).join('');
+}
+
+// ─── 기관 상담내역 모달 ───
+
+async function openInstConsultModal(instId, instName) {
+  const modal = document.getElementById('instConsultModal');
+  document.getElementById('icmTitle').textContent = instName;
+  document.getElementById('icmInstId').value = instId;
+  document.getElementById('icmInstName').value = instName;
+  document.getElementById('icmHistory').innerHTML = '<p style="color:#999;text-align:center;padding:24px 0">로딩 중...</p>';
+  document.getElementById('icmInfo').innerHTML = '';
+  // 입력 폼 초기화
+  document.getElementById('icmDate').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('icmContactType').value = '전화';
+  document.getElementById('icmResult').value = '';
+  document.getElementById('icmPerson').value = '';
+  document.getElementById('icmNextDate').value = '';
+  document.getElementById('icmMemo').value = '';
+  modal.style.display = 'flex';
+
+  // 기관 정보 + 상담 이력 동시 조회
+  const [instRes, consultRes] = await Promise.all([
+    supabase.from('institutions').select('*').eq('id', instId).single(),
+    supabase.from('consultations')
+      .select('id, date, content, tags, md_name, source, contact_type, result, contact_person, next_followup_date, campaign')
+      .eq('institution_id', instId)
+      .order('date', { ascending: false })
+      .limit(50),
+  ]);
+
+  // 기관 정보 카드 (연락처 + 주소 + 샘플)
+  const inst = instRes.data;
+  if (inst) {
+    const m = inst.metadata || {};
+    const phone = m.contact_phone || '';
+    const mobile = m.contact_mobile || '';
+    const contact = m.contact_name || '';
+    const address = m.address || '';
+    const address2 = m.address2 || '';
+    const zipcode = m.postal_code || '';
+    const sample = m.sample_shipped_date
+      ? `📦 ${m.sample_shipped_date} 발송 (${m.sample_carrier || ''} ${m.sample_tracking_number || ''})`
+      : (m.sample_requested ? '📦 샘플 신청 (미발송)' : '');
+    const stage = inst.purchase_stage || '';
+    const stageColor = ADMIN_STAGE_COLORS[stage] || '#ccc';
+
+    // 담당자명 자동 채우기
+    if (contact) document.getElementById('icmPerson').value = contact;
+
+    document.getElementById('icmInfo').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px;background:#f8f9fa;border-radius:8px;margin-bottom:12px;font-size:0.85rem;">
+        <div>
+          <span class="stage-badge" style="background:${stageColor};margin-right:6px">${stage}</span>
+          <strong>${inst.type || ''}</strong>
+        </div>
+        <div style="text-align:right">
+          ${inst.purchase_amount ? '납품 ' + Number(inst.purchase_amount).toLocaleString() + '원' : ''}
+          ${inst.purchase_volume ? ' · ' + inst.purchase_volume + '개' : ''}
+        </div>
+        ${contact || phone || mobile ? `<div>👤 ${contact} ${phone ? '<a href="tel:' + phone + '" style="color:#1976D2">' + phone + '</a>' : ''} ${mobile ? '<a href="tel:' + mobile + '" style="color:#1976D2">' + mobile + '</a>' : ''}</div>` : ''}
+        ${address ? `<div>📍 ${zipcode ? '[' + zipcode + '] ' : ''}${address}${address2 ? ' ' + address2 : ''}</div>` : ''}
+        ${sample ? `<div style="grid-column:1/-1">${sample}</div>` : ''}
+      </div>
+    `;
+  }
+
+  // 상담 이력 렌더링
+  const rows = consultRes.data || [];
+  if (!rows.length) {
+    document.getElementById('icmHistory').innerHTML = '<p style="color:#999;text-align:center;padding:24px 0">상담 내역이 없습니다.</p>';
+  } else {
+    document.getElementById('icmHistory').innerHTML = rows.map(r => {
+      const date = r.date ? String(r.date).slice(0, 10) : '';
+      const tags = (r.tags || []).map(t => `<span class="tag-badge">${t}</span>`).join('');
+      const src = r.source || '애니빌드';
+      const srcColor = src === '팔로업' ? '#1976D2' : '#757575';
+      const resultBadge = r.result
+        ? `<span class="tag-badge" style="background:${r.result === '통화성공' || r.result === '구매전환' ? '#e8f5e9' : '#fff3e0'};color:${r.result === '통화성공' || r.result === '구매전환' ? '#2e7d32' : '#e65100'}">${r.result}</span>`
+        : '';
+      const nextDate = r.next_followup_date
+        ? `<span style="color:#F57C00;font-size:0.8rem">→ 다음: ${r.next_followup_date}</span>` : '';
+      const person = r.contact_person ? `<span style="color:#555;font-size:0.8rem">👤 ${r.contact_person}</span>` : '';
+      const contactType = r.contact_type ? `<span style="color:#888;font-size:0.78rem">[${r.contact_type}]</span>` : '';
+
+      return `<div style="padding:10px 0;border-bottom:1px solid #f0f0f0;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <strong style="font-size:0.85rem">${date}</strong>
+          <span style="color:${srcColor};font-size:0.78rem">${src}</span>
+          ${contactType}
+          ${resultBadge}
+          ${person}
+        </div>
+        <div style="font-size:0.85rem;color:#333;margin-bottom:4px;">${(r.content || '').replace(/</g, '&lt;')}</div>
+        <div style="display:flex;gap:6px;align-items:center;">${tags} ${nextDate}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function closeInstConsultModal() {
+  document.getElementById('instConsultModal').style.display = 'none';
+}
+
+function icmAutoNextDate() {
+  const result = document.getElementById('icmResult').value;
+  const nextEl = document.getElementById('icmNextDate');
+  if (nextEl.value) return; // 이미 입력했으면 건드리지 않음
+  const today = new Date();
+  const rules = { '통화성공': 14, '부재': 2, '연결불가': 7, '이메일발송': 3 };
+  if (rules[result]) {
+    today.setDate(today.getDate() + rules[result]);
+    nextEl.value = today.toISOString().slice(0, 10);
+  } else if (result === '거절') {
+    nextEl.value = '';
+  }
+}
+
+async function saveInstConsult() {
+  const instId = document.getElementById('icmInstId').value;
+  const instName = document.getElementById('icmInstName').value;
+  const date = document.getElementById('icmDate').value;
+  const contactType = document.getElementById('icmContactType').value;
+  const result = document.getElementById('icmResult').value;
+  const person = document.getElementById('icmPerson').value.trim();
+  const nextDate = document.getElementById('icmNextDate').value || null;
+  const memo = document.getElementById('icmMemo').value.trim();
+
+  if (!date) { showToast('접촉일은 필수입니다.', 'error'); return; }
+
+  const record = {
+    source: '팔로업',
+    date,
+    contact_type: contactType,
+    result: result || null,
+    contact_person: person || null,
+    content: memo || null,
+    next_followup_date: nextDate,
+    matched: true,
+    institution_id: parseInt(instId),
+    raw_institution_name: instName,
+  };
+
+  const { error } = await supabase.from('consultations').insert([record]);
+  if (error) { showToast('저장 실패: ' + error.message, 'error'); return; }
+
+  showToast('상담 기록 저장 완료', 'success');
+  // 새로고침 — 이력 다시 로드
+  openInstConsultModal(parseInt(instId), instName);
+  // 기관 목록도 갱신
+  loadConsultations().catch(() => {});
 }
 
 // 다음 우편번호 검색
