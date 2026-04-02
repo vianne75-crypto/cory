@@ -1,116 +1,34 @@
-// 구매단계 정의 (7단계 — 2026-03-19 재설계)
-const PURCHASE_STAGES = ['인지', '관심', '고려', '구매', '활용', '재구매', '파트너'];
+Fetching all institutions...
+// ⚠️ AUTO-GENERATED: Supabase institutions table
+// Generated: 2026-04-02T14:01:39.998Z
+// Do not edit manually - use /rest/v1/institutions API instead
 
-// 기관 유형 정의 및 색상
-const INSTITUTION_TYPES = {
-  '보건소': { color: '#2196F3', icon: 'H' },
-  '전문기관': { color: '#9C27B0', icon: 'M' },
-  '금연지원센터': { color: '#4CAF50', icon: 'S' },
-  '광역시도 건강증진부서': { color: '#F44336', icon: 'G' },
-  '교육기관': { color: '#3F51B5', icon: 'E' },
-  '전공교육': { color: '#E91E63', icon: 'P' },
-  '군/경/소방': { color: '#795548', icon: 'D' },
-  '사업장': { color: '#FF9800', icon: 'B' },
-  '복지기관': { color: '#009688', icon: 'W' },
-  '대학보건관리자': { color: '#00897b', icon: 'HC' },
-  '공공기관(기타)': { color: '#607D8B', icon: 'C' },
-  '강사·대행사': { color: '#FF6F00', icon: 'T' }
-};
-
-// 구매단계별 색상 (7단계)
-const STAGE_COLORS = {
-  '인지': '#e0e0e0', '관심': '#b0bec5', '고려': '#ffb74d',
-  '구매': '#4fc3f7', '활용': '#29b6f6', '재구매': '#66bb6a', '파트너': '#ab47bc'
-};
-
-// 제품 유형
-const PRODUCT_TYPES = ['알쓰패치', '노담패치'];
-
-// 전문센터 키워드 (P0-C — 2026-03-30)
-const EXPERT_CENTER_KEYWORDS = [
-  '암센터', '암병원', '중독관리', '알코올상담', '정신건강복지',
-  '근로자건강센터', '금연지원센터', '한국건강증진개발원', '중독관리통합'
-];
-
-// 세그먼트 분류 함수 (P0-C)
-function getSegment(name, type) {
-  if (EXPERT_CENTER_KEYWORDS.some(kw => name.includes(kw))) return '전문센터';
-  if (type === '금연지원센터') return '전문센터';
-  if (['보건소', '광역시도 건강증진부서'].includes(type)) return '보건소';
-  if (['교육기관', '전공교육', '대학보건관리자'].includes(type)) return '학교';
-  if (type === '사업장') return '사업장';
-  if (type === '군/경/소방') return '군경';
-  return '기타';
-}
-
-// 지역별 전체 대상기관 수 (추정)
-const REGION_TOTAL_TARGETS = {
-  '강원특별자치도': 64,
-  '경기도': 124,
-  '경상남도': 55,
-  '경상북도': 71,
-  '광주광역시': 26,
-  '대구광역시': 37,
-  '대전광역시': 25,
-  '부산광역시': 56,
-  '서울특별시': 104,
-  '세종특별자치시': 5,
-  '울산광역시': 16,
-  '인천광역시': 34,
-  '전라남도': 60,
-  '전북특별자치도': 54,
-  '제주특별자치도': 8,
-  '충청남도': 58,
-  '충청북도': 41,
-};
-
-// 지역별 대학보건관리자(HC) 대상 수
-const HC_REGION_TARGETS = {
-  '강원특별자치도': 16,
-  '경기도': 55,
-  '경상남도': 12,
-  '경상북도': 21,
-  '광주광역시': 11,
-  '대구광역시': 8,
-  '대전광역시': 11,
-  '부산광역시': 16,
-  '서울특별시': 53,
-  '세종특별자치시': 4,
-  '울산광역시': 3,
-  '인천광역시': 8,
-  '전라남도': 13,
-  '전북특별자치도': 9,
-  '제주특별자치도': 3,
-  '충청남도': 17,
-  '충청북도': 13,
-};
-
-// 지역별 중심 좌표
-const REGION_CENTERS = {
-  '서울특별시': [37.5665, 126.978],
-  '부산광역시': [35.1796, 129.0756],
-  '대구광역시': [35.8714, 128.6014],
-  '인천광역시': [37.4563, 126.7052],
-  '광주광역시': [35.1595, 126.8526],
-  '대전광역시': [36.3504, 127.3845],
-  '울산광역시': [35.5384, 129.3114],
-  '세종특별자치시': [36.48, 127.0],
-  '경기도': [37.275, 127.01],
-  '강원특별자치도': [37.8228, 128.1555],
-  '충청북도': [36.6357, 127.4912],
-  '충청남도': [36.5184, 126.8],
-  '전북특별자치도': [35.82, 127.11],
-  '전라남도': [34.816, 126.463],
-  '경상북도': [36.576, 128.506],
-  '경상남도': [35.46, 128.213],
-  '제주특별자치도': [33.489, 126.498]
-};
-
-// 정제된 주문 데이터 기반 공공기관 (263개)
-const institutionData = 
-[
+const institutionData = [
   {
-    "id": 1,
+    "id": 839,
+    "name": "강진군보건소",
+    "type": "보건소",
+    "region": "전라남도",
+    "district": "강진군",
+    "lat": 34.9097,
+    "lng": 126.8485,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "단건",
+    "purchaseVolume": 500,
+    "purchaseAmount": 890000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "...
+
+✅ Generated data for 1000 institutions
+// ⚠️ AUTO-GENERATED: Supabase institutions table
+// Generated: 2026-04-02T14:01:39.998Z
+// Do not edit manually - use /rest/v1/institutions API instead
+
+const institutionData = [
+  {
+    "id": 839,
     "name": "강진군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -126,12 +44,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2026-02-13",
     "consultCount": 31,
-    "lastConsultDate": "2019-03-26"
+    "lastConsultDate": null
   },
   {
-    "id": 2,
+    "id": 840,
     "name": "한국기술교육대학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "충청남도",
     "district": "천안시",
     "lat": 36.4509,
@@ -143,13 +61,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 6120,
     "purchaseAmount": 8040000,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2026-02-11",
     "consultCount": 7,
     "lastConsultDate": "2026-02-06"
   },
   {
-    "id": 3,
+    "id": 841,
     "name": "청주시서원보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -157,37 +75,19 @@ const institutionData =
     "lat": 36.7066,
     "lng": 127.5447,
     "products": [
-      "노담패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 10,
-    "purchaseAmount": 50000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2026-02-11",
-    "consultCount": 8,
-    "lastConsultDate": "2025-02-18"
-  },
-  {
-    "id": 4,
-    "name": "청주시서원보건소",
-    "type": "보건소",
-    "region": "충청북도",
-    "district": "청주시",
-    "lat": 36.7534,
-    "lng": 127.3678,
-    "products": [
+      "노담패치",
       "알쓰패치"
     ],
     "purchaseCycle": "단건",
-    "purchaseVolume": 10,
-    "purchaseAmount": 42000,
+    "purchaseVolume": 20,
+    "purchaseAmount": 92000,
     "purchaseStage": "구매",
     "lastPurchaseDate": "2026-02-11",
-    "consultCount": 13,
-    "lastConsultDate": "2024-10-14"
+    "consultCount": 21,
+    "lastConsultDate": null
   },
   {
-    "id": 5,
+    "id": 843,
     "name": "이천시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -203,11 +103,11 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2026-02-10",
     "consultCount": 15,
-    "lastConsultDate": "2022-05-20"
+    "lastConsultDate": null
   },
   {
-    "id": 6,
-    "name": "전북특별자치도 정신건강복지센터",
+    "id": 844,
+    "name": "정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
     "district": "전주시",
@@ -222,10 +122,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2026-02-04",
     "consultCount": 7,
-    "lastConsultDate": "2026-01-29"
+    "lastConsultDate": null
   },
   {
-    "id": 7,
+    "id": 845,
     "name": "횡성군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -239,51 +139,33 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 2856,
     "purchaseAmount": 3985000,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2026-02-03",
     "consultCount": 24,
-    "lastConsultDate": "2026-01-02"
+    "lastConsultDate": null
   },
   {
-    "id": 8,
+    "id": 846,
     "name": "국민건강보험공단 김제지사",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "전북특별자치도",
     "district": "김제시",
     "lat": 35.8653,
     "lng": 127.1224,
     "products": [
-      "노담패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 300,
-    "purchaseAmount": 492000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2026-01-30",
-    "consultCount": 11,
-    "lastConsultDate": "2022-12-13"
-  },
-  {
-    "id": 9,
-    "name": "국민건강보험공단 김제지사",
-    "type": "공공기관(기타)",
-    "region": "전북특별자치도",
-    "district": "김제시",
-    "lat": 35.7364,
-    "lng": 127.1357,
-    "products": [
+      "노담패치",
       "알쓰패치"
     ],
     "purchaseCycle": "단건",
-    "purchaseVolume": 300,
-    "purchaseAmount": 409500,
+    "purchaseVolume": 600,
+    "purchaseAmount": 901500,
     "purchaseStage": "구매",
     "lastPurchaseDate": "2026-01-30",
-    "consultCount": 8,
+    "consultCount": 19,
     "lastConsultDate": "2025-04-17"
   },
   {
-    "id": 10,
+    "id": 848,
     "name": "함평군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -299,10 +181,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2026-01-27",
     "consultCount": 18,
-    "lastConsultDate": "2026-01-26"
+    "lastConsultDate": null
   },
   {
-    "id": 11,
+    "id": 849,
     "name": "선산보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -318,12 +200,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2026-01-14",
     "consultCount": 23,
-    "lastConsultDate": "2026-01-06"
+    "lastConsultDate": null
   },
   {
-    "id": 12,
+    "id": 850,
     "name": "조은요양병원",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "경기도",
     "district": "평택시",
     "lat": 37.3659,
@@ -340,7 +222,7 @@ const institutionData =
     "lastConsultDate": "2020-04-21"
   },
   {
-    "id": 13,
+    "id": 851,
     "name": "김해중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -353,13 +235,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 1702,
     "purchaseAmount": 3070168,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-12-26",
     "consultCount": 40,
-    "lastConsultDate": "2025-11-13"
+    "lastConsultDate": null
   },
   {
-    "id": 14,
+    "id": 852,
     "name": "진주중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -375,10 +257,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-12-26",
     "consultCount": 4,
-    "lastConsultDate": "2015-10-23"
+    "lastConsultDate": null
   },
   {
-    "id": 15,
+    "id": 853,
     "name": "삼척시정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -391,13 +273,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 2002,
     "purchaseAmount": 3617020,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-12-23",
     "consultCount": 5,
-    "lastConsultDate": "2025-12-23"
+    "lastConsultDate": null
   },
   {
-    "id": 16,
+    "id": 854,
     "name": "파주시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -410,13 +292,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1413,
     "purchaseAmount": 987500,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-12-22",
     "consultCount": 19,
-    "lastConsultDate": "2025-11-25"
+    "lastConsultDate": null
   },
   {
-    "id": 17,
+    "id": 855,
     "name": "군위군보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -427,16 +309,16 @@ const institutionData =
       "노담패치",
       "알쓰패치"
     ],
-    "purchaseCycle": "분기",
+    "purchaseCycle": "반기",
     "purchaseVolume": 1752,
     "purchaseAmount": 3975000,
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-12-19",
     "consultCount": 6,
-    "lastConsultDate": "2012-03-15"
+    "lastConsultDate": null
   },
   {
-    "id": 18,
+    "id": 856,
     "name": "광진구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -449,13 +331,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 12560,
     "purchaseAmount": 7885000,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-12-18",
     "consultCount": 32,
-    "lastConsultDate": "2025-12-18"
+    "lastConsultDate": null
   },
   {
-    "id": 19,
+    "id": 857,
     "name": "부산중독관리통합지원센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -468,15 +350,15 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 7310,
     "purchaseAmount": 9051000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-12-17",
     "consultCount": 6,
-    "lastConsultDate": "2025-12-04"
+    "lastConsultDate": null
   },
   {
-    "id": 20,
+    "id": 858,
     "name": "대구광역시청",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "대구광역시",
     "district": "중구",
     "lat": 35.9799,
@@ -493,7 +375,7 @@ const institutionData =
     "lastConsultDate": "2020-10-30"
   },
   {
-    "id": 21,
+    "id": 859,
     "name": "통영시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -506,13 +388,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 2132,
     "purchaseAmount": 4102000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-12-15",
     "consultCount": 63,
-    "lastConsultDate": "2024-11-21"
+    "lastConsultDate": null
   },
   {
-    "id": 22,
+    "id": 860,
     "name": "구미중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -528,10 +410,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-12-15",
     "consultCount": 3,
-    "lastConsultDate": "2025-12-09"
+    "lastConsultDate": null
   },
   {
-    "id": 23,
+    "id": 861,
     "name": "군포시 산본보건지소",
     "type": "보건소",
     "region": "경기도",
@@ -544,13 +426,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 1300,
     "purchaseAmount": 2730000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-12-12",
     "consultCount": 54,
-    "lastConsultDate": "2025-10-24"
+    "lastConsultDate": null
   },
   {
-    "id": 24,
+    "id": 862,
     "name": "포항북구보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -566,11 +448,11 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-12-08",
     "consultCount": 8,
-    "lastConsultDate": "2017-06-09"
+    "lastConsultDate": null
   },
   {
-    "id": 25,
-    "name": "남양주시 동부보건소",
+    "id": 863,
+    "name": "동부보건소",
     "type": "보건소",
     "region": "경기도",
     "district": "남양주시",
@@ -585,12 +467,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-12-05",
     "consultCount": 43,
-    "lastConsultDate": "2025-12-02"
+    "lastConsultDate": null
   },
   {
-    "id": 26,
+    "id": 864,
     "name": "정선고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "강원특별자치도",
     "district": "정선군",
     "lat": 37.7839,
@@ -607,7 +489,7 @@ const institutionData =
     "lastConsultDate": "2025-11-06"
   },
   {
-    "id": 27,
+    "id": 865,
     "name": "제주중독관리통합지원센터",
     "type": "전문기관",
     "region": "제주특별자치도",
@@ -623,10 +505,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-12-02",
     "consultCount": 4,
-    "lastConsultDate": "2020-11-16"
+    "lastConsultDate": null
   },
   {
-    "id": 28,
+    "id": 866,
     "name": "여수시보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -643,10 +525,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-12-01",
     "consultCount": 24,
-    "lastConsultDate": "2024-05-13"
+    "lastConsultDate": null
   },
   {
-    "id": 29,
+    "id": 867,
     "name": "경상남도광역정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -659,13 +541,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1908,
     "purchaseAmount": 1333000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-11-26",
     "consultCount": 5,
-    "lastConsultDate": "2021-04-23"
+    "lastConsultDate": null
   },
   {
-    "id": 30,
+    "id": 868,
     "name": "충북광역정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -681,10 +563,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-25",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 31,
+    "id": 869,
     "name": "대전광역정신건강복지센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -700,10 +582,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-24",
     "consultCount": 1,
-    "lastConsultDate": "2025-11-10"
+    "lastConsultDate": null
   },
   {
-    "id": 32,
+    "id": 870,
     "name": "창원중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -716,13 +598,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 38000,
     "purchaseAmount": 27400000,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-11-24",
     "consultCount": 30,
-    "lastConsultDate": "2025-11-24"
+    "lastConsultDate": null
   },
   {
-    "id": 33,
+    "id": 871,
     "name": "강북구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -735,13 +617,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 5142,
     "purchaseAmount": 5730000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-11-24",
     "consultCount": 41,
-    "lastConsultDate": "2025-11-24"
+    "lastConsultDate": null
   },
   {
-    "id": 34,
+    "id": 872,
     "name": "우산건강생활지원센터",
     "type": "보건소",
     "region": "광주광역시",
@@ -757,12 +639,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-24",
     "consultCount": 8,
-    "lastConsultDate": "2025-10-29"
+    "lastConsultDate": null
   },
   {
-    "id": 35,
-    "name": "서울여자대학교",
-    "type": "교육기관",
+    "id": 873,
+    "name": "서울여자대학교 금연",
+    "type": "초중고",
     "region": "서울특별시",
     "district": "성북구",
     "lat": 37.5111,
@@ -776,10 +658,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-21",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 36,
+    "id": 874,
     "name": "성동구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -795,10 +677,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-20",
     "consultCount": 57,
-    "lastConsultDate": "2025-11-19"
+    "lastConsultDate": null
   },
   {
-    "id": 37,
+    "id": 875,
     "name": "동해시정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -814,10 +696,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-20",
     "consultCount": 13,
-    "lastConsultDate": "2023-08-31"
+    "lastConsultDate": null
   },
   {
-    "id": 38,
+    "id": 876,
     "name": "아산시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -833,12 +715,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-20",
     "consultCount": 36,
-    "lastConsultDate": "2025-11-12"
+    "lastConsultDate": null
   },
   {
-    "id": 39,
+    "id": 877,
     "name": "국군포천병원 외래간호과",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "포천시",
     "lat": 37.5382,
@@ -852,10 +734,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-19",
     "consultCount": 1,
-    "lastConsultDate": "2025-11-18"
+    "lastConsultDate": null
   },
   {
-    "id": 40,
+    "id": 878,
     "name": "괴산군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -871,12 +753,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-19",
     "consultCount": 5,
-    "lastConsultDate": "2025-11-03"
+    "lastConsultDate": null
   },
   {
-    "id": 41,
+    "id": 879,
     "name": "광문고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "서울특별시",
     "district": "강동구",
     "lat": 37.5849,
@@ -893,7 +775,7 @@ const institutionData =
     "lastConsultDate": "2025-11-10"
   },
   {
-    "id": 42,
+    "id": 880,
     "name": "대전서구중독관리통합지원센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -909,11 +791,11 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-13",
     "consultCount": 5,
-    "lastConsultDate": "2025-11-10"
+    "lastConsultDate": null
   },
   {
-    "id": 43,
-    "name": "울릉군보건의료원",
+    "id": 881,
+    "name": "울��군보건의료원",
     "type": "보건소",
     "region": "경상북도",
     "district": "울릉군",
@@ -926,13 +808,13 @@ const institutionData =
     "purchaseCycle": "분기",
     "purchaseVolume": 602,
     "purchaseAmount": 1410000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-11-13",
     "consultCount": 10,
-    "lastConsultDate": "2025-11-11"
+    "lastConsultDate": null
   },
   {
-    "id": 44,
+    "id": 882,
     "name": "제주보건소",
     "type": "보건소",
     "region": "제주특별자치도",
@@ -945,13 +827,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 3000,
     "purchaseAmount": 1780000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-11-12",
     "consultCount": 31,
-    "lastConsultDate": "2025-12-02"
+    "lastConsultDate": null
   },
   {
-    "id": 45,
+    "id": 883,
     "name": "구미건강생활지원센터",
     "type": "보건소",
     "region": "경상북도",
@@ -967,10 +849,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-11",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 46,
+    "id": 884,
     "name": "포항보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -986,12 +868,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-10",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 47,
+    "id": 885,
     "name": "김포시청",
-    "type": "공공기관(기타)",
+    "type": "광역시도 �� 중앙기관",
     "region": "경기도",
     "district": "김포시",
     "lat": 37.5014,
@@ -1008,7 +890,7 @@ const institutionData =
     "lastConsultDate": "2025-11-11"
   },
   {
-    "id": 48,
+    "id": 886,
     "name": "남양주보건소",
     "type": "보건소",
     "region": "경기도",
@@ -1021,16 +903,16 @@ const institutionData =
     "purchaseCycle": "분기",
     "purchaseVolume": 1102,
     "purchaseAmount": 1830000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-11-10",
     "consultCount": 18,
-    "lastConsultDate": "2025-11-03"
+    "lastConsultDate": null
   },
   {
-    "id": 49,
+    "id": 887,
     "name": "무주군보건의료원",
     "type": "보건소",
-    "region": "전북특별자치도",
+    "region": "전��특별자치도",
     "district": "무주군",
     "lat": 35.9691,
     "lng": 127.1176,
@@ -1043,10 +925,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-06",
     "consultCount": 4,
-    "lastConsultDate": "2015-06-10"
+    "lastConsultDate": null
   },
   {
-    "id": 50,
+    "id": 888,
     "name": "김해시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -1063,12 +945,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-04",
     "consultCount": 46,
-    "lastConsultDate": "2025-10-30"
+    "lastConsultDate": null
   },
   {
-    "id": 51,
+    "id": 889,
     "name": "국군수도병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "성남시",
     "lat": 37.2672,
@@ -1083,10 +965,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-04",
     "consultCount": 4,
-    "lastConsultDate": "2025-10-16"
+    "lastConsultDate": null
   },
   {
-    "id": 52,
+    "id": 890,
     "name": "서초구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -1099,13 +981,13 @@ const institutionData =
     "purchaseCycle": "연간",
     "purchaseVolume": 3266,
     "purchaseAmount": 3690000,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-11-03",
     "consultCount": 51,
-    "lastConsultDate": "2025-11-03"
+    "lastConsultDate": null
   },
   {
-    "id": 53,
+    "id": 891,
     "name": "무안군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -1117,17 +999,17 @@ const institutionData =
       "알쓰패치"
     ],
     "purchaseCycle": "반기",
-    "purchaseVolume": 1700,
-    "purchaseAmount": 2173000,
+    "purchaseVolume": 2240,
+    "purchaseAmount": 3134200,
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-11-03",
     "consultCount": 11,
-    "lastConsultDate": "2024-04-25"
+    "lastConsultDate": null
   },
   {
-    "id": 54,
+    "id": 892,
     "name": "중1동행정복지센터",
-    "type": "복지기관",
+    "type": "광역시도 및 중앙기관",
     "region": "부산광역시",
     "district": "해운대구",
     "lat": 35.0631,
@@ -1141,13 +1023,13 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-10-29",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 55,
+    "id": 893,
     "name": "부산 기장군보건소",
     "type": "보건소",
-    "region": "부산광역시",
+    "region": "부산��역시",
     "district": "기장군",
     "lat": 35.1657,
     "lng": 129.2117,
@@ -1160,10 +1042,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-10-29",
     "consultCount": 17,
-    "lastConsultDate": "2024-02-06"
+    "lastConsultDate": null
   },
   {
-    "id": 56,
+    "id": 894,
     "name": "동대문구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -1175,14 +1057,14 @@ const institutionData =
     ],
     "purchaseCycle": "반기",
     "purchaseVolume": 2706,
-    "purchaseAmount": 3170000,
-    "purchaseStage": "만족",
-    "lastPurchaseDate": "2025-10-28",
+    "purchaseAmount": 4220000,
+    "purchaseStage": "재구매",
+    "lastPurchaseDate": "2026-03-25",
     "consultCount": 44,
-    "lastConsultDate": "2025-10-28"
+    "lastConsultDate": null
   },
   {
-    "id": 57,
+    "id": 895,
     "name": "춘천시보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -1196,14 +1078,14 @@ const institutionData =
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-10-27",
+    "lastPurchaseDate": "2026-03-16",
     "consultCount": 14,
-    "lastConsultDate": "2025-06-20"
+    "lastConsultDate": null
   },
   {
-    "id": 58,
+    "id": 896,
     "name": "완산고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "전주시",
     "lat": 35.9441,
@@ -1220,7 +1102,7 @@ const institutionData =
     "lastConsultDate": "2025-03-07"
   },
   {
-    "id": 59,
+    "id": 897,
     "name": "금산군보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -1230,16 +1112,16 @@ const institutionData =
     "products": [
       "알쓰패치"
     ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 742,
-    "purchaseAmount": 842170,
+    "purchaseCycle": "반기",
+    "purchaseVolume": 1892,
+    "purchaseAmount": 2889170,
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-10-22",
     "consultCount": 6,
-    "lastConsultDate": "2015-12-16"
+    "lastConsultDate": null
   },
   {
-    "id": 60,
+    "id": 898,
     "name": "구미시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -1255,12 +1137,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-10-22",
     "consultCount": 3,
-    "lastConsultDate": "2016-09-23"
+    "lastConsultDate": null
   },
   {
-    "id": 61,
+    "id": 899,
     "name": "상경중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "서울특별시",
     "district": "노원구",
     "lat": 37.6453,
@@ -1277,7 +1159,7 @@ const institutionData =
     "lastConsultDate": "2024-09-23"
   },
   {
-    "id": 62,
+    "id": 900,
     "name": "덕양구보건소",
     "type": "보건소",
     "region": "경기도",
@@ -1293,12 +1175,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-10-22",
     "consultCount": 9,
-    "lastConsultDate": "2024-05-01"
+    "lastConsultDate": null
   },
   {
-    "id": 63,
+    "id": 901,
     "name": "60사단 의무대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "고양시",
     "lat": 37.264,
@@ -1310,13 +1192,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1038,
     "purchaseAmount": 959700,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-10-20",
     "consultCount": 7,
-    "lastConsultDate": "2025-10-13"
+    "lastConsultDate": null
   },
   {
-    "id": 64,
+    "id": 902,
     "name": "옹진군보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -1330,13 +1212,13 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 1552,
     "purchaseAmount": 2774500,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-10-20",
     "consultCount": 17,
-    "lastConsultDate": "2025-08-29"
+    "lastConsultDate": null
   },
   {
-    "id": 65,
+    "id": 903,
     "name": "마포구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -1344,7 +1226,7 @@ const institutionData =
     "lat": 37.6801,
     "lng": 127.0775,
     "products": [
-      "알쓰패치"
+      "알쓰���치"
     ],
     "purchaseCycle": "반기",
     "purchaseVolume": 550,
@@ -1352,10 +1234,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-10-14",
     "consultCount": 10,
-    "lastConsultDate": "2025-09-04"
+    "lastConsultDate": null
   },
   {
-    "id": 66,
+    "id": 904,
     "name": "보령시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -1371,10 +1253,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-10-14",
     "consultCount": 33,
-    "lastConsultDate": "2021-02-26"
+    "lastConsultDate": null
   },
   {
-    "id": 67,
+    "id": 905,
     "name": "도봉중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -1387,15 +1269,15 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 2753,
     "purchaseAmount": 2550000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-10-10",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 68,
+    "id": 906,
     "name": "한국보훈복지의료공단 광주보훈병원",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "광주광역시",
     "district": "광산구",
     "lat": 35.0352,
@@ -1409,10 +1291,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-30",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 69,
+    "id": 907,
     "name": "대구북구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -1428,12 +1310,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-30",
     "consultCount": 19,
-    "lastConsultDate": "2025-09-30"
+    "lastConsultDate": null
   },
   {
-    "id": 70,
+    "id": 908,
     "name": "서울시통합건강증진사업지원단",
-    "type": "광역시도 건강증진부서",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "광진구",
     "lat": 37.6463,
@@ -1450,7 +1332,7 @@ const institutionData =
     "lastConsultDate": "2025-09-26"
   },
   {
-    "id": 71,
+    "id": 909,
     "name": "약학대학 학부실습 과정에 사용 예정",
     "type": "전공교육",
     "region": "인천광역시",
@@ -1466,10 +1348,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-30",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 72,
+    "id": 910,
     "name": "마포구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -1482,14 +1364,14 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 4272,
     "purchaseAmount": 5499600,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-09-26",
     "consultCount": 28,
-    "lastConsultDate": "2025-12-09"
+    "lastConsultDate": null
   },
   {
-    "id": 73,
-    "name": "국립정신건강센터",
+    "id": 911,
+    "name": "국립정신건강센터 정신건강사업과",
     "type": "전문기관",
     "region": "경기도",
     "district": "평택시",
@@ -1504,10 +1386,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-22",
     "consultCount": 1,
-    "lastConsultDate": "2016-12-20"
+    "lastConsultDate": null
   },
   {
-    "id": 74,
+    "id": 912,
     "name": "부산가톨릭대학교중독이음센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -1524,10 +1406,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-22",
     "consultCount": 2,
-    "lastConsultDate": "2021-09-01"
+    "lastConsultDate": null
   },
   {
-    "id": 75,
+    "id": 913,
     "name": "양천구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -1543,12 +1425,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-18",
     "consultCount": 15,
-    "lastConsultDate": "2020-08-31"
+    "lastConsultDate": null
   },
   {
-    "id": 76,
+    "id": 914,
     "name": "안양범계중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경기도",
     "district": "남양주시",
     "lat": 37.5623,
@@ -1562,10 +1444,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-16",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 77,
+    "id": 915,
     "name": "광주 광산중독관리통합지원센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -1581,10 +1463,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-15",
     "consultCount": 2,
-    "lastConsultDate": "2018-09-28"
+    "lastConsultDate": null
   },
   {
-    "id": 78,
+    "id": 916,
     "name": "군산시보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -1600,10 +1482,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-12",
     "consultCount": 9,
-    "lastConsultDate": "2023-05-11"
+    "lastConsultDate": null
   },
   {
-    "id": 79,
+    "id": 917,
     "name": "사천시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -1614,16 +1496,16 @@ const institutionData =
       "알쓰패치"
     ],
     "purchaseCycle": "반기",
-    "purchaseVolume": 1600,
-    "purchaseAmount": 3360000,
+    "purchaseVolume": 2550,
+    "purchaseAmount": 5355000,
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-11",
     "consultCount": 35,
-    "lastConsultDate": "2025-09-10"
+    "lastConsultDate": null
   },
   {
-    "id": 80,
-    "name": "대구광역시 중구보건소",
+    "id": 918,
+    "name": "중구보건소",
     "type": "보건소",
     "region": "대구광역시",
     "district": "중구",
@@ -1638,12 +1520,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-11",
     "consultCount": 4,
-    "lastConsultDate": "2024-02-29"
+    "lastConsultDate": null
   },
   {
-    "id": 81,
+    "id": 919,
     "name": "전남여자상업고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경기도",
     "district": "남양주시",
     "lat": 37.2851,
@@ -1657,10 +1539,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-09",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 82,
+    "id": 920,
     "name": "안성시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -1676,12 +1558,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-09",
     "consultCount": 56,
-    "lastConsultDate": "2024-04-29"
+    "lastConsultDate": null
   },
   {
-    "id": 83,
+    "id": 921,
     "name": "전북대학교 소방공무원 심리지원센터",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "전주시",
     "lat": 35.9282,
@@ -1698,7 +1580,7 @@ const institutionData =
     "lastConsultDate": "2025-09-04"
   },
   {
-    "id": 84,
+    "id": 922,
     "name": "서대문구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -1714,12 +1596,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-02",
     "consultCount": 61,
-    "lastConsultDate": "2024-10-07"
+    "lastConsultDate": null
   },
   {
-    "id": 85,
+    "id": 923,
     "name": "[육군]66보병사단 의무대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "가평군",
     "lat": 37.5445,
@@ -1733,10 +1615,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-09-02",
     "consultCount": 3,
-    "lastConsultDate": "2021-08-26"
+    "lastConsultDate": null
   },
   {
-    "id": 86,
+    "id": 924,
     "name": "송파구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -1749,15 +1631,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 4000,
     "purchaseAmount": 2100000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-09-02",
     "consultCount": 4,
-    "lastConsultDate": "2025-09-01"
+    "lastConsultDate": null
   },
   {
-    "id": 87,
+    "id": 925,
     "name": "한양대학교 학생지원팀 한양보건센터",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경기도",
     "district": "안산시",
     "lat": 37.506,
@@ -1774,7 +1656,7 @@ const institutionData =
     "lastConsultDate": "2021-02-15"
   },
   {
-    "id": 88,
+    "id": 926,
     "name": "서울중구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -1787,15 +1669,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1503,
     "purchaseAmount": 1000000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-08-27",
     "consultCount": 4,
-    "lastConsultDate": "2025-08-19"
+    "lastConsultDate": null
   },
   {
-    "id": 89,
+    "id": 927,
     "name": "국립부곡병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경상남도",
     "district": "창녕군",
     "lat": 35.4377,
@@ -1809,10 +1691,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-08-27",
     "consultCount": 10,
-    "lastConsultDate": "2024-12-09"
+    "lastConsultDate": null
   },
   {
-    "id": 90,
+    "id": 928,
     "name": "양평군보건소",
     "type": "보건소",
     "region": "경기도",
@@ -1829,10 +1711,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-08-24",
     "consultCount": 21,
-    "lastConsultDate": "2025-11-14"
+    "lastConsultDate": null
   },
   {
-    "id": 91,
+    "id": 929,
     "name": "대구수성구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -1848,12 +1730,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-08-20",
     "consultCount": 10,
-    "lastConsultDate": "2023-06-14"
+    "lastConsultDate": null
   },
   {
-    "id": 92,
+    "id": 930,
     "name": "국군양주병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "양주시",
     "lat": 37.3846,
@@ -1864,13 +1746,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 1350,
     "purchaseAmount": 3150000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-08-11",
     "consultCount": 4,
-    "lastConsultDate": "2025-08-11"
+    "lastConsultDate": null
   },
   {
-    "id": 93,
+    "id": 931,
     "name": "경주시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -1882,14 +1764,14 @@ const institutionData =
     ],
     "purchaseCycle": "반기",
     "purchaseVolume": 7502,
-    "purchaseAmount": 11580000,
-    "purchaseStage": "추천",
-    "lastPurchaseDate": "2025-08-08",
+    "purchaseAmount": 12630000,
+    "purchaseStage": "파트너",
+    "lastPurchaseDate": "2026-03-17",
     "consultCount": 36,
-    "lastConsultDate": "2025-08-07"
+    "lastConsultDate": null
   },
   {
-    "id": 94,
+    "id": 932,
     "name": "울주군보건소",
     "type": "보건소",
     "region": "울산광역시",
@@ -1902,13 +1784,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 4603,
     "purchaseAmount": 10500000,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-08-07",
     "consultCount": 58,
-    "lastConsultDate": "2025-04-21"
+    "lastConsultDate": null
   },
   {
-    "id": 95,
+    "id": 933,
     "name": "서울금연지원센터",
     "type": "금연지원센터",
     "region": "서울특별시",
@@ -1921,15 +1803,15 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 2000,
     "purchaseAmount": 4750000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-08-05",
     "consultCount": 7,
     "lastConsultDate": "2025-02-17"
   },
   {
-    "id": 96,
+    "id": 934,
     "name": "3사단 의무대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "강원특별자치도",
     "district": "철원군",
     "lat": 37.8057,
@@ -1943,10 +1825,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-07-30",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 97,
+    "id": 935,
     "name": "영동군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -1956,16 +1838,16 @@ const institutionData =
     "products": [
       "알쓰패치"
     ],
-    "purchaseCycle": "분기",
-    "purchaseVolume": 2500,
-    "purchaseAmount": 3925000,
+    "purchaseCycle": "반기",
+    "purchaseVolume": 3000,
+    "purchaseAmount": 4710000,
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-07-29",
     "consultCount": 15,
-    "lastConsultDate": "2021-07-02"
+    "lastConsultDate": null
   },
   {
-    "id": 98,
+    "id": 936,
     "name": "연수구중독관리통합지원센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -1981,10 +1863,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-07-25",
     "consultCount": 20,
-    "lastConsultDate": "2025-07-25"
+    "lastConsultDate": null
   },
   {
-    "id": 99,
+    "id": 937,
     "name": "송파구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -1996,14 +1878,14 @@ const institutionData =
     ],
     "purchaseCycle": "반기",
     "purchaseVolume": 1500,
-    "purchaseAmount": 3150000,
+    "purchaseAmount": 4200000,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-07-22",
+    "lastPurchaseDate": "2026-03-05",
     "consultCount": 8,
-    "lastConsultDate": "2025-07-21"
+    "lastConsultDate": null
   },
   {
-    "id": 100,
+    "id": 938,
     "name": "경기도중독관리센터",
     "type": "전문기관",
     "region": "경기도",
@@ -2019,29 +1901,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-07-04",
     "consultCount": 52,
-    "lastConsultDate": "2024-10-31"
+    "lastConsultDate": null
   },
   {
-    "id": 101,
-    "name": "국군강릉병원",
-    "type": "군/경/소방",
-    "region": "인천광역시",
-    "district": "남동구",
-    "lat": 37.452,
-    "lng": 126.6193,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 300,
-    "purchaseAmount": 636000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-07-03",
-    "consultCount": 8,
-    "lastConsultDate": "2024-10-04"
-  },
-  {
-    "id": 102,
+    "id": 940,
     "name": "마산중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -2054,13 +1917,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 3000,
     "purchaseAmount": 2000000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-07-02",
     "consultCount": 9,
-    "lastConsultDate": "2025-08-29"
+    "lastConsultDate": null
   },
   {
-    "id": 103,
+    "id": 941,
     "name": "대전세종금연지원센터",
     "type": "금연지원센터",
     "region": "대전광역시",
@@ -2079,7 +1942,7 @@ const institutionData =
     "lastConsultDate": "2025-06-25"
   },
   {
-    "id": 104,
+    "id": 942,
     "name": "진주시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -2095,12 +1958,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-06-27",
     "consultCount": 25,
-    "lastConsultDate": "2022-10-21"
+    "lastConsultDate": null
   },
   {
-    "id": 105,
+    "id": 943,
     "name": "육군제2062부대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "남양주시",
     "lat": 37.4003,
@@ -2114,10 +1977,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-06-23",
     "consultCount": 1,
-    "lastConsultDate": "2019-06-17"
+    "lastConsultDate": null
   },
   {
-    "id": 106,
+    "id": 944,
     "name": "춘천시보건소 건강관리과",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -2130,15 +1993,15 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 1502,
     "purchaseAmount": 2130000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-06-20",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 107,
+    "id": 945,
     "name": "한국건강관리협회 울산광역시지부",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "울산광역시",
     "district": "중구",
     "lat": 35.5551,
@@ -2155,45 +2018,26 @@ const institutionData =
     "lastConsultDate": "2020-05-14"
   },
   {
-    "id": 108,
+    "id": 946,
     "name": "홍성군보건소",
     "type": "보건소",
-    "region": "대전광역시",
-    "district": "중구",
+    "region": "충청남도",
+    "district": "홍성군",
     "lat": 36.2468,
     "lng": 127.3235,
     "products": [
       "알쓰패치"
     ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 3060,
-    "purchaseAmount": 712000,
-    "purchaseStage": "구매",
+    "purchaseCycle": "반기",
+    "purchaseVolume": 12240,
+    "purchaseAmount": 2723400,
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-06-13",
     "consultCount": 24,
-    "lastConsultDate": "2025-09-23"
+    "lastConsultDate": null
   },
   {
-    "id": 109,
-    "name": "홍성군보건소",
-    "type": "보건소",
-    "region": "충청남도",
-    "district": "홍성군",
-    "lat": 36.491,
-    "lng": 127.4083,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 9180,
-    "purchaseAmount": 2011400,
-    "purchaseStage": "추천",
-    "lastPurchaseDate": "2025-06-13",
-    "consultCount": 24,
-    "lastConsultDate": "2025-09-23"
-  },
-  {
-    "id": 110,
+    "id": 947,
     "name": "부안보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -2209,12 +2053,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-06-11",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 111,
+    "id": 948,
     "name": "설천중·고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "무주군",
     "lat": 35.6874,
@@ -2228,10 +2072,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-06-11",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 112,
+    "id": 949,
     "name": "남해군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -2247,11 +2091,11 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-06-05",
     "consultCount": 43,
-    "lastConsultDate": "2024-05-28"
+    "lastConsultDate": null
   },
   {
-    "id": 113,
-    "name": "보건소 납품",
+    "id": 950,
+    "name": "보건소",
     "type": "보건소",
     "region": "광주광역시",
     "district": "북구",
@@ -2266,12 +2110,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-06-04",
     "consultCount": 769,
-    "lastConsultDate": "2026-01-12"
+    "lastConsultDate": null
   },
   {
-    "id": 114,
+    "id": 951,
     "name": "예산덕산중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "충청남도",
     "district": "예산군",
     "lat": 36.3924,
@@ -2285,12 +2129,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-05-30",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 115,
+    "id": 952,
     "name": "한국건강관리협회",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "강서구",
     "lat": 37.595,
@@ -2307,9 +2151,9 @@ const institutionData =
     "lastConsultDate": "2024-02-06"
   },
   {
-    "id": 116,
+    "id": 953,
     "name": "한국경마축산고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "남원시",
     "lat": 35.7409,
@@ -2323,10 +2167,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-05-27",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 117,
+    "id": 954,
     "name": "달성군보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -2339,13 +2183,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 906,
     "purchaseAmount": 810000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-05-26",
     "consultCount": 83,
-    "lastConsultDate": "2025-05-26"
+    "lastConsultDate": null
   },
   {
-    "id": 118,
+    "id": 955,
     "name": "강남구보건소 금연클리닉",
     "type": "보건소",
     "region": "서울특별시",
@@ -2359,15 +2203,15 @@ const institutionData =
     "purchaseCycle": "분기",
     "purchaseVolume": 11487,
     "purchaseAmount": 15111600,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-05-19",
     "consultCount": 92,
-    "lastConsultDate": "2025-07-09"
+    "lastConsultDate": null
   },
   {
-    "id": 119,
+    "id": 956,
     "name": "줄포자동차공업고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "부안군",
     "lat": 35.7961,
@@ -2384,7 +2228,7 @@ const institutionData =
     "lastConsultDate": "2015-11-04"
   },
   {
-    "id": 120,
+    "id": 957,
     "name": "종로구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -2400,10 +2244,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-05-14",
     "consultCount": 13,
-    "lastConsultDate": "2025-04-14"
+    "lastConsultDate": null
   },
   {
-    "id": 121,
+    "id": 958,
     "name": "대구한의대학교 보건학부",
     "type": "전공교육",
     "region": "경상북도",
@@ -2422,7 +2266,7 @@ const institutionData =
     "lastConsultDate": "2024-06-07"
   },
   {
-    "id": 122,
+    "id": 959,
     "name": "용인 3개구 보건소",
     "type": "보건소",
     "region": "경기도",
@@ -2438,12 +2282,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-05-13",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 123,
+    "id": 960,
     "name": "무주중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "무주군",
     "lat": 35.8718,
@@ -2457,12 +2301,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-05-12",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 124,
+    "id": 961,
     "name": "카프성모병원",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "고양시",
     "lat": 37.3587,
@@ -2479,9 +2323,9 @@ const institutionData =
     "lastConsultDate": "2020-04-17"
   },
   {
-    "id": 125,
+    "id": 962,
     "name": "청평고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경기도",
     "district": "가평군",
     "lat": 37.2856,
@@ -2493,15 +2337,15 @@ const institutionData =
     "purchaseCycle": "분기",
     "purchaseVolume": 72,
     "purchaseAmount": 334000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-05-08",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 126,
+    "id": 963,
     "name": "학교 보건수업",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "익산시",
     "lat": 35.9698,
@@ -2515,10 +2359,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-05-07",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 127,
+    "id": 964,
     "name": "서산시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -2534,10 +2378,10 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2025-05-01",
     "consultCount": 7,
-    "lastConsultDate": "2025-05-01"
+    "lastConsultDate": null
   },
   {
-    "id": 128,
+    "id": 965,
     "name": "대구한의대학교",
     "type": "전공교육",
     "region": "경상북도",
@@ -2548,15 +2392,15 @@ const institutionData =
       "알쓰패치"
     ],
     "purchaseCycle": "반기",
-    "purchaseVolume": 240,
-    "purchaseAmount": 717600,
+    "purchaseVolume": 4090,
+    "purchaseAmount": 3797600,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-04-25",
+    "lastPurchaseDate": "Tue May 13 2025 00:00:00 GMT+0900 (한국 표준시)",
     "consultCount": 1,
     "lastConsultDate": "2023-05-15"
   },
   {
-    "id": 129,
+    "id": 966,
     "name": "서울금연",
     "type": "금연지원센터",
     "region": "서울특별시",
@@ -2569,15 +2413,15 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 1600,
     "purchaseAmount": 2500000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-04-15",
     "consultCount": 1,
     "lastConsultDate": "2025-04-04"
   },
   {
-    "id": 130,
+    "id": 967,
     "name": "17사단의무대대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "인천광역시",
     "district": "부평구",
     "lat": 37.4172,
@@ -2589,15 +2433,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 5724,
     "purchaseAmount": 1550000,
-    "purchaseStage": "추천",
+    "purchaseStage": "파트너",
     "lastPurchaseDate": "2025-04-14",
     "consultCount": 7,
-    "lastConsultDate": "2025-04-09"
+    "lastConsultDate": null
   },
   {
-    "id": 131,
+    "id": 968,
     "name": "전주중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "전주시",
     "lat": 35.9204,
@@ -2608,15 +2452,15 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 1120,
     "purchaseAmount": 2010000,
-    "purchaseStage": "만족",
+    "purchaseStage": "재구매",
     "lastPurchaseDate": "2025-04-08",
     "consultCount": 3,
     "lastConsultDate": "2023-08-25"
   },
   {
-    "id": 132,
+    "id": 969,
     "name": "동국대학교사범대학부속고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "서울특별시",
     "district": "동대문구",
     "lat": 37.6,
@@ -2634,9 +2478,9 @@ const institutionData =
     "lastConsultDate": "2024-10-18"
   },
   {
-    "id": 133,
+    "id": 970,
     "name": "서울교통공사",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "서울특별시",
     "district": "성동구",
     "lat": 37.6127,
@@ -2646,16 +2490,16 @@ const institutionData =
     ],
     "purchaseCycle": "단건",
     "purchaseVolume": 501,
-    "purchaseAmount": 1050000,
+    "purchaseAmount": 2100000,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-03-27",
+    "lastPurchaseDate": "2026-03-30",
     "consultCount": 3,
     "lastConsultDate": "2025-03-24"
   },
   {
-    "id": 134,
+    "id": 971,
     "name": "한국나노마이스터고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경상남도",
     "district": "밀양시",
     "lat": 35.5557,
@@ -2666,13 +2510,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 150,
     "purchaseAmount": 382500,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-03-20",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 135,
+    "id": 972,
     "name": "아산시보건소 중독관리통합지원센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -2685,15 +2529,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 534000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-03-19",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 136,
+    "id": 973,
     "name": "전주호성중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "전주시",
     "lat": 35.7024,
@@ -2702,15 +2546,15 @@ const institutionData =
       "알쓰패치"
     ],
     "purchaseCycle": "단건",
-    "purchaseVolume": 41,
-    "purchaseAmount": 172200,
+    "purchaseVolume": 159,
+    "purchaseAmount": 526200,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-03-18",
+    "lastPurchaseDate": "2026-03-23",
     "consultCount": 2,
     "lastConsultDate": "2024-03-27"
   },
   {
-    "id": 137,
+    "id": 974,
     "name": "유성구중독관리통합지원센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -2723,34 +2567,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 420000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-03-07",
     "consultCount": 4,
     "lastConsultDate": "2020-12-07"
   },
   {
-    "id": 138,
-    "name": "사업장 건강증진프로그램",
-    "type": "사업장",
-    "region": "경기도",
-    "district": "이천시",
-    "lat": 37.4791,
-    "lng": 127.4294,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 70,
-    "purchaseAmount": 294000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-03-05",
-    "consultCount": 11,
-    "lastConsultDate": "2026-01-12"
-  },
-  {
-    "id": 139,
-    "name": "판촉사랑->국군강릉병원으로 납품",
-    "type": "사업장",
+    "id": 976,
+    "name": "국군강릉병원",
+    "type": "산업보건",
     "region": "인천광역시",
     "district": "남동구",
     "lat": 37.4966,
@@ -2761,13 +2586,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 200,
     "purchaseAmount": 510000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-03-05",
     "consultCount": 52,
     "lastConsultDate": "2025-03-04"
   },
   {
-    "id": 140,
+    "id": 977,
     "name": "성남시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -2780,14 +2605,14 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-03-05",
     "consultCount": 4,
     "lastConsultDate": "2021-02-24"
   },
   {
-    "id": 141,
-    "name": "광주광역시 서구보건소",
+    "id": 978,
+    "name": "서구보건소",
     "type": "보건소",
     "region": "광주광역시",
     "district": "서구",
@@ -2799,13 +2624,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 550,
     "purchaseAmount": 979000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-02-28",
     "consultCount": 5,
     "lastConsultDate": "2023-11-28"
   },
   {
-    "id": 142,
+    "id": 979,
     "name": "아산시중독관리통합지원센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -2818,15 +2643,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 890000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-02-26",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 143,
+    "id": 980,
     "name": "온누리안과병원",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "전북특별자치도",
     "district": "전주시",
     "lat": 35.6714,
@@ -2837,15 +2662,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-02-24",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 144,
+    "id": 981,
     "name": "GC녹십자 건강관리실",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "경기도",
     "district": "용인시",
     "lat": 37.4549,
@@ -2856,13 +2681,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 301,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2025-02-05",
     "consultCount": 2,
     "lastConsultDate": "2025-02-04"
   },
   {
-    "id": 145,
+    "id": 982,
     "name": "순천향대학교",
     "type": "전공교육",
     "region": "충청남도",
@@ -2873,17 +2698,17 @@ const institutionData =
       "알쓰패치"
     ],
     "purchaseCycle": "단건",
-    "purchaseVolume": 10,
-    "purchaseAmount": 42000,
+    "purchaseVolume": 60,
+    "purchaseAmount": 82000,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2025-01-14",
+    "lastPurchaseDate": "Tue Jan 14 2025 00:00:00 GMT+0900 (한국 표준시)",
     "consultCount": 2,
     "lastConsultDate": "2019-10-23"
   },
   {
-    "id": 146,
+    "id": 983,
     "name": "고등학교 동아리 행사",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경상북도",
     "district": "영주시",
     "lat": 36.4702,
@@ -2894,13 +2719,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 36,
     "purchaseAmount": 147000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-31",
     "consultCount": 9,
     "lastConsultDate": "2024-06-24"
   },
   {
-    "id": 147,
+    "id": 984,
     "name": "창원시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -2913,15 +2738,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 9000,
     "purchaseAmount": 6300000,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-23",
     "consultCount": 11,
     "lastConsultDate": "2020-10-08"
   },
   {
-    "id": 148,
+    "id": 985,
     "name": "경북기계공업고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경상북도",
     "district": "경산시",
     "lat": 36.6131,
@@ -2933,13 +2758,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 220,
     "purchaseAmount": 426700,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-20",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 149,
+    "id": 986,
     "name": "김포시정신건강복지센터 부설 중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -2952,13 +2777,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1250,
     "purchaseAmount": 2625000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-20",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 150,
+    "id": 987,
     "name": "바이플러스,김제시보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -2972,15 +2797,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 600,
     "purchaseAmount": 841500,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-13",
     "consultCount": 19,
     "lastConsultDate": "2023-05-22"
   },
   {
-    "id": 151,
+    "id": 988,
     "name": "춘성중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "강원특별자치도",
     "district": "춘천시",
     "lat": 37.7653,
@@ -2991,32 +2816,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 40,
     "purchaseAmount": 168000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-11",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 152,
-    "name": "무안군보건소",
-    "type": "보건소",
-    "region": "전라남도",
-    "district": "무안군",
-    "lat": 35.2792,
-    "lng": 126.7656,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 540,
-    "purchaseAmount": 961200,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2024-12-09",
-    "consultCount": 11,
-    "lastConsultDate": "2024-04-25"
-  },
-  {
-    "id": 153,
+    "id": 989,
     "name": "인천동구중독관리통합지원센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -3029,13 +2835,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 4014,
     "purchaseAmount": 4560000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-05",
     "consultCount": 4,
     "lastConsultDate": "2024-11-22"
   },
   {
-    "id": 154,
+    "id": 990,
     "name": "광주북구중독관리통합지원센터",
     "type": "전문기관",
     "region": "광주광역시",
@@ -3048,13 +2854,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1000,
     "purchaseAmount": 2100000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-05",
     "consultCount": 4,
     "lastConsultDate": "2012-03-22"
   },
   {
-    "id": 155,
+    "id": 991,
     "name": "동두천정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -3067,15 +2873,15 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 60,
     "purchaseAmount": 200000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-03",
     "consultCount": 2,
     "lastConsultDate": "2024-12-06"
   },
   {
-    "id": 156,
+    "id": 992,
     "name": "청양정산중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "충청남도",
     "district": "청양군",
     "lat": 36.6278,
@@ -3086,34 +2892,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 150,
     "purchaseAmount": 459000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-12-03",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 157,
-    "name": "금산군보건소",
-    "type": "보건소",
-    "region": "충청남도",
-    "district": "금산군",
-    "lat": 36.4436,
-    "lng": 127.4989,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 1150,
-    "purchaseAmount": 2047000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2024-11-26",
-    "consultCount": 6,
-    "lastConsultDate": "2015-12-16"
-  },
-  {
-    "id": 158,
+    "id": 993,
     "name": "육군사관학교 의무대대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "노원구",
     "lat": 37.4239,
@@ -3124,15 +2911,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-11-25",
     "consultCount": 4,
     "lastConsultDate": "2024-11-25"
   },
   {
-    "id": 159,
+    "id": 994,
     "name": "국민건강의료기",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "경상북도",
     "district": "포항시",
     "lat": 36.5826,
@@ -3144,13 +2931,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1200,
     "purchaseAmount": 1170000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-11-18",
     "consultCount": 12,
     "lastConsultDate": "2025-05-07"
   },
   {
-    "id": 160,
+    "id": 995,
     "name": "진주보건소, 맥선",
     "type": "보건소",
     "region": "경상남도",
@@ -3163,15 +2950,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 900,
     "purchaseAmount": 1413000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-11-15",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 161,
+    "id": 996,
     "name": "국군춘천병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "강원특별자치도",
     "district": "춘천시",
     "lat": 37.909,
@@ -3182,15 +2969,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 40,
     "purchaseAmount": 126000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-11-14",
     "consultCount": 2,
     "lastConsultDate": "2019-04-22"
   },
   {
-    "id": 162,
+    "id": 997,
     "name": "국군서울지구병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "종로구",
     "lat": 37.6782,
@@ -3201,13 +2988,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 74,
     "purchaseAmount": 147000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-11-13",
     "consultCount": 6,
     "lastConsultDate": "2024-11-11"
   },
   {
-    "id": 163,
+    "id": 998,
     "name": "대구남구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -3220,13 +3007,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 3902,
     "purchaseAmount": 4125000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-11-01",
     "consultCount": 26,
     "lastConsultDate": "2025-05-12"
   },
   {
-    "id": 164,
+    "id": 999,
     "name": "기장군보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -3239,13 +3026,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 1502,
     "purchaseAmount": 2150000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-11-01",
     "consultCount": 8,
     "lastConsultDate": "2023-10-06"
   },
   {
-    "id": 165,
+    "id": 1000,
     "name": "남양주동부보건센터",
     "type": "보건소",
     "region": "경기도",
@@ -3258,15 +3045,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-10-31",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 166,
+    "id": 1001,
     "name": "15사단 의무대대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "강원특별자치도",
     "district": "화천군",
     "lat": 37.6799,
@@ -3277,15 +3064,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-10-29",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 167,
+    "id": 1002,
     "name": "75사단 의무대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "남양주시",
     "lat": 37.3623,
@@ -3296,13 +3083,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 402,
     "purchaseAmount": 630000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-10-17",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 168,
+    "id": 1003,
     "name": "대구동구중독관리통합지원센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -3315,15 +3102,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-10-16",
     "consultCount": 7,
     "lastConsultDate": "2015-04-13"
   },
   {
-    "id": 169,
+    "id": 1004,
     "name": "국군강릉병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "강원특별자치도",
     "district": "강릉시",
     "lat": 37.8652,
@@ -3334,15 +3121,15 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 386,
     "purchaseAmount": 990000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-10-08",
     "consultCount": 8,
     "lastConsultDate": "2024-10-04"
   },
   {
-    "id": 170,
+    "id": 1005,
     "name": "서울시통합건강증진사업단",
-    "type": "광역시도 건강증진부서",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "광진구",
     "lat": 37.6983,
@@ -3353,13 +3140,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 3735,
     "purchaseAmount": 3610500,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-09-30",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 171,
+    "id": 1006,
     "name": "수성구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -3372,13 +3159,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 785000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-09-19",
     "consultCount": 2,
     "lastConsultDate": "2019-07-12"
   },
   {
-    "id": 172,
+    "id": 1007,
     "name": "종로구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -3391,13 +3178,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 230,
     "purchaseAmount": 600000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-09-12",
     "consultCount": 13,
     "lastConsultDate": "2024-07-23"
   },
   {
-    "id": 173,
+    "id": 1008,
     "name": "동대문구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -3410,13 +3197,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 50,
     "purchaseAmount": 210000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-09-09",
     "consultCount": 1,
     "lastConsultDate": "2017-08-14"
   },
   {
-    "id": 174,
+    "id": 1009,
     "name": "동작구정신보건복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -3429,13 +3216,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-09-06",
     "consultCount": 14,
     "lastConsultDate": "2024-09-06"
   },
   {
-    "id": 175,
+    "id": 1010,
     "name": "울산 남구보건소",
     "type": "보건소",
     "region": "울산광역시",
@@ -3448,13 +3235,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 2301,
     "purchaseAmount": 5880000,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-09-06",
     "consultCount": 40,
     "lastConsultDate": "2023-08-28"
   },
   {
-    "id": 176,
+    "id": 1011,
     "name": "예산군보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -3462,20 +3249,21 @@ const institutionData =
     "lat": 36.484,
     "lng": 126.823,
     "products": [
-      "노담패치"
+      "노담패치",
+      "알쓰패치"
     ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 2000,
-    "purchaseAmount": 2500000,
-    "purchaseStage": "구매",
+    "purchaseCycle": "반기",
+    "purchaseVolume": 3600,
+    "purchaseAmount": 3924000,
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-09-05",
     "consultCount": 18,
     "lastConsultDate": "2024-09-06"
   },
   {
-    "id": 177,
+    "id": 1012,
     "name": "서울시청",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "중구",
     "lat": 37.417,
@@ -3486,13 +3274,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 2000,
     "purchaseAmount": 1570000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-08-30",
     "consultCount": 17,
     "lastConsultDate": "2024-10-29"
   },
   {
-    "id": 178,
+    "id": 1013,
     "name": "정선군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -3504,14 +3292,14 @@ const institutionData =
     ],
     "purchaseCycle": "단건",
     "purchaseVolume": 1000,
-    "purchaseAmount": 890000,
+    "purchaseAmount": 1940000,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2024-08-28",
+    "lastPurchaseDate": "2026-03-17",
     "consultCount": 37,
-    "lastConsultDate": "2023-10-23"
+    "lastConsultDate": null
   },
   {
-    "id": 179,
+    "id": 1014,
     "name": "영등포구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -3524,13 +3312,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1842,
     "purchaseAmount": 1932000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-08-26",
     "consultCount": 24,
     "lastConsultDate": "2025-03-21"
   },
   {
-    "id": 180,
+    "id": 1015,
     "name": "경상대예방의학교실",
     "type": "전공교육",
     "region": "경상남도",
@@ -3543,13 +3331,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 5,
     "purchaseAmount": 148500,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-08-22",
     "consultCount": 2,
     "lastConsultDate": "2024-08-21"
   },
   {
-    "id": 181,
+    "id": 1016,
     "name": "경상국립대학교 예방의학교실",
     "type": "전공교육",
     "region": "경상남도",
@@ -3562,13 +3350,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 607,
     "purchaseAmount": 784300,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-07-12",
     "consultCount": 3,
     "lastConsultDate": "2024-08-26"
   },
   {
-    "id": 182,
+    "id": 1017,
     "name": "태백시보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -3581,17 +3369,17 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 1966,
     "purchaseAmount": 4074000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-07-05",
     "consultCount": 13,
     "lastConsultDate": "2024-07-03"
   },
   {
-    "id": 183,
+    "id": 1018,
     "name": "국군구리병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
-    "district": "구리시",
+    "district": "��리시",
     "lat": 37.3566,
     "lng": 127.4908,
     "products": [
@@ -3600,34 +3388,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-07-05",
     "consultCount": 3,
     "lastConsultDate": "2024-09-13"
   },
   {
-    "id": 184,
-    "name": "예산군보건소",
-    "type": "보건소",
-    "region": "충청남도",
-    "district": "예산군",
-    "lat": 36.3211,
-    "lng": 127.3232,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 1600,
-    "purchaseAmount": 1424000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2024-06-21",
-    "consultCount": 18,
-    "lastConsultDate": "2024-09-06"
-  },
-  {
-    "id": 185,
+    "id": 1019,
     "name": "완도해양경찰서",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "전라남도",
     "district": "완도군",
     "lat": 34.7561,
@@ -3638,13 +3407,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 400,
     "purchaseAmount": 800000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-06-17",
     "consultCount": 3,
     "lastConsultDate": "2024-06-17"
   },
   {
-    "id": 186,
+    "id": 1020,
     "name": "용산구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -3658,13 +3427,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 804,
     "purchaseAmount": 2160000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-06-14",
     "consultCount": 42,
     "lastConsultDate": "2024-06-14"
   },
   {
-    "id": 187,
+    "id": 1021,
     "name": "충남 서산시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -3677,15 +3446,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-27",
     "consultCount": 13,
     "lastConsultDate": "2024-05-23"
   },
   {
-    "id": 188,
+    "id": 1022,
     "name": "동국대학교사범대학부속중고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "서울특별시",
     "district": "동대문구",
     "lat": 37.4166,
@@ -3699,12 +3468,12 @@ const institutionData =
     "purchaseStage": "구매",
     "lastPurchaseDate": "2024-05-24",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 189,
+    "id": 1023,
     "name": "무풍고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "무주군",
     "lat": 35.7993,
@@ -3715,13 +3484,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 30,
     "purchaseAmount": 150000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-24",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 190,
+    "id": 1024,
     "name": "달서구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -3734,13 +3503,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-21",
     "consultCount": 14,
     "lastConsultDate": "2023-10-23"
   },
   {
-    "id": 191,
+    "id": 1025,
     "name": "원주시보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -3753,15 +3522,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1250000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-20",
     "consultCount": 9,
     "lastConsultDate": "2024-05-13"
   },
   {
-    "id": 192,
-    "name": "서울시 통합건강증진사업지원단",
-    "type": "공공기관(기타)",
+    "id": 1026,
+    "name": "서울시 통합건강증진사업지원단 금연사업팀",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "중구",
     "lat": 37.4419,
@@ -3772,34 +3541,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1000,
     "purchaseAmount": 2500000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-16",
     "consultCount": 2,
     "lastConsultDate": "2024-04-03"
   },
   {
-    "id": 193,
-    "name": "영동군보건소",
-    "type": "보건소",
-    "region": "충청북도",
-    "district": "영동군",
-    "lat": 36.6756,
-    "lng": 127.4423,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 500,
-    "purchaseAmount": 785000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2024-05-16",
-    "consultCount": 15,
-    "lastConsultDate": "2021-07-02"
-  },
-  {
-    "id": 194,
+    "id": 1027,
     "name": "국민건강보험공단 서귀포지사",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "제주특별자치도",
     "district": "서귀포시",
     "lat": 33.5408,
@@ -3810,13 +3560,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 170,
     "purchaseAmount": 433500,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-14",
     "consultCount": 22,
     "lastConsultDate": "2024-10-14"
   },
   {
-    "id": 195,
+    "id": 1028,
     "name": "영주시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -3829,13 +3579,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 890000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-13",
     "consultCount": 4,
     "lastConsultDate": "2023-12-21"
   },
   {
-    "id": 196,
+    "id": 1029,
     "name": "울산동구정신건강복지센터",
     "type": "전문기관",
     "region": "울산광역시",
@@ -3848,13 +3598,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 230,
     "purchaseAmount": 600000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-10",
     "consultCount": 42,
     "lastConsultDate": "2024-05-13"
   },
   {
-    "id": 197,
+    "id": 1030,
     "name": "동작구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -3867,13 +3617,13 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 501,
     "purchaseAmount": 2100000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-07",
     "consultCount": 3,
     "lastConsultDate": "2024-08-09"
   },
   {
-    "id": 198,
+    "id": 1031,
     "name": "영암군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -3886,13 +3636,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1250000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-05-03",
     "consultCount": 13,
     "lastConsultDate": "2024-05-02"
   },
   {
-    "id": 199,
+    "id": 1032,
     "name": "강서구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -3905,15 +3655,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 600,
     "purchaseAmount": 636000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-04-25",
     "consultCount": 8,
     "lastConsultDate": "2024-04-25"
   },
   {
-    "id": 200,
+    "id": 1033,
     "name": "태평서울병원",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "경기도",
     "district": "성남시",
     "lat": 37.3166,
@@ -3924,13 +3674,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 24000,
     "purchaseAmount": 10000000,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-04-11",
     "consultCount": 2,
     "lastConsultDate": "2024-04-09"
   },
   {
-    "id": 201,
+    "id": 1034,
     "name": "건강생활팀",
     "type": "보건소",
     "region": "경기도",
@@ -3943,13 +3693,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 600,
     "purchaseAmount": 1260000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-04-02",
     "consultCount": 1,
     "lastConsultDate": "2019-02-26"
   },
   {
-    "id": 202,
+    "id": 1035,
     "name": "충주시보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -3968,7 +3718,7 @@ const institutionData =
     "lastConsultDate": "2015-03-09"
   },
   {
-    "id": 203,
+    "id": 1036,
     "name": "용산보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -3982,13 +3732,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 2000,
     "purchaseAmount": 2300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-03-26",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 204,
+    "id": 1037,
     "name": "광진구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -4001,13 +3751,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 1400,
     "purchaseAmount": 3023000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-03-13",
     "consultCount": 4,
     "lastConsultDate": "2024-03-07"
   },
   {
-    "id": 205,
+    "id": 1038,
     "name": "서초구보건소마음건강센터",
     "type": "보건소",
     "region": "서울특별시",
@@ -4020,14 +3770,14 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2024-02-19",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 206,
-    "name": "제주광역정신건강복지센터",
+    "id": 1039,
+    "name": "제주광역 정신건강복지센터 중독통합관리팀",
     "type": "전문기관",
     "region": "제주특별자치도",
     "district": "제주시",
@@ -4039,15 +3789,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-12-15",
     "consultCount": 1,
     "lastConsultDate": "2023-12-14"
   },
   {
-    "id": 207,
+    "id": 1040,
     "name": "서울신목초등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "서울특별시",
     "district": "양천구",
     "lat": 37.6323,
@@ -4058,13 +3808,13 @@ const institutionData =
     "purchaseCycle": "연간",
     "purchaseVolume": 300,
     "purchaseAmount": 900000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-12-05",
     "consultCount": 2,
     "lastConsultDate": "2023-12-05"
   },
   {
-    "id": 208,
+    "id": 1041,
     "name": "광주남구보건소",
     "type": "보건소",
     "region": "광주광역시",
@@ -4077,14 +3827,14 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-11-17",
     "consultCount": 2,
     "lastConsultDate": "2023-11-17"
   },
   {
-    "id": 209,
-    "name": "전주시 중독관리통합지원센터",
+    "id": 1042,
+    "name": "중독관리통합지원센터",
     "type": "전문기관",
     "region": "전북특별자치도",
     "district": "전주시",
@@ -4096,15 +3846,15 @@ const institutionData =
     "purchaseCycle": "분기",
     "purchaseVolume": 3000,
     "purchaseAmount": 3925000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-11-16",
     "consultCount": 8,
     "lastConsultDate": "2023-08-11"
   },
   {
-    "id": 210,
+    "id": 1043,
     "name": "육군사관학교 군부대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "서초구",
     "lat": 37.4907,
@@ -4115,15 +3865,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 301,
     "purchaseAmount": 780000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-11-09",
     "consultCount": 23,
     "lastConsultDate": "2025-06-23"
   },
   {
-    "id": 211,
+    "id": 1044,
     "name": "한화솔루션 큐셀 음성제2사업장 건강관리실",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "충청북도",
     "district": "음성군",
     "lat": 36.7154,
@@ -4134,15 +3884,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-11-02",
     "consultCount": 4,
     "lastConsultDate": "2022-10-17"
   },
   {
-    "id": 212,
+    "id": 1045,
     "name": "한화큐셀 진천사업장 건강관리실",
-    "type": "사업장",
+    "type": "산업보건",
     "region": "충청북도",
     "district": "진천군",
     "lat": 36.5089,
@@ -4153,13 +3903,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 150,
     "purchaseAmount": 450000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-11-02",
     "consultCount": 2,
     "lastConsultDate": "2024-04-26"
   },
   {
-    "id": 213,
+    "id": 1046,
     "name": "김포시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -4172,15 +3922,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-10-31",
     "consultCount": 4,
     "lastConsultDate": "2025-01-20"
   },
   {
-    "id": 214,
+    "id": 1047,
     "name": "유성여자고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "경상북도",
     "district": "포항시",
     "lat": 36.5039,
@@ -4192,13 +3942,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 270,
     "purchaseAmount": 501000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-10-27",
     "consultCount": 1,
     "lastConsultDate": "2023-10-27"
   },
   {
-    "id": 215,
+    "id": 1048,
     "name": "함양군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -4207,18 +3957,18 @@ const institutionData =
     "lng": 128.2714,
     "products": [
       "노담패치",
-      "알쓰패치"
+      "���쓰패치"
     ],
     "purchaseCycle": "반기",
     "purchaseVolume": 9012,
     "purchaseAmount": 10280000,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-10-25",
     "consultCount": 47,
     "lastConsultDate": "2023-10-25"
   },
   {
-    "id": 216,
+    "id": 1049,
     "name": "달서구중독관리통합지원센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -4231,15 +3981,15 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 600,
     "purchaseAmount": 1500000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-10-23",
     "consultCount": 2,
     "lastConsultDate": "2022-11-15"
   },
   {
-    "id": 217,
+    "id": 1050,
     "name": "2601부대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "세종특별자치시",
     "district": "연서면",
     "lat": 36.4523,
@@ -4251,13 +4001,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 640,
     "purchaseAmount": 1056000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-10-18",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 218,
+    "id": 1051,
     "name": "화순전남금연지원센터",
     "type": "금연지원센터",
     "region": "전라남도",
@@ -4270,13 +4020,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1250000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-10-05",
     "consultCount": 4,
     "lastConsultDate": "2023-10-26"
   },
   {
-    "id": 219,
+    "id": 1052,
     "name": "이화여대 약학대학",
     "type": "전공교육",
     "region": "서울특별시",
@@ -4289,15 +4039,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 70,
     "purchaseAmount": 294000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-09-25",
     "consultCount": 3,
     "lastConsultDate": "2023-11-22"
   },
   {
-    "id": 220,
+    "id": 1053,
     "name": "5733부대 60사단 의무대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "고양시",
     "lat": 37.5198,
@@ -4308,15 +4058,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-09-18",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 221,
+    "id": 1054,
     "name": "육군훈련소 지구병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "충청남도",
     "district": "논산시",
     "lat": 36.4992,
@@ -4328,15 +4078,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1200,
     "purchaseAmount": 1680000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-09-06",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 222,
+    "id": 1055,
     "name": "영진전문대학",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "대구광역시",
     "district": "북구",
     "lat": 35.8222,
@@ -4348,15 +4098,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 800,
     "purchaseAmount": 1320000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-08-30",
     "consultCount": 1,
     "lastConsultDate": "2023-08-18"
   },
   {
-    "id": 223,
+    "id": 1056,
     "name": "강원과학고등학교 보건실",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "강원특별자치도",
     "district": "원주시",
     "lat": 37.7941,
@@ -4367,15 +4117,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 135,
     "purchaseAmount": 486000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-08-30",
     "consultCount": 17,
     "lastConsultDate": "2023-09-19"
   },
   {
-    "id": 224,
+    "id": 1057,
     "name": "부석중학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "충청남도",
     "district": "서산시",
     "lat": 36.5551,
@@ -4386,34 +4136,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 71,
     "purchaseAmount": 172200,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-08-24",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 225,
-    "name": "계명대학교",
-    "type": "교육기관",
-    "region": "대구광역시",
-    "district": "달서구",
-    "lat": 35.8396,
-    "lng": 128.6207,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 400,
-    "purchaseAmount": 1000000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2023-08-22",
-    "consultCount": 4,
-    "lastConsultDate": "2026-02-13"
-  },
-  {
-    "id": 226,
+    "id": 1059,
     "name": "수도방위사령부",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "서울특별시",
     "district": "관악구",
     "lat": 37.4572,
@@ -4424,13 +4155,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 302,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-08-10",
     "consultCount": 10,
     "lastConsultDate": "2023-11-29"
   },
   {
-    "id": 227,
+    "id": 1060,
     "name": "익산시보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -4443,13 +4174,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 2500,
     "purchaseAmount": 2350000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-07-19",
     "consultCount": 13,
     "lastConsultDate": "2023-09-05"
   },
   {
-    "id": 228,
+    "id": 1061,
     "name": "김포시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -4462,13 +4193,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 400,
     "purchaseAmount": 1000000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-07-05",
     "consultCount": 32,
     "lastConsultDate": "2024-06-18"
   },
   {
-    "id": 229,
+    "id": 1062,
     "name": "강동구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -4481,13 +4212,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-06-20",
     "consultCount": 23,
     "lastConsultDate": "2023-06-16"
   },
   {
-    "id": 230,
+    "id": 1063,
     "name": "군포시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -4500,13 +4231,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 45,
     "purchaseAmount": 189000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-06-14",
     "consultCount": 1,
     "lastConsultDate": "2023-06-14"
   },
   {
-    "id": 231,
+    "id": 1064,
     "name": "전주대학교 의과학대학 행정실",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -4519,15 +4250,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 45,
     "purchaseAmount": 189000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-05-30",
     "consultCount": 3,
     "lastConsultDate": "2022-09-13"
   },
   {
-    "id": 232,
+    "id": 1065,
     "name": "강원대병원 강원지역암센터",
-    "type": "공공기관(기타)",
+    "type": "광역시도 및 중앙기관",
     "region": "강원특별자치도",
     "district": "춘천시",
     "lat": 37.8683,
@@ -4539,53 +4270,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 2400,
     "purchaseAmount": 1680000,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-05-24",
     "consultCount": 5,
     "lastConsultDate": "2023-11-29"
   },
   {
-    "id": 233,
-    "name": "이화여자대학교",
-    "type": "교육기관",
-    "region": "서울특별시",
-    "district": "서대문구",
-    "lat": 37.4226,
-    "lng": 126.8737,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 150,
-    "purchaseAmount": 450000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2023-05-18",
-    "consultCount": 1,
-    "lastConsultDate": "2011-10-04"
-  },
-  {
-    "id": 234,
-    "name": "목포대학교",
-    "type": "교육기관",
-    "region": "전라남도",
-    "district": "무안군",
-    "lat": 34.9277,
-    "lng": 127.0711,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 300,
-    "purchaseAmount": 750000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2023-05-12",
-    "consultCount": 2,
-    "lastConsultDate": "2023-05-11"
-  },
-  {
-    "id": 235,
+    "id": 1068,
     "name": "군산고등학교",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "군산시",
     "lat": 35.8947,
@@ -4596,13 +4289,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 202,
     "purchaseAmount": 330000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-05-09",
     "consultCount": 1,
     "lastConsultDate": "2023-05-09"
   },
   {
-    "id": 236,
+    "id": 1069,
     "name": "대구광역정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -4615,13 +4308,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-04-20",
     "consultCount": 1,
     "lastConsultDate": "2023-04-13"
   },
   {
-    "id": 237,
+    "id": 1070,
     "name": "증평군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -4634,15 +4327,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 785000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-03-15",
     "consultCount": 2,
     "lastConsultDate": "2020-12-09"
   },
   {
-    "id": 238,
+    "id": 1071,
     "name": "화순전남대학교병원",
-    "type": "교육기관",
+    "type": "초중고",
     "region": "전라남도",
     "district": "화순군",
     "lat": 34.9728,
@@ -4653,13 +4346,13 @@ const institutionData =
     "purchaseCycle": "반기",
     "purchaseVolume": 700,
     "purchaseAmount": 1650000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2023-01-17",
     "consultCount": 9,
     "lastConsultDate": "2023-08-04"
   },
   {
-    "id": 239,
+    "id": 1072,
     "name": "울산중구중독관리통합지원센터",
     "type": "전문기관",
     "region": "울산광역시",
@@ -4672,13 +4365,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-12-12",
     "consultCount": 16,
     "lastConsultDate": "2023-10-13"
   },
   {
-    "id": 240,
+    "id": 1073,
     "name": "오산시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -4691,13 +4384,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-11-28",
     "consultCount": 26,
     "lastConsultDate": "2022-11-21"
   },
   {
-    "id": 241,
+    "id": 1074,
     "name": "전주대학교",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -4710,13 +4403,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 50,
     "purchaseAmount": 210000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-11-15",
     "consultCount": 1,
     "lastConsultDate": "2023-05-15"
   },
   {
-    "id": 242,
+    "id": 1075,
     "name": "봉화군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -4729,13 +4422,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 50,
     "purchaseAmount": 210000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-11-15",
     "consultCount": 4,
     "lastConsultDate": "2022-11-15"
   },
   {
-    "id": 243,
+    "id": 1076,
     "name": "세종특별자치시광역정신건강복지센터",
     "type": "전문기관",
     "region": "세종특별자치시",
@@ -4748,15 +4441,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-11-14",
     "consultCount": 3,
     "lastConsultDate": "2022-11-10"
   },
   {
-    "id": 244,
-    "name": "김제고등학교 보건실",
-    "type": "교육기관",
+    "id": 1077,
+    "name": "김��고등학교 보건실",
+    "type": "초중고",
     "region": "전북특별자치도",
     "district": "김제시",
     "lat": 35.9195,
@@ -4767,13 +4460,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 222,
     "purchaseAmount": 330000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-11-14",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 245,
+    "id": 1078,
     "name": "장흥군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -4786,15 +4479,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-11-14",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 246,
+    "id": 1079,
     "name": "제8기동사단 의무대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "양주시",
     "lat": 37.3775,
@@ -4805,15 +4498,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 300,
     "purchaseAmount": 750000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-11-07",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 247,
+    "id": 1080,
     "name": "국군홍천병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "강원특별자치도",
     "district": "홍천군",
     "lat": 37.7749,
@@ -4824,15 +4517,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 702,
     "purchaseAmount": 710000,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-10-28",
     "consultCount": 5,
     "lastConsultDate": "2022-10-24"
   },
   {
-    "id": 248,
+    "id": 1081,
     "name": "60사단 군사경찰대대",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "고양시",
     "lat": 37.2668,
@@ -4843,13 +4536,13 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 177,
     "purchaseAmount": 371400,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-10-27",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 249,
+    "id": 1082,
     "name": "광주시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -4861,14 +4554,14 @@ const institutionData =
     ],
     "purchaseCycle": "단건",
     "purchaseVolume": 602,
-    "purchaseAmount": 780000,
+    "purchaseAmount": 2030000,
     "purchaseStage": "구매",
-    "lastPurchaseDate": "2022-10-27",
+    "lastPurchaseDate": "2026-02-24",
     "consultCount": 68,
-    "lastConsultDate": "2026-02-10"
+    "lastConsultDate": null
   },
   {
-    "id": 250,
+    "id": 1083,
     "name": "대구달서구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -4881,13 +4574,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1002,
     "purchaseAmount": 1080000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-10-20",
     "consultCount": 3,
     "lastConsultDate": "2023-04-07"
   },
   {
-    "id": 251,
+    "id": 1084,
     "name": "화천군보건의료원",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -4900,13 +4593,13 @@ const institutionData =
     "purchaseCycle": "월간",
     "purchaseVolume": 2000,
     "purchaseAmount": 3560000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-10-07",
     "consultCount": 43,
     "lastConsultDate": "2022-09-30"
   },
   {
-    "id": 252,
+    "id": 1085,
     "name": "성주군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -4919,15 +4612,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 50,
     "purchaseAmount": 150000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-10-04",
     "consultCount": 27,
     "lastConsultDate": "2022-10-04"
   },
   {
-    "id": 253,
+    "id": 1086,
     "name": "국립부곡병원 중독진단과",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경상남도",
     "district": "창녕군",
     "lat": 35.4851,
@@ -4938,13 +4631,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1000,
     "purchaseAmount": 2100000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-10-04",
     "consultCount": 1,
     "lastConsultDate": "2023-12-14"
   },
   {
-    "id": 254,
+    "id": 1087,
     "name": "인천중구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -4957,15 +4650,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1506,
     "purchaseAmount": 867500,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-09-22",
     "consultCount": 16,
     "lastConsultDate": "2023-09-18"
   },
   {
-    "id": 255,
+    "id": 1088,
     "name": "60사단",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "고양시",
     "lat": 37.3193,
@@ -4976,13 +4669,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 602,
     "purchaseAmount": 830000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-08-29",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 256,
+    "id": 1089,
     "name": "제주서귀포시보건소",
     "type": "보건소",
     "region": "제주특별자치도",
@@ -4995,34 +4688,15 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 2721,
     "purchaseAmount": 2010500,
-    "purchaseStage": "만족",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-08-16",
     "consultCount": 26,
     "lastConsultDate": "2022-11-03"
   },
   {
-    "id": 257,
-    "name": "사천시보건소",
-    "type": "보건소",
-    "region": "경상남도",
-    "district": "사천시",
-    "lat": 35.6036,
-    "lng": 128.2206,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 950,
-    "purchaseAmount": 1995000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "2022-08-10",
-    "consultCount": 35,
-    "lastConsultDate": "2025-09-10"
-  },
-  {
-    "id": 258,
+    "id": 1090,
     "name": "국군고양병원",
-    "type": "군/경/소방",
+    "type": "광역시도 및 중앙기관",
     "region": "경기도",
     "district": "파주시",
     "lat": 37.3487,
@@ -5033,13 +4707,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 200,
     "purchaseAmount": 600000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-07-29",
     "consultCount": 4,
     "lastConsultDate": "2024-05-01"
   },
   {
-    "id": 259,
+    "id": 1091,
     "name": "시흥시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5052,13 +4726,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 800,
     "purchaseAmount": 1256000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-07-28",
     "consultCount": 43,
     "lastConsultDate": "2023-07-21"
   },
   {
-    "id": 260,
+    "id": 1092,
     "name": "군산시중독관리통합지원센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -5071,13 +4745,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 1002,
     "purchaseAmount": 880000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-07-27",
     "consultCount": 1,
     "lastConsultDate": "2018-11-19"
   },
   {
-    "id": 261,
+    "id": 1093,
     "name": "옹진군정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -5090,13 +4764,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 500,
     "purchaseAmount": 1050000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-06-08",
     "consultCount": 2,
     "lastConsultDate": "2024-04-25"
   },
   {
-    "id": 262,
+    "id": 1094,
     "name": "대구동부중독관리통합지원센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -5109,13 +4783,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 100,
     "purchaseAmount": 300000,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-05-27",
     "consultCount": 1,
     "lastConsultDate": "2021-11-19"
   },
   {
-    "id": 263,
+    "id": 1095,
     "name": "완주군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -5128,13 +4802,13 @@ const institutionData =
     "purchaseCycle": "단건",
     "purchaseVolume": 810,
     "purchaseAmount": 1247400,
-    "purchaseStage": "구매",
+    "purchaseStage": "COLD",
     "lastPurchaseDate": "2022-05-03",
     "consultCount": 6,
     "lastConsultDate": "2017-02-24"
   },
   {
-    "id": 264,
+    "id": 1096,
     "name": "강릉시보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5153,7 +4827,7 @@ const institutionData =
     "lastConsultDate": "2023-01-10"
   },
   {
-    "id": 265,
+    "id": 1097,
     "name": "고성군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5172,7 +4846,7 @@ const institutionData =
     "lastConsultDate": "2018-08-08"
   },
   {
-    "id": 266,
+    "id": 1098,
     "name": "동해시보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5191,7 +4865,7 @@ const institutionData =
     "lastConsultDate": "2019-03-06"
   },
   {
-    "id": 267,
+    "id": 1099,
     "name": "삼척시보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5210,7 +4884,7 @@ const institutionData =
     "lastConsultDate": "2023-10-27"
   },
   {
-    "id": 268,
+    "id": 1100,
     "name": "속초시보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5229,7 +4903,7 @@ const institutionData =
     "lastConsultDate": "2015-03-11"
   },
   {
-    "id": 269,
+    "id": 1101,
     "name": "양구군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5248,7 +4922,7 @@ const institutionData =
     "lastConsultDate": "2019-09-11"
   },
   {
-    "id": 270,
+    "id": 1102,
     "name": "양양군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5267,7 +4941,7 @@ const institutionData =
     "lastConsultDate": "2020-01-09"
   },
   {
-    "id": 271,
+    "id": 1103,
     "name": "영월군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5286,7 +4960,7 @@ const institutionData =
     "lastConsultDate": "2024-05-20"
   },
   {
-    "id": 272,
+    "id": 1104,
     "name": "인제군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5305,7 +4979,7 @@ const institutionData =
     "lastConsultDate": "2020-04-03"
   },
   {
-    "id": 273,
+    "id": 1105,
     "name": "철원군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5324,7 +4998,7 @@ const institutionData =
     "lastConsultDate": "2023-03-29"
   },
   {
-    "id": 274,
+    "id": 1106,
     "name": "평창군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5343,7 +5017,7 @@ const institutionData =
     "lastConsultDate": "2018-10-31"
   },
   {
-    "id": 275,
+    "id": 1107,
     "name": "홍천군보건소",
     "type": "보건소",
     "region": "강원특별자치도",
@@ -5362,7 +5036,7 @@ const institutionData =
     "lastConsultDate": "2023-02-16"
   },
   {
-    "id": 276,
+    "id": 1108,
     "name": "가평군보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5370,7 +5044,7 @@ const institutionData =
     "lat": 37.8277,
     "lng": 127.4469,
     "products": [
-      "알쓰패치"
+      "알쓰패��"
     ],
     "purchaseCycle": "-",
     "purchaseVolume": 0,
@@ -5381,7 +5055,7 @@ const institutionData =
     "lastConsultDate": "2024-09-25"
   },
   {
-    "id": 277,
+    "id": 1109,
     "name": "과천시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5400,7 +5074,7 @@ const institutionData =
     "lastConsultDate": "2025-11-06"
   },
   {
-    "id": 278,
+    "id": 1110,
     "name": "광명시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5419,7 +5093,7 @@ const institutionData =
     "lastConsultDate": "2019-09-10"
   },
   {
-    "id": 279,
+    "id": 1111,
     "name": "구리시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5438,7 +5112,7 @@ const institutionData =
     "lastConsultDate": "2020-12-23"
   },
   {
-    "id": 280,
+    "id": 1112,
     "name": "동두천시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5457,7 +5131,7 @@ const institutionData =
     "lastConsultDate": "2023-04-24"
   },
   {
-    "id": 281,
+    "id": 1113,
     "name": "부천시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5476,7 +5150,7 @@ const institutionData =
     "lastConsultDate": "2023-07-24"
   },
   {
-    "id": 282,
+    "id": 1114,
     "name": "성남시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5495,7 +5169,7 @@ const institutionData =
     "lastConsultDate": "2018-02-09"
   },
   {
-    "id": 283,
+    "id": 1115,
     "name": "수원시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5514,7 +5188,7 @@ const institutionData =
     "lastConsultDate": "2022-04-12"
   },
   {
-    "id": 284,
+    "id": 1116,
     "name": "안산시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5533,7 +5207,7 @@ const institutionData =
     "lastConsultDate": "2024-03-22"
   },
   {
-    "id": 285,
+    "id": 1117,
     "name": "안성시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5552,7 +5226,7 @@ const institutionData =
     "lastConsultDate": "2024-04-25"
   },
   {
-    "id": 286,
+    "id": 1118,
     "name": "안양시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5571,7 +5245,7 @@ const institutionData =
     "lastConsultDate": "2015-06-17"
   },
   {
-    "id": 287,
+    "id": 1119,
     "name": "양주시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5590,7 +5264,7 @@ const institutionData =
     "lastConsultDate": "2022-12-14"
   },
   {
-    "id": 288,
+    "id": 1120,
     "name": "여주시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5609,7 +5283,7 @@ const institutionData =
     "lastConsultDate": "2025-05-26"
   },
   {
-    "id": 289,
+    "id": 1121,
     "name": "연천군보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5628,7 +5302,7 @@ const institutionData =
     "lastConsultDate": "2015-12-17"
   },
   {
-    "id": 290,
+    "id": 1122,
     "name": "의왕시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5647,7 +5321,7 @@ const institutionData =
     "lastConsultDate": "2019-03-14"
   },
   {
-    "id": 291,
+    "id": 1123,
     "name": "의정부시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5666,7 +5340,7 @@ const institutionData =
     "lastConsultDate": "2024-11-04"
   },
   {
-    "id": 292,
+    "id": 1124,
     "name": "파주시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5685,7 +5359,7 @@ const institutionData =
     "lastConsultDate": "2022-09-21"
   },
   {
-    "id": 293,
+    "id": 1125,
     "name": "평택시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5704,7 +5378,7 @@ const institutionData =
     "lastConsultDate": "2022-09-20"
   },
   {
-    "id": 294,
+    "id": 1126,
     "name": "포천시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5723,7 +5397,7 @@ const institutionData =
     "lastConsultDate": "2019-03-25"
   },
   {
-    "id": 295,
+    "id": 1127,
     "name": "하남시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5742,7 +5416,7 @@ const institutionData =
     "lastConsultDate": "2023-07-27"
   },
   {
-    "id": 296,
+    "id": 1128,
     "name": "화성시보건소",
     "type": "보건소",
     "region": "경기도",
@@ -5761,7 +5435,7 @@ const institutionData =
     "lastConsultDate": "2024-08-21"
   },
   {
-    "id": 297,
+    "id": 1129,
     "name": "거제시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5780,7 +5454,7 @@ const institutionData =
     "lastConsultDate": "2021-11-23"
   },
   {
-    "id": 298,
+    "id": 1130,
     "name": "거창군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5799,7 +5473,7 @@ const institutionData =
     "lastConsultDate": "2019-10-28"
   },
   {
-    "id": 299,
+    "id": 1131,
     "name": "고성군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5818,7 +5492,7 @@ const institutionData =
     "lastConsultDate": "2018-08-08"
   },
   {
-    "id": 300,
+    "id": 1132,
     "name": "밀양시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5837,7 +5511,7 @@ const institutionData =
     "lastConsultDate": "2019-10-04"
   },
   {
-    "id": 301,
+    "id": 1133,
     "name": "산청군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5853,10 +5527,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 302,
+    "id": 1134,
     "name": "양산시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5875,7 +5549,7 @@ const institutionData =
     "lastConsultDate": "2020-02-19"
   },
   {
-    "id": 303,
+    "id": 1135,
     "name": "의령군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5894,7 +5568,7 @@ const institutionData =
     "lastConsultDate": "2020-04-27"
   },
   {
-    "id": 304,
+    "id": 1136,
     "name": "창녕군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5913,7 +5587,7 @@ const institutionData =
     "lastConsultDate": "2023-01-31"
   },
   {
-    "id": 305,
+    "id": 1137,
     "name": "창원시보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5932,7 +5606,7 @@ const institutionData =
     "lastConsultDate": "2019-05-30"
   },
   {
-    "id": 306,
+    "id": 1138,
     "name": "하동군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5951,7 +5625,7 @@ const institutionData =
     "lastConsultDate": "2014-06-26"
   },
   {
-    "id": 307,
+    "id": 1139,
     "name": "함안군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5970,7 +5644,7 @@ const institutionData =
     "lastConsultDate": "2021-10-20"
   },
   {
-    "id": 308,
+    "id": 1140,
     "name": "합천군보건소",
     "type": "보건소",
     "region": "경상남도",
@@ -5989,7 +5663,7 @@ const institutionData =
     "lastConsultDate": "2020-07-20"
   },
   {
-    "id": 309,
+    "id": 1141,
     "name": "경산시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6008,7 +5682,7 @@ const institutionData =
     "lastConsultDate": "2024-07-31"
   },
   {
-    "id": 310,
+    "id": 1142,
     "name": "고령군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6027,26 +5701,7 @@ const institutionData =
     "lastConsultDate": "2020-01-06"
   },
   {
-    "id": 311,
-    "name": "군위군보건소",
-    "type": "보건소",
-    "region": "경상북도",
-    "district": "군위군",
-    "lat": 36.1615,
-    "lng": 128.6455,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "-",
-    "purchaseVolume": 0,
-    "purchaseAmount": 0,
-    "purchaseStage": "관심",
-    "lastPurchaseDate": "-",
-    "consultCount": 6,
-    "lastConsultDate": "2012-03-15"
-  },
-  {
-    "id": 312,
+    "id": 1143,
     "name": "김천시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6065,7 +5720,7 @@ const institutionData =
     "lastConsultDate": "2023-09-12"
   },
   {
-    "id": 313,
+    "id": 1144,
     "name": "문경시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6084,7 +5739,7 @@ const institutionData =
     "lastConsultDate": "2019-03-04"
   },
   {
-    "id": 314,
+    "id": 1145,
     "name": "봉화군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6103,7 +5758,7 @@ const institutionData =
     "lastConsultDate": "2014-12-17"
   },
   {
-    "id": 315,
+    "id": 1146,
     "name": "상주시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6122,7 +5777,7 @@ const institutionData =
     "lastConsultDate": "2021-08-19"
   },
   {
-    "id": 316,
+    "id": 1147,
     "name": "영덕군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6141,7 +5796,7 @@ const institutionData =
     "lastConsultDate": "2019-06-03"
   },
   {
-    "id": 317,
+    "id": 1148,
     "name": "영양군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6160,7 +5815,7 @@ const institutionData =
     "lastConsultDate": "2023-04-20"
   },
   {
-    "id": 318,
+    "id": 1149,
     "name": "영천시보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6179,7 +5834,7 @@ const institutionData =
     "lastConsultDate": "2019-04-04"
   },
   {
-    "id": 319,
+    "id": 1150,
     "name": "예천군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6198,7 +5853,7 @@ const institutionData =
     "lastConsultDate": "2019-05-31"
   },
   {
-    "id": 320,
+    "id": 1151,
     "name": "울진군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6217,7 +5872,7 @@ const institutionData =
     "lastConsultDate": "2021-03-05"
   },
   {
-    "id": 321,
+    "id": 1152,
     "name": "의성군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6236,7 +5891,7 @@ const institutionData =
     "lastConsultDate": "2016-05-26"
   },
   {
-    "id": 322,
+    "id": 1153,
     "name": "청도군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6255,7 +5910,7 @@ const institutionData =
     "lastConsultDate": "2019-06-11"
   },
   {
-    "id": 323,
+    "id": 1154,
     "name": "청송군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6274,7 +5929,7 @@ const institutionData =
     "lastConsultDate": "2021-11-08"
   },
   {
-    "id": 324,
+    "id": 1155,
     "name": "칠곡군보건소",
     "type": "보건소",
     "region": "경상북도",
@@ -6293,7 +5948,7 @@ const institutionData =
     "lastConsultDate": "2022-11-03"
   },
   {
-    "id": 325,
+    "id": 1156,
     "name": "동구보건소",
     "type": "보건소",
     "region": "광주광역시",
@@ -6312,7 +5967,7 @@ const institutionData =
     "lastConsultDate": "2018-04-23"
   },
   {
-    "id": 326,
+    "id": 1157,
     "name": "동구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -6331,7 +5986,7 @@ const institutionData =
     "lastConsultDate": "2018-04-23"
   },
   {
-    "id": 327,
+    "id": 1158,
     "name": "서구보건소",
     "type": "보건소",
     "region": "대구광역시",
@@ -6350,7 +6005,7 @@ const institutionData =
     "lastConsultDate": "2021-11-08"
   },
   {
-    "id": 328,
+    "id": 1159,
     "name": "대덕구보건소",
     "type": "보건소",
     "region": "대전광역시",
@@ -6369,7 +6024,7 @@ const institutionData =
     "lastConsultDate": "2017-05-24"
   },
   {
-    "id": 329,
+    "id": 1160,
     "name": "동구보건소",
     "type": "보건소",
     "region": "대전광역시",
@@ -6388,7 +6043,7 @@ const institutionData =
     "lastConsultDate": "2018-04-23"
   },
   {
-    "id": 330,
+    "id": 1161,
     "name": "서구보건소",
     "type": "보건소",
     "region": "대전광역시",
@@ -6407,7 +6062,7 @@ const institutionData =
     "lastConsultDate": "2021-11-08"
   },
   {
-    "id": 331,
+    "id": 1162,
     "name": "유성구보건소",
     "type": "보건소",
     "region": "대전광역시",
@@ -6426,7 +6081,7 @@ const institutionData =
     "lastConsultDate": "2020-10-27"
   },
   {
-    "id": 332,
+    "id": 1163,
     "name": "강서구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6445,7 +6100,7 @@ const institutionData =
     "lastConsultDate": "2022-08-17"
   },
   {
-    "id": 333,
+    "id": 1164,
     "name": "금정구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6464,7 +6119,7 @@ const institutionData =
     "lastConsultDate": "2021-11-23"
   },
   {
-    "id": 334,
+    "id": 1165,
     "name": "남구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6483,7 +6138,7 @@ const institutionData =
     "lastConsultDate": "2015-11-19"
   },
   {
-    "id": 335,
+    "id": 1166,
     "name": "동구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6502,7 +6157,7 @@ const institutionData =
     "lastConsultDate": "2018-04-23"
   },
   {
-    "id": 336,
+    "id": 1167,
     "name": "동래구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6521,7 +6176,7 @@ const institutionData =
     "lastConsultDate": "2021-10-08"
   },
   {
-    "id": 337,
+    "id": 1168,
     "name": "부산진구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6540,7 +6195,7 @@ const institutionData =
     "lastConsultDate": "2020-09-17"
   },
   {
-    "id": 338,
+    "id": 1169,
     "name": "북구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6559,7 +6214,7 @@ const institutionData =
     "lastConsultDate": "2024-08-27"
   },
   {
-    "id": 339,
+    "id": 1170,
     "name": "사상구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6578,7 +6233,7 @@ const institutionData =
     "lastConsultDate": "2019-08-28"
   },
   {
-    "id": 340,
+    "id": 1171,
     "name": "사하구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6597,7 +6252,7 @@ const institutionData =
     "lastConsultDate": "2022-12-07"
   },
   {
-    "id": 341,
+    "id": 1172,
     "name": "서구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6616,7 +6271,7 @@ const institutionData =
     "lastConsultDate": "2021-11-08"
   },
   {
-    "id": 342,
+    "id": 1173,
     "name": "수영구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6635,7 +6290,7 @@ const institutionData =
     "lastConsultDate": "2025-09-12"
   },
   {
-    "id": 343,
+    "id": 1174,
     "name": "연제구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6654,7 +6309,7 @@ const institutionData =
     "lastConsultDate": "2011-08-18"
   },
   {
-    "id": 344,
+    "id": 1175,
     "name": "영도구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6673,7 +6328,7 @@ const institutionData =
     "lastConsultDate": "2020-09-25"
   },
   {
-    "id": 345,
+    "id": 1176,
     "name": "중구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6692,7 +6347,7 @@ const institutionData =
     "lastConsultDate": "2025-11-18"
   },
   {
-    "id": 346,
+    "id": 1177,
     "name": "해운대구보건소",
     "type": "보건소",
     "region": "부산광역시",
@@ -6711,7 +6366,7 @@ const institutionData =
     "lastConsultDate": "2025-10-23"
   },
   {
-    "id": 347,
+    "id": 1178,
     "name": "강서구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6730,7 +6385,7 @@ const institutionData =
     "lastConsultDate": "2022-08-17"
   },
   {
-    "id": 348,
+    "id": 1179,
     "name": "관악구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6749,7 +6404,7 @@ const institutionData =
     "lastConsultDate": "2026-02-11"
   },
   {
-    "id": 349,
+    "id": 1180,
     "name": "구로구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6768,7 +6423,7 @@ const institutionData =
     "lastConsultDate": "2023-08-03"
   },
   {
-    "id": 350,
+    "id": 1181,
     "name": "금천구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6787,7 +6442,7 @@ const institutionData =
     "lastConsultDate": "2021-04-06"
   },
   {
-    "id": 351,
+    "id": 1182,
     "name": "노원구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6806,7 +6461,7 @@ const institutionData =
     "lastConsultDate": "2024-05-08"
   },
   {
-    "id": 352,
+    "id": 1183,
     "name": "도봉구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6825,7 +6480,7 @@ const institutionData =
     "lastConsultDate": "2024-05-02"
   },
   {
-    "id": 353,
+    "id": 1184,
     "name": "동작구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6844,7 +6499,7 @@ const institutionData =
     "lastConsultDate": "2019-12-18"
   },
   {
-    "id": 354,
+    "id": 1185,
     "name": "성북구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6863,7 +6518,7 @@ const institutionData =
     "lastConsultDate": "2024-03-29"
   },
   {
-    "id": 355,
+    "id": 1186,
     "name": "은평구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6882,7 +6537,7 @@ const institutionData =
     "lastConsultDate": "2022-09-22"
   },
   {
-    "id": 356,
+    "id": 1187,
     "name": "중랑구보건소",
     "type": "보건소",
     "region": "서울특별시",
@@ -6901,7 +6556,7 @@ const institutionData =
     "lastConsultDate": "2022-08-04"
   },
   {
-    "id": 357,
+    "id": 1188,
     "name": "세종시보건소",
     "type": "보건소",
     "region": "세종특별자치시",
@@ -6920,7 +6575,7 @@ const institutionData =
     "lastConsultDate": "2024-02-14"
   },
   {
-    "id": 358,
+    "id": 1189,
     "name": "동구보건소",
     "type": "보건소",
     "region": "울산광역시",
@@ -6939,7 +6594,7 @@ const institutionData =
     "lastConsultDate": "2018-04-23"
   },
   {
-    "id": 359,
+    "id": 1190,
     "name": "북구보건소",
     "type": "보건소",
     "region": "울산광역시",
@@ -6958,7 +6613,7 @@ const institutionData =
     "lastConsultDate": "2024-08-27"
   },
   {
-    "id": 360,
+    "id": 1191,
     "name": "중구보건소",
     "type": "보건소",
     "region": "울산광역시",
@@ -6977,7 +6632,7 @@ const institutionData =
     "lastConsultDate": "2025-11-18"
   },
   {
-    "id": 361,
+    "id": 1192,
     "name": "강화군보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -6996,7 +6651,7 @@ const institutionData =
     "lastConsultDate": "2021-06-11"
   },
   {
-    "id": 362,
+    "id": 1193,
     "name": "계양구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -7015,7 +6670,7 @@ const institutionData =
     "lastConsultDate": "2020-07-22"
   },
   {
-    "id": 363,
+    "id": 1194,
     "name": "남동구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -7034,7 +6689,7 @@ const institutionData =
     "lastConsultDate": "2021-10-28"
   },
   {
-    "id": 364,
+    "id": 1195,
     "name": "동구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -7053,7 +6708,7 @@ const institutionData =
     "lastConsultDate": "2018-04-23"
   },
   {
-    "id": 365,
+    "id": 1196,
     "name": "미추홀구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -7069,10 +6724,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 366,
+    "id": 1197,
     "name": "부평구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -7091,7 +6746,7 @@ const institutionData =
     "lastConsultDate": "2022-11-18"
   },
   {
-    "id": 367,
+    "id": 1198,
     "name": "서구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -7110,7 +6765,7 @@ const institutionData =
     "lastConsultDate": "2021-11-08"
   },
   {
-    "id": 368,
+    "id": 1199,
     "name": "연수구보건소",
     "type": "보건소",
     "region": "인천광역시",
@@ -7129,7 +6784,7 @@ const institutionData =
     "lastConsultDate": "2015-11-16"
   },
   {
-    "id": 369,
+    "id": 1200,
     "name": "고흥군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7148,7 +6803,7 @@ const institutionData =
     "lastConsultDate": "2021-03-08"
   },
   {
-    "id": 370,
+    "id": 1201,
     "name": "곡성군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7167,7 +6822,7 @@ const institutionData =
     "lastConsultDate": "2019-01-22"
   },
   {
-    "id": 371,
+    "id": 1202,
     "name": "광양시보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7186,7 +6841,7 @@ const institutionData =
     "lastConsultDate": "2024-04-03"
   },
   {
-    "id": 372,
+    "id": 1203,
     "name": "구례군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7205,7 +6860,7 @@ const institutionData =
     "lastConsultDate": "2014-03-28"
   },
   {
-    "id": 373,
+    "id": 1204,
     "name": "나주시보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7224,7 +6879,7 @@ const institutionData =
     "lastConsultDate": "2021-05-27"
   },
   {
-    "id": 374,
+    "id": 1205,
     "name": "담양군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7243,7 +6898,7 @@ const institutionData =
     "lastConsultDate": "2017-12-19"
   },
   {
-    "id": 375,
+    "id": 1206,
     "name": "목포시보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7262,7 +6917,7 @@ const institutionData =
     "lastConsultDate": "2025-04-08"
   },
   {
-    "id": 376,
+    "id": 1207,
     "name": "보성군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7281,7 +6936,7 @@ const institutionData =
     "lastConsultDate": "2024-03-19"
   },
   {
-    "id": 377,
+    "id": 1208,
     "name": "순천시보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7300,7 +6955,7 @@ const institutionData =
     "lastConsultDate": "2020-11-11"
   },
   {
-    "id": 378,
+    "id": 1209,
     "name": "신안군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7319,7 +6974,7 @@ const institutionData =
     "lastConsultDate": "2013-02-13"
   },
   {
-    "id": 379,
+    "id": 1210,
     "name": "영광군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7338,7 +6993,7 @@ const institutionData =
     "lastConsultDate": "2017-10-26"
   },
   {
-    "id": 380,
+    "id": 1211,
     "name": "완도군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7357,7 +7012,7 @@ const institutionData =
     "lastConsultDate": "2022-05-31"
   },
   {
-    "id": 381,
+    "id": 1212,
     "name": "장성군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7376,7 +7031,7 @@ const institutionData =
     "lastConsultDate": "2016-02-12"
   },
   {
-    "id": 382,
+    "id": 1213,
     "name": "장흥군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7392,10 +7047,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 383,
+    "id": 1214,
     "name": "진도군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7414,7 +7069,7 @@ const institutionData =
     "lastConsultDate": "2023-10-25"
   },
   {
-    "id": 384,
+    "id": 1215,
     "name": "해남군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7433,7 +7088,7 @@ const institutionData =
     "lastConsultDate": "2015-06-26"
   },
   {
-    "id": 385,
+    "id": 1216,
     "name": "화순군보건소",
     "type": "보건소",
     "region": "전라남도",
@@ -7452,7 +7107,7 @@ const institutionData =
     "lastConsultDate": "2009-05-12"
   },
   {
-    "id": 386,
+    "id": 1217,
     "name": "고창군보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7471,7 +7126,7 @@ const institutionData =
     "lastConsultDate": "2019-07-31"
   },
   {
-    "id": 387,
+    "id": 1218,
     "name": "남원시보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7490,7 +7145,7 @@ const institutionData =
     "lastConsultDate": "2022-12-26"
   },
   {
-    "id": 388,
+    "id": 1219,
     "name": "순창군보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7506,10 +7161,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 389,
+    "id": 1220,
     "name": "완주군보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7528,7 +7183,7 @@ const institutionData =
     "lastConsultDate": "2025-04-04"
   },
   {
-    "id": 390,
+    "id": 1221,
     "name": "임실군보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7547,7 +7202,7 @@ const institutionData =
     "lastConsultDate": "2019-11-14"
   },
   {
-    "id": 391,
+    "id": 1222,
     "name": "장수군보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7566,7 +7221,7 @@ const institutionData =
     "lastConsultDate": "2018-11-26"
   },
   {
-    "id": 392,
+    "id": 1223,
     "name": "전주시보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7585,7 +7240,7 @@ const institutionData =
     "lastConsultDate": "2024-01-09"
   },
   {
-    "id": 393,
+    "id": 1224,
     "name": "정읍시보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7604,7 +7259,7 @@ const institutionData =
     "lastConsultDate": "2021-07-05"
   },
   {
-    "id": 394,
+    "id": 1225,
     "name": "진안군보건소",
     "type": "보건소",
     "region": "전북특별자치도",
@@ -7623,7 +7278,7 @@ const institutionData =
     "lastConsultDate": "2020-04-06"
   },
   {
-    "id": 395,
+    "id": 1226,
     "name": "계룡시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7642,7 +7297,7 @@ const institutionData =
     "lastConsultDate": "2024-02-23"
   },
   {
-    "id": 396,
+    "id": 1227,
     "name": "공주시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7661,7 +7316,7 @@ const institutionData =
     "lastConsultDate": "2020-02-03"
   },
   {
-    "id": 397,
+    "id": 1228,
     "name": "논산시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7680,7 +7335,7 @@ const institutionData =
     "lastConsultDate": "2020-11-09"
   },
   {
-    "id": 398,
+    "id": 1229,
     "name": "당진시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7699,7 +7354,7 @@ const institutionData =
     "lastConsultDate": "2020-11-04"
   },
   {
-    "id": 399,
+    "id": 1230,
     "name": "부여군보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7718,7 +7373,7 @@ const institutionData =
     "lastConsultDate": "2018-06-15"
   },
   {
-    "id": 400,
+    "id": 1231,
     "name": "서천군보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7737,7 +7392,7 @@ const institutionData =
     "lastConsultDate": "2016-03-31"
   },
   {
-    "id": 401,
+    "id": 1232,
     "name": "천안시보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7756,7 +7411,7 @@ const institutionData =
     "lastConsultDate": "2021-07-21"
   },
   {
-    "id": 402,
+    "id": 1233,
     "name": "청양군보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7772,10 +7427,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 403,
+    "id": 1234,
     "name": "태안군보건소",
     "type": "보건소",
     "region": "충청남도",
@@ -7791,10 +7446,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 404,
+    "id": 1235,
     "name": "단양군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -7813,7 +7468,7 @@ const institutionData =
     "lastConsultDate": "2022-08-23"
   },
   {
-    "id": 405,
+    "id": 1236,
     "name": "보은군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -7832,7 +7487,7 @@ const institutionData =
     "lastConsultDate": "2014-03-27"
   },
   {
-    "id": 406,
+    "id": 1237,
     "name": "옥천군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -7851,7 +7506,7 @@ const institutionData =
     "lastConsultDate": "2024-04-26"
   },
   {
-    "id": 407,
+    "id": 1238,
     "name": "음성군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -7870,7 +7525,7 @@ const institutionData =
     "lastConsultDate": "2023-05-08"
   },
   {
-    "id": 408,
+    "id": 1239,
     "name": "제천시보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -7889,7 +7544,7 @@ const institutionData =
     "lastConsultDate": "2020-09-29"
   },
   {
-    "id": 409,
+    "id": 1240,
     "name": "진천군보건소",
     "type": "보건소",
     "region": "충청북도",
@@ -7908,7 +7563,7 @@ const institutionData =
     "lastConsultDate": "2017-05-11"
   },
   {
-    "id": 410,
+    "id": 1241,
     "name": "강릉시정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -7924,10 +7579,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 411,
+    "id": 1242,
     "name": "고성군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -7943,10 +7598,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 412,
+    "id": 1243,
     "name": "속초시정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -7962,10 +7617,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 413,
+    "id": 1244,
     "name": "양구군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -7981,10 +7636,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 414,
+    "id": 1245,
     "name": "양양군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8000,10 +7655,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 415,
+    "id": 1246,
     "name": "영월군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8019,10 +7674,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 416,
+    "id": 1247,
     "name": "원주시정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8038,10 +7693,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 417,
+    "id": 1248,
     "name": "인제군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8057,10 +7712,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 418,
+    "id": 1249,
     "name": "정선군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8076,10 +7731,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 419,
+    "id": 1250,
     "name": "철원군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8095,10 +7750,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 420,
+    "id": 1251,
     "name": "춘천시정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8114,10 +7769,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 421,
+    "id": 1252,
     "name": "태백시정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8133,10 +7788,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 422,
+    "id": 1253,
     "name": "평창군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8152,10 +7807,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 423,
+    "id": 1254,
     "name": "홍천군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8171,10 +7826,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 424,
+    "id": 1255,
     "name": "화천군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8190,10 +7845,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 425,
+    "id": 1256,
     "name": "횡성군정신건강복지센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -8212,7 +7867,7 @@ const institutionData =
     "lastConsultDate": "2018-10-02"
   },
   {
-    "id": 426,
+    "id": 1257,
     "name": "가평군정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8228,10 +7883,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 427,
+    "id": 1258,
     "name": "고양시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8250,7 +7905,7 @@ const institutionData =
     "lastConsultDate": "2022-01-14"
   },
   {
-    "id": 428,
+    "id": 1259,
     "name": "과천시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8269,7 +7924,7 @@ const institutionData =
     "lastConsultDate": "2019-05-27"
   },
   {
-    "id": 429,
+    "id": 1260,
     "name": "광명시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8285,10 +7940,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 430,
+    "id": 1261,
     "name": "광주시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8304,10 +7959,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 431,
+    "id": 1262,
     "name": "구리시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8323,10 +7978,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 432,
+    "id": 1263,
     "name": "남양주시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8345,7 +8000,7 @@ const institutionData =
     "lastConsultDate": "2020-09-03"
   },
   {
-    "id": 433,
+    "id": 1264,
     "name": "부천시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8364,7 +8019,7 @@ const institutionData =
     "lastConsultDate": "2022-03-16"
   },
   {
-    "id": 434,
+    "id": 1265,
     "name": "성남시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8380,10 +8035,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 435,
+    "id": 1266,
     "name": "수원시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8399,10 +8054,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 436,
+    "id": 1267,
     "name": "시흥시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8421,7 +8076,7 @@ const institutionData =
     "lastConsultDate": "2019-11-18"
   },
   {
-    "id": 437,
+    "id": 1268,
     "name": "안산시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8440,7 +8095,7 @@ const institutionData =
     "lastConsultDate": "2020-01-15"
   },
   {
-    "id": 438,
+    "id": 1269,
     "name": "안양시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8456,10 +8111,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 439,
+    "id": 1270,
     "name": "양주시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8478,7 +8133,7 @@ const institutionData =
     "lastConsultDate": "2020-12-21"
   },
   {
-    "id": 440,
+    "id": 1271,
     "name": "양평군정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8494,10 +8149,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 441,
+    "id": 1272,
     "name": "여주시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8513,10 +8168,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 442,
+    "id": 1273,
     "name": "연천군정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8532,10 +8187,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 443,
+    "id": 1274,
     "name": "오산시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8554,7 +8209,7 @@ const institutionData =
     "lastConsultDate": "2019-06-13"
   },
   {
-    "id": 444,
+    "id": 1275,
     "name": "용인시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8573,7 +8228,7 @@ const institutionData =
     "lastConsultDate": "2016-12-08"
   },
   {
-    "id": 445,
+    "id": 1276,
     "name": "의왕시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8589,10 +8244,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 446,
+    "id": 1277,
     "name": "의정부시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8608,10 +8263,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 447,
+    "id": 1278,
     "name": "이천시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8630,7 +8285,7 @@ const institutionData =
     "lastConsultDate": "2023-04-24"
   },
   {
-    "id": 448,
+    "id": 1279,
     "name": "파주시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8646,10 +8301,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 449,
+    "id": 1280,
     "name": "포천시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8665,10 +8320,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 450,
+    "id": 1281,
     "name": "하남시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8684,10 +8339,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 451,
+    "id": 1282,
     "name": "화성시정신건강복지센터",
     "type": "전문기관",
     "region": "경기도",
@@ -8703,10 +8358,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 452,
+    "id": 1283,
     "name": "거제시정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8722,10 +8377,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 453,
+    "id": 1284,
     "name": "거창군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8741,10 +8396,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 454,
+    "id": 1285,
     "name": "고성군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8760,10 +8415,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 455,
+    "id": 1286,
     "name": "김해시정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8779,10 +8434,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 456,
+    "id": 1287,
     "name": "남해군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8798,10 +8453,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 457,
+    "id": 1288,
     "name": "밀양시정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8817,10 +8472,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 458,
+    "id": 1289,
     "name": "사천시정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8836,10 +8491,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 459,
+    "id": 1290,
     "name": "산청군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8855,10 +8510,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 460,
+    "id": 1291,
     "name": "양산시정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8874,10 +8529,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 461,
+    "id": 1292,
     "name": "의령군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8893,10 +8548,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 462,
+    "id": 1293,
     "name": "진주시정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8912,10 +8567,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 463,
+    "id": 1294,
     "name": "창녕군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8931,10 +8586,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 464,
+    "id": 1295,
     "name": "통영시정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8950,10 +8605,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 465,
+    "id": 1296,
     "name": "하동군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8969,10 +8624,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 466,
+    "id": 1297,
     "name": "함안군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -8988,10 +8643,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 467,
+    "id": 1298,
     "name": "함양군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -9007,10 +8662,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 468,
+    "id": 1299,
     "name": "합천군정신건강복지센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -9026,10 +8681,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 469,
+    "id": 1300,
     "name": "경산시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9045,10 +8700,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 470,
+    "id": 1301,
     "name": "경주시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9064,10 +8719,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 471,
+    "id": 1302,
     "name": "고령군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9083,10 +8738,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 472,
+    "id": 1303,
     "name": "구미시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9102,13 +8757,13 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 473,
+    "id": 1304,
     "name": "군위군정신건강복지센터",
     "type": "전문기관",
-    "region": "경상북도",
+    "region": "대구광역시",
     "district": "군위군",
     "lat": 36.1772,
     "lng": 128.6394,
@@ -9121,10 +8776,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 474,
+    "id": 1305,
     "name": "김천시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9140,10 +8795,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 475,
+    "id": 1306,
     "name": "문경시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9159,10 +8814,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 476,
+    "id": 1307,
     "name": "상주시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9178,10 +8833,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 477,
+    "id": 1308,
     "name": "성주군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9197,10 +8852,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 478,
+    "id": 1309,
     "name": "안동시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9219,7 +8874,7 @@ const institutionData =
     "lastConsultDate": "2018-12-03"
   },
   {
-    "id": 479,
+    "id": 1310,
     "name": "영덕군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9235,10 +8890,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 480,
+    "id": 1311,
     "name": "영양군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9254,10 +8909,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 481,
+    "id": 1312,
     "name": "영주시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9273,10 +8928,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 482,
+    "id": 1313,
     "name": "영천시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9292,10 +8947,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 483,
+    "id": 1314,
     "name": "예천군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9311,16 +8966,16 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 484,
+    "id": 1315,
     "name": "울릉군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
     "district": "울릉군",
-    "lat": 37.5054,
-    "lng": 130.873,
+    "lat": 36.6597,
+    "lng": 128.221,
     "products": [
       "알쓰패치"
     ],
@@ -9330,10 +8985,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 485,
+    "id": 1316,
     "name": "울진군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9349,10 +9004,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 486,
+    "id": 1317,
     "name": "의성군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9368,10 +9023,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 487,
+    "id": 1318,
     "name": "청도군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9387,10 +9042,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 488,
+    "id": 1319,
     "name": "청송군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9406,10 +9061,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 489,
+    "id": 1320,
     "name": "칠곡군정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9425,10 +9080,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 490,
+    "id": 1321,
     "name": "포항시정신건강복지센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -9447,10 +9102,10 @@ const institutionData =
     "lastConsultDate": "2023-04-25"
   },
   {
-    "id": 491,
+    "id": 1322,
     "name": "광산구정신건강복지센터",
     "type": "전문기관",
-    "region": "광주광역시",
+    "region": "���주광역시",
     "district": "광산구",
     "lat": 35.16,
     "lng": 126.7556,
@@ -9466,7 +9121,7 @@ const institutionData =
     "lastConsultDate": "2019-05-31"
   },
   {
-    "id": 492,
+    "id": 1323,
     "name": "남구정신건강복지센터",
     "type": "전문기관",
     "region": "광주광역시",
@@ -9482,10 +9137,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 493,
+    "id": 1324,
     "name": "동구정신건강복지센터",
     "type": "전문기관",
     "region": "광주광역시",
@@ -9501,10 +9156,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 494,
+    "id": 1325,
     "name": "북구정신건강복지센터",
     "type": "전문기관",
     "region": "광주광역시",
@@ -9520,10 +9175,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 495,
+    "id": 1326,
     "name": "서구정신건강복지센터",
     "type": "전문기관",
     "region": "광주광역시",
@@ -9539,10 +9194,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 496,
+    "id": 1327,
     "name": "남구정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -9558,10 +9213,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 497,
+    "id": 1328,
     "name": "달서구정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -9580,7 +9235,7 @@ const institutionData =
     "lastConsultDate": "2018-12-07"
   },
   {
-    "id": 498,
+    "id": 1329,
     "name": "달성군정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -9596,10 +9251,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 499,
+    "id": 1330,
     "name": "북구정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -9615,10 +9270,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 500,
+    "id": 1331,
     "name": "서구정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -9634,10 +9289,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 501,
+    "id": 1332,
     "name": "수성구정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -9653,10 +9308,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 502,
+    "id": 1333,
     "name": "중구정신건강복지센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -9672,10 +9327,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 503,
+    "id": 1334,
     "name": "대덕구정신건강복지센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -9691,10 +9346,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 504,
+    "id": 1335,
     "name": "동구정신건강복지센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -9710,10 +9365,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 505,
+    "id": 1336,
     "name": "서구정신건강복지센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -9729,10 +9384,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 506,
+    "id": 1337,
     "name": "유성구정신건강복지센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -9748,29 +9403,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 507,
-    "name": "강서구정신건강복지센터",
-    "type": "전문기관",
-    "region": "부산광역시",
-    "district": "강서구",
-    "lat": 35.1353,
-    "lng": 128.8965,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "-",
-    "purchaseVolume": 0,
-    "purchaseAmount": 0,
-    "purchaseStage": "고려",
-    "lastPurchaseDate": "-",
-    "consultCount": 8,
-    "lastConsultDate": "2024-04-25"
-  },
-  {
-    "id": 508,
+    "id": 1339,
     "name": "금정구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9786,10 +9422,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 509,
+    "id": 1340,
     "name": "기장군정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9805,10 +9441,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 510,
+    "id": 1341,
     "name": "남구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9824,10 +9460,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 511,
+    "id": 1342,
     "name": "동구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9843,10 +9479,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 512,
+    "id": 1343,
     "name": "동래구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9862,10 +9498,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 513,
+    "id": 1344,
     "name": "부산진구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9881,10 +9517,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 514,
+    "id": 1345,
     "name": "북구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9900,10 +9536,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 515,
+    "id": 1346,
     "name": "사상구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9919,10 +9555,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 516,
+    "id": 1347,
     "name": "사하구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9938,10 +9574,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 517,
+    "id": 1348,
     "name": "서구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9957,10 +9593,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 518,
+    "id": 1349,
     "name": "수영구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9976,10 +9612,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 519,
+    "id": 1350,
     "name": "연제구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -9998,7 +9634,7 @@ const institutionData =
     "lastConsultDate": "2017-12-27"
   },
   {
-    "id": 520,
+    "id": 1351,
     "name": "영도구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -10014,10 +9650,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 521,
+    "id": 1352,
     "name": "중구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -10033,10 +9669,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 522,
+    "id": 1353,
     "name": "해운대구정신건강복지센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -10052,10 +9688,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 523,
+    "id": 1354,
     "name": "강남구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10071,10 +9707,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 524,
+    "id": 1355,
     "name": "강동구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10090,10 +9726,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 525,
+    "id": 1356,
     "name": "강북구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10109,10 +9745,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 526,
+    "id": 1357,
     "name": "관악구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10128,10 +9764,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 527,
+    "id": 1358,
     "name": "구로구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10147,10 +9783,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 528,
+    "id": 1359,
     "name": "금천구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10166,10 +9802,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 529,
+    "id": 1360,
     "name": "노원구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10185,10 +9821,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 530,
+    "id": 1361,
     "name": "도봉구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10204,10 +9840,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 531,
+    "id": 1362,
     "name": "서대문구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10223,10 +9859,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 532,
+    "id": 1363,
     "name": "서초구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10242,10 +9878,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 533,
+    "id": 1364,
     "name": "성동구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10261,10 +9897,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 534,
+    "id": 1365,
     "name": "성북구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10280,10 +9916,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 535,
+    "id": 1366,
     "name": "양천구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10299,10 +9935,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 536,
+    "id": 1367,
     "name": "영등포구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10318,10 +9954,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 537,
+    "id": 1368,
     "name": "용산구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10340,7 +9976,7 @@ const institutionData =
     "lastConsultDate": "2024-09-12"
   },
   {
-    "id": 538,
+    "id": 1369,
     "name": "은평구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10356,10 +9992,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 539,
+    "id": 1370,
     "name": "중구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10375,10 +10011,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 540,
+    "id": 1371,
     "name": "중랑구정신건강복지센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -10394,10 +10030,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 541,
+    "id": 1372,
     "name": "세종시정신건강복지센터",
     "type": "전문기관",
     "region": "세종특별자치시",
@@ -10413,10 +10049,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 542,
+    "id": 1373,
     "name": "남구정신건강복지센터",
     "type": "전문기관",
     "region": "울산광역시",
@@ -10432,10 +10068,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 543,
+    "id": 1374,
     "name": "북구정신건강복지센터",
     "type": "전문기관",
     "region": "울산광역시",
@@ -10451,10 +10087,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 544,
+    "id": 1375,
     "name": "울주군정신건강복지센터",
     "type": "전문기관",
     "region": "울산광역시",
@@ -10470,10 +10106,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 545,
+    "id": 1376,
     "name": "중구정신건강복지센터",
     "type": "전문기관",
     "region": "울산광역시",
@@ -10489,10 +10125,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 546,
+    "id": 1377,
     "name": "강화군정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10508,10 +10144,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 547,
+    "id": 1378,
     "name": "계양구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10527,10 +10163,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 548,
+    "id": 1379,
     "name": "남동구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10546,10 +10182,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 549,
+    "id": 1380,
     "name": "동구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10565,10 +10201,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 550,
+    "id": 1381,
     "name": "미추홀구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10587,7 +10223,7 @@ const institutionData =
     "lastConsultDate": "2022-12-08"
   },
   {
-    "id": 551,
+    "id": 1382,
     "name": "부평구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10603,10 +10239,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 552,
+    "id": 1383,
     "name": "서구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10622,10 +10258,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 553,
+    "id": 1384,
     "name": "연수구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10641,10 +10277,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 554,
+    "id": 1385,
     "name": "중구정신건강복지센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -10660,10 +10296,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 555,
+    "id": 1386,
     "name": "강진군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10679,10 +10315,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 556,
+    "id": 1387,
     "name": "고흥군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10698,10 +10334,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 557,
+    "id": 1388,
     "name": "곡성군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10717,10 +10353,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 558,
+    "id": 1389,
     "name": "광양시정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10736,10 +10372,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 559,
+    "id": 1390,
     "name": "구례군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10755,10 +10391,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 560,
+    "id": 1391,
     "name": "나주시정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10774,10 +10410,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 561,
+    "id": 1392,
     "name": "담양군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10793,10 +10429,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 562,
+    "id": 1393,
     "name": "목포시정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10812,10 +10448,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 563,
+    "id": 1394,
     "name": "무안군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10831,10 +10467,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 564,
+    "id": 1395,
     "name": "보성군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10850,10 +10486,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 565,
+    "id": 1396,
     "name": "순천시정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10872,7 +10508,7 @@ const institutionData =
     "lastConsultDate": "2022-05-17"
   },
   {
-    "id": 566,
+    "id": 1397,
     "name": "신안군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10888,10 +10524,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 567,
+    "id": 1398,
     "name": "여수시정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10907,10 +10543,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 568,
+    "id": 1399,
     "name": "영광군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10926,10 +10562,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 569,
+    "id": 1400,
     "name": "영암군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10945,10 +10581,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 570,
+    "id": 1401,
     "name": "완도군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10964,10 +10600,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 571,
+    "id": 1402,
     "name": "장성군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -10983,10 +10619,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 572,
+    "id": 1403,
     "name": "진도군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -11002,10 +10638,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 573,
+    "id": 1404,
     "name": "함평군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -11021,10 +10657,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 574,
+    "id": 1405,
     "name": "해남군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -11040,10 +10676,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 575,
+    "id": 1406,
     "name": "화순군정신건강복지센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -11059,10 +10695,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 576,
+    "id": 1407,
     "name": "고창군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11078,10 +10714,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 577,
+    "id": 1408,
     "name": "군산시정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11097,10 +10733,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 578,
+    "id": 1409,
     "name": "김제시정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11116,10 +10752,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 579,
+    "id": 1410,
     "name": "남원시정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11135,10 +10771,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 580,
+    "id": 1411,
     "name": "무주군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11154,10 +10790,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 581,
+    "id": 1412,
     "name": "부안군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11176,7 +10812,7 @@ const institutionData =
     "lastConsultDate": "2017-10-16"
   },
   {
-    "id": 582,
+    "id": 1413,
     "name": "순창군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11192,10 +10828,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 583,
+    "id": 1414,
     "name": "익산시정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11214,7 +10850,7 @@ const institutionData =
     "lastConsultDate": "2021-05-13"
   },
   {
-    "id": 584,
+    "id": 1415,
     "name": "임실군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11230,10 +10866,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 585,
+    "id": 1416,
     "name": "장수군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11249,10 +10885,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 586,
+    "id": 1417,
     "name": "정읍시정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11268,10 +10904,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 587,
+    "id": 1418,
     "name": "진안군정신건강복지센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -11287,10 +10923,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 588,
+    "id": 1419,
     "name": "서귀포시정신건강복지센터",
     "type": "전문기관",
     "region": "제주특별자치도",
@@ -11306,10 +10942,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 589,
+    "id": 1420,
     "name": "계룡시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11325,10 +10961,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 590,
+    "id": 1421,
     "name": "공주시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11344,10 +10980,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 591,
+    "id": 1422,
     "name": "금산군정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11363,10 +10999,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 592,
+    "id": 1423,
     "name": "논산시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11382,10 +11018,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 593,
+    "id": 1424,
     "name": "당진시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11401,10 +11037,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 594,
+    "id": 1425,
     "name": "보령시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11420,10 +11056,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 595,
+    "id": 1426,
     "name": "부여군정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11439,10 +11075,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 596,
+    "id": 1427,
     "name": "서산시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11458,10 +11094,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 597,
+    "id": 1428,
     "name": "서천군정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11477,10 +11113,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 598,
+    "id": 1429,
     "name": "아산시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11496,10 +11132,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 599,
+    "id": 1430,
     "name": "예산군정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11515,10 +11151,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 600,
+    "id": 1431,
     "name": "천안시정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11534,10 +11170,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 601,
+    "id": 1432,
     "name": "청양군정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11553,10 +11189,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 602,
+    "id": 1433,
     "name": "태안군정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11572,10 +11208,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 603,
+    "id": 1434,
     "name": "홍성군정신건강복지센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -11591,10 +11227,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 604,
+    "id": 1435,
     "name": "괴산군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11610,10 +11246,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 605,
+    "id": 1436,
     "name": "단양군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11629,10 +11265,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 606,
+    "id": 1437,
     "name": "보은군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11651,7 +11287,7 @@ const institutionData =
     "lastConsultDate": "2017-09-25"
   },
   {
-    "id": 607,
+    "id": 1438,
     "name": "영동군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11667,10 +11303,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 608,
+    "id": 1439,
     "name": "옥천군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11686,10 +11322,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 609,
+    "id": 1440,
     "name": "음성군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11705,10 +11341,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 610,
+    "id": 1441,
     "name": "제천시정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11727,7 +11363,7 @@ const institutionData =
     "lastConsultDate": "2020-10-20"
   },
   {
-    "id": 611,
+    "id": 1442,
     "name": "증평군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11743,10 +11379,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 612,
+    "id": 1443,
     "name": "진천군정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11762,10 +11398,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 613,
+    "id": 1444,
     "name": "충주시정신건강복지센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -11781,10 +11417,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 614,
+    "id": 1445,
     "name": "강릉시중독관리통합지원센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -11800,10 +11436,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 615,
+    "id": 1446,
     "name": "원주시중독관리통합지원센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -11819,10 +11455,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 616,
+    "id": 1447,
     "name": "춘천시중독관리통합지원센터",
     "type": "전문기관",
     "region": "강원특별자치도",
@@ -11841,7 +11477,7 @@ const institutionData =
     "lastConsultDate": "2023-06-07"
   },
   {
-    "id": 617,
+    "id": 1448,
     "name": "고양시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -11857,10 +11493,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 618,
+    "id": 1449,
     "name": "안산시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -11876,10 +11512,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 619,
+    "id": 1450,
     "name": "안양시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -11895,10 +11531,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 620,
+    "id": 1451,
     "name": "용인시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -11910,14 +11546,14 @@ const institutionData =
     ],
     "purchaseCycle": "-",
     "purchaseVolume": 0,
-    "purchaseAmount": 0,
-    "purchaseStage": "인지",
-    "lastPurchaseDate": "-",
+    "purchaseAmount": 750000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2026-03-20",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 621,
+    "id": 1452,
     "name": "평택시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -11933,10 +11569,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 622,
+    "id": 1453,
     "name": "화성시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경기도",
@@ -11955,7 +11591,7 @@ const institutionData =
     "lastConsultDate": "2016-09-26"
   },
   {
-    "id": 623,
+    "id": 1454,
     "name": "양산시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상남도",
@@ -11974,7 +11610,7 @@ const institutionData =
     "lastConsultDate": "2022-09-22"
   },
   {
-    "id": 624,
+    "id": 1455,
     "name": "경산시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -11990,10 +11626,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 625,
+    "id": 1456,
     "name": "포항시중독관리통합지원센터",
     "type": "전문기관",
     "region": "경상북도",
@@ -12009,10 +11645,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 626,
+    "id": 1457,
     "name": "광산구중독관리통합지원센터",
     "type": "전문기관",
     "region": "광주광역시",
@@ -12028,10 +11664,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 627,
+    "id": 1458,
     "name": "서구중독관리통합지원센터",
     "type": "전문기관",
     "region": "광주광역시",
@@ -12047,10 +11683,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 628,
+    "id": 1459,
     "name": "북구중독관리통합지원센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -12066,10 +11702,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 629,
+    "id": 1460,
     "name": "수성구중독관리통합지원센터",
     "type": "전문기관",
     "region": "대구광역시",
@@ -12085,10 +11721,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 630,
+    "id": 1461,
     "name": "중구중독관리통합지원센터",
     "type": "전문기관",
     "region": "대전광역시",
@@ -12104,10 +11740,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 631,
+    "id": 1462,
     "name": "동래구중독관리통합지원센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -12123,10 +11759,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 632,
+    "id": 1463,
     "name": "부산진구중독관리통합지원센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -12142,10 +11778,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 633,
+    "id": 1464,
     "name": "사하구중독관리통합지원센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -12161,10 +11797,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 634,
+    "id": 1465,
     "name": "해운대구중독관리통합지원센터",
     "type": "전문기관",
     "region": "부산광역시",
@@ -12180,10 +11816,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 635,
+    "id": 1466,
     "name": "강남구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12199,10 +11835,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 636,
+    "id": 1467,
     "name": "강서구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12218,10 +11854,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 637,
+    "id": 1468,
     "name": "관악구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12237,10 +11873,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 638,
+    "id": 1469,
     "name": "노원구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12256,10 +11892,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 639,
+    "id": 1470,
     "name": "마포구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12275,10 +11911,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 640,
+    "id": 1471,
     "name": "성북구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12294,10 +11930,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 641,
+    "id": 1472,
     "name": "송파구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12313,10 +11949,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 642,
+    "id": 1473,
     "name": "영등포구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12332,10 +11968,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 643,
+    "id": 1474,
     "name": "종로구중독관리통합지원센터",
     "type": "전문기관",
     "region": "서울특별시",
@@ -12351,10 +11987,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 644,
+    "id": 1475,
     "name": "세종시중독관리통합지원센터",
     "type": "전문기관",
     "region": "세종특별자치시",
@@ -12370,10 +12006,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 645,
+    "id": 1476,
     "name": "남구중독관리통합지원센터",
     "type": "전문기관",
     "region": "울산광역시",
@@ -12389,10 +12025,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 646,
+    "id": 1477,
     "name": "남동구중독관리통합지원센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -12411,7 +12047,7 @@ const institutionData =
     "lastConsultDate": "2018-11-07"
   },
   {
-    "id": 647,
+    "id": 1478,
     "name": "부평구중독관리통합지원센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -12427,10 +12063,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 648,
+    "id": 1479,
     "name": "서구중독관리통합지원센터",
     "type": "전문기관",
     "region": "인천광역시",
@@ -12446,10 +12082,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 649,
+    "id": 1480,
     "name": "목포시중독관리통합지원센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -12465,10 +12101,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 650,
+    "id": 1481,
     "name": "순천시중독관리통합지원센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -12484,10 +12120,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 651,
+    "id": 1482,
     "name": "여수시중독관리통합지원센터",
     "type": "전문기관",
     "region": "전라남도",
@@ -12506,7 +12142,7 @@ const institutionData =
     "lastConsultDate": "2019-04-01"
   },
   {
-    "id": 652,
+    "id": 1483,
     "name": "익산시중독관리통합지원센터",
     "type": "전문기관",
     "region": "전북특별자치도",
@@ -12522,10 +12158,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 653,
+    "id": 1484,
     "name": "서귀포시중독관리통합지원센터",
     "type": "전문기관",
     "region": "제주특별자치도",
@@ -12541,10 +12177,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 654,
+    "id": 1485,
     "name": "서산시중독관리통합지원센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -12560,10 +12196,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 655,
+    "id": 1486,
     "name": "천안시중독관리통합지원센터",
     "type": "전문기관",
     "region": "충청남도",
@@ -12579,10 +12215,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 656,
+    "id": 1487,
     "name": "청주시중독관리통합지원센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -12598,10 +12234,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 657,
+    "id": 1488,
     "name": "충주시중독관리통합지원센터",
     "type": "전문기관",
     "region": "충청북도",
@@ -12617,10 +12253,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 658,
+    "id": 1489,
     "name": "가야대학교 간호학과",
     "type": "전공교육",
     "region": "경상남도",
@@ -12636,10 +12272,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 659,
+    "id": 1490,
     "name": "가천대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "인천광역시",
@@ -12655,10 +12291,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 660,
+    "id": 1491,
     "name": "가톨릭관동대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -12677,7 +12313,7 @@ const institutionData =
     "lastConsultDate": "2023-09-14"
   },
   {
-    "id": 661,
+    "id": 1492,
     "name": "가톨릭꽃동네대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -12693,10 +12329,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 662,
+    "id": 1493,
     "name": "가톨릭대학교 의과/약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -12712,10 +12348,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 663,
+    "id": 1494,
     "name": "가톨릭대학교 간호대학 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -12734,7 +12370,7 @@ const institutionData =
     "lastConsultDate": "2020-10-27"
   },
   {
-    "id": 664,
+    "id": 1495,
     "name": "가톨릭상지대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -12750,10 +12386,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 665,
+    "id": 1496,
     "name": "강동대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -12769,10 +12405,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 666,
+    "id": 1497,
     "name": "강릉영동대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -12788,10 +12424,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 667,
+    "id": 1498,
     "name": "강릉원주대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -12807,10 +12443,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 668,
+    "id": 1499,
     "name": "강서대학교 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -12826,10 +12462,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 669,
+    "id": 1500,
     "name": "강원대학교 의과/보건/약학학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -12845,10 +12481,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 670,
+    "id": 1501,
     "name": "강원대학교 도계캠퍼스 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -12867,7 +12503,7 @@ const institutionData =
     "lastConsultDate": "2015-09-14"
   },
   {
-    "id": 671,
+    "id": 1502,
     "name": "강원대학교(춘천) 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -12883,10 +12519,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 672,
+    "id": 1503,
     "name": "건국대학교 간호/의과학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -12902,10 +12538,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 673,
+    "id": 1504,
     "name": "건양대학교 의과/보건학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -12921,10 +12557,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 674,
+    "id": 1505,
     "name": "건양대학교(메디컬) 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -12943,7 +12579,7 @@ const institutionData =
     "lastConsultDate": "2023-06-08"
   },
   {
-    "id": 675,
+    "id": 1506,
     "name": "경남대학교 간호학과",
     "type": "전공교육",
     "region": "경상남도",
@@ -12959,10 +12595,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 676,
+    "id": 1507,
     "name": "경남정보대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -12978,10 +12614,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 677,
+    "id": 1508,
     "name": "경동대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -12997,10 +12633,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 678,
+    "id": 1509,
     "name": "경민대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -13016,10 +12652,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 679,
+    "id": 1510,
     "name": "경복대학교(남양주) 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -13035,10 +12671,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 680,
+    "id": 1511,
     "name": "경북과학대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13054,10 +12690,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 681,
+    "id": 1512,
     "name": "경북대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -13073,10 +12709,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 682,
+    "id": 1513,
     "name": "경북보건대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13092,10 +12728,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 683,
+    "id": 1514,
     "name": "경북전문대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13114,7 +12750,7 @@ const institutionData =
     "lastConsultDate": "2021-06-30"
   },
   {
-    "id": 684,
+    "id": 1515,
     "name": "경성대학교 간호/약학학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -13130,10 +12766,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 685,
+    "id": 1516,
     "name": "경운대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13149,10 +12785,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 686,
+    "id": 1517,
     "name": "경인여자대학교 간호학과",
     "type": "전공교육",
     "region": "인천광역시",
@@ -13168,10 +12804,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 687,
+    "id": 1518,
     "name": "경일대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13187,10 +12823,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 688,
+    "id": 1519,
     "name": "경희대학교 의과/약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -13209,7 +12845,7 @@ const institutionData =
     "lastConsultDate": "2019-09-16"
   },
   {
-    "id": 689,
+    "id": 1520,
     "name": "경희대학교 서울캠퍼스 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -13225,10 +12861,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 690,
+    "id": 1521,
     "name": "계명문화대학교 간호학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -13244,10 +12880,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 691,
+    "id": 1522,
     "name": "고려대학교 간호/의과/보건학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -13266,8 +12902,8 @@ const institutionData =
     "lastConsultDate": "2020-12-11"
   },
   {
-    "id": 692,
-    "name": "고신대학교 간호/의과학과",
+    "id": 1523,
+    "name": "고신대학�� 간호/의과학과",
     "type": "전공교육",
     "region": "부산광역시",
     "district": "서구",
@@ -13282,10 +12918,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 693,
+    "id": 1524,
     "name": "공주대학교 간호/보건학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -13301,10 +12937,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 694,
+    "id": 1525,
     "name": "광주대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -13320,10 +12956,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 695,
+    "id": 1526,
     "name": "광주보건대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -13342,7 +12978,7 @@ const institutionData =
     "lastConsultDate": "2022-11-02"
   },
   {
-    "id": 696,
+    "id": 1527,
     "name": "광주여자대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -13358,10 +12994,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 697,
+    "id": 1528,
     "name": "구미대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13377,10 +13013,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 698,
+    "id": 1529,
     "name": "국군간호사관학교 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -13399,7 +13035,7 @@ const institutionData =
     "lastConsultDate": "2025-06-04"
   },
   {
-    "id": 699,
+    "id": 1530,
     "name": "국립군산대학교 간호학과",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -13415,10 +13051,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 700,
+    "id": 1531,
     "name": "국립목포대학교 간호학과",
     "type": "전공교육",
     "region": "전라남도",
@@ -13434,10 +13070,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 701,
+    "id": 1532,
     "name": "국립순천대학교 간호학과",
     "type": "전공교육",
     "region": "전라남도",
@@ -13453,10 +13089,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 702,
+    "id": 1533,
     "name": "국제대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -13472,10 +13108,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 703,
+    "id": 1534,
     "name": "극동대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -13491,10 +13127,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 704,
+    "id": 1535,
     "name": "기독간호대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -13510,10 +13146,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 705,
+    "id": 1536,
     "name": "김천대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13529,10 +13165,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 706,
+    "id": 1537,
     "name": "나사렛대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -13548,10 +13184,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 707,
+    "id": 1538,
     "name": "남부대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -13567,10 +13203,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 708,
+    "id": 1539,
     "name": "남서울대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -13589,7 +13225,7 @@ const institutionData =
     "lastConsultDate": "2020-05-13"
   },
   {
-    "id": 709,
+    "id": 1540,
     "name": "단국대학교 의과/보건/약학학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -13605,10 +13241,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 710,
+    "id": 1541,
     "name": "단국대학교 천안캠퍼스 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -13624,10 +13260,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 711,
+    "id": 1542,
     "name": "대경대학교(경산) 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -13643,10 +13279,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 712,
+    "id": 1543,
     "name": "대구가톨릭대학교 간호/약학학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -13662,10 +13298,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 713,
+    "id": 1544,
     "name": "대구과학대학교 간호학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -13681,10 +13317,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 714,
+    "id": 1545,
     "name": "대구대학교 간호학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -13703,7 +13339,7 @@ const institutionData =
     "lastConsultDate": "2023-04-07"
   },
   {
-    "id": 715,
+    "id": 1546,
     "name": "대구보건대학교 간호학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -13719,10 +13355,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 716,
+    "id": 1547,
     "name": "대동대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -13741,7 +13377,7 @@ const institutionData =
     "lastConsultDate": "2011-11-09"
   },
   {
-    "id": 717,
+    "id": 1548,
     "name": "대원대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -13757,10 +13393,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 718,
+    "id": 1549,
     "name": "대전과학기술대학교 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -13776,10 +13412,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 719,
+    "id": 1550,
     "name": "대전대학교 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -13795,10 +13431,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 720,
+    "id": 1551,
     "name": "대전보건대학교 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -13814,10 +13450,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 721,
+    "id": 1552,
     "name": "대진대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -13833,10 +13469,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 722,
+    "id": 1553,
     "name": "덕성여자대학교 약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -13852,10 +13488,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 723,
+    "id": 1554,
     "name": "동강대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -13871,10 +13507,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 724,
+    "id": 1555,
     "name": "동남보건대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -13893,7 +13529,7 @@ const institutionData =
     "lastConsultDate": "2018-04-20"
   },
   {
-    "id": 725,
+    "id": 1556,
     "name": "동덕여자대학교 약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -13909,10 +13545,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 726,
+    "id": 1557,
     "name": "동명대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -13928,10 +13564,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 727,
+    "id": 1558,
     "name": "동서대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -13947,10 +13583,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 728,
+    "id": 1559,
     "name": "동신대학교 간호학과",
     "type": "전공교육",
     "region": "전라남도",
@@ -13966,10 +13602,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 729,
+    "id": 1560,
     "name": "동아대학교 간호/의과학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -13988,7 +13624,7 @@ const institutionData =
     "lastConsultDate": "2021-06-24"
   },
   {
-    "id": 730,
+    "id": 1561,
     "name": "동양대학교(영주) 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -14004,10 +13640,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 731,
+    "id": 1562,
     "name": "동의과학대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14023,10 +13659,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 732,
+    "id": 1563,
     "name": "동의대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14042,10 +13678,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 733,
+    "id": 1564,
     "name": "두원공과대학교(안성) 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14061,10 +13697,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 734,
+    "id": 1565,
     "name": "두원공과대학교(파주) 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14080,10 +13716,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 735,
+    "id": 1566,
     "name": "목포가톨릭대학교 간호학과",
     "type": "전공교육",
     "region": "전라남도",
@@ -14099,10 +13735,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 736,
+    "id": 1567,
     "name": "문경대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -14118,10 +13754,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 737,
+    "id": 1568,
     "name": "배재대학교 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -14140,7 +13776,7 @@ const institutionData =
     "lastConsultDate": "2021-08-18"
   },
   {
-    "id": 738,
+    "id": 1569,
     "name": "백석대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -14156,10 +13792,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 739,
+    "id": 1570,
     "name": "백석문화대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -14175,10 +13811,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 740,
+    "id": 1571,
     "name": "부경대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14194,10 +13830,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 741,
+    "id": 1572,
     "name": "부산가톨릭대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14213,10 +13849,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 742,
+    "id": 1573,
     "name": "부산과학기술대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14232,10 +13868,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 743,
+    "id": 1574,
     "name": "부산대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "경상남도",
@@ -14251,10 +13887,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 744,
+    "id": 1575,
     "name": "부산보건대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14270,10 +13906,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 745,
+    "id": 1576,
     "name": "부산여자대학교 간호학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14289,10 +13925,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 746,
+    "id": 1577,
     "name": "부천대학교(소사) 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14308,10 +13944,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 747,
+    "id": 1578,
     "name": "삼육대학교 간호/보건/약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14330,7 +13966,7 @@ const institutionData =
     "lastConsultDate": "2021-06-15"
   },
   {
-    "id": 748,
+    "id": 1579,
     "name": "삼육보건대학교 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14349,7 +13985,7 @@ const institutionData =
     "lastConsultDate": "2019-11-29"
   },
   {
-    "id": 749,
+    "id": 1580,
     "name": "상명대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -14365,10 +14001,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 750,
+    "id": 1581,
     "name": "상지대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -14384,10 +14020,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 751,
+    "id": 1582,
     "name": "서영대학교(광주) 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -14403,10 +14039,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 752,
+    "id": 1583,
     "name": "서영대학교(파주) 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14422,10 +14058,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 753,
+    "id": 1584,
     "name": "서울대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14441,10 +14077,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 754,
+    "id": 1585,
     "name": "서울여자간호대학교 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14460,10 +14096,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 755,
+    "id": 1586,
     "name": "서일대학교 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14479,10 +14115,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 756,
+    "id": 1587,
     "name": "서정대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14498,10 +14134,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 757,
+    "id": 1588,
     "name": "선린대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -14517,10 +14153,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 758,
+    "id": 1589,
     "name": "선문대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -14536,14 +14172,14 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 759,
+    "id": 1590,
     "name": "성균관대학교 의과/약학학과",
     "type": "전공교육",
     "region": "경기도",
-    "district": "수원시",
+    "district": "���원시",
     "lat": 37.2839,
     "lng": 127.0044,
     "products": [
@@ -14558,7 +14194,7 @@ const institutionData =
     "lastConsultDate": "2015-11-05"
   },
   {
-    "id": 760,
+    "id": 1591,
     "name": "성신여자대학교 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14574,10 +14210,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 761,
+    "id": 1592,
     "name": "세경대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -14593,10 +14229,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 762,
+    "id": 1593,
     "name": "세명대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -14612,10 +14248,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 763,
+    "id": 1594,
     "name": "세한대학교 영암캠퍼스 간호학과",
     "type": "전공교육",
     "region": "전라남도",
@@ -14631,10 +14267,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 764,
+    "id": 1595,
     "name": "송곡대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -14650,10 +14286,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 765,
+    "id": 1596,
     "name": "송원대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -14669,10 +14305,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 766,
+    "id": 1597,
     "name": "송호대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -14688,10 +14324,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 767,
+    "id": 1598,
     "name": "수성대학교 간호학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -14707,10 +14343,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 768,
+    "id": 1599,
     "name": "수원과학대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14726,10 +14362,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 769,
+    "id": 1600,
     "name": "수원대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14745,10 +14381,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 770,
+    "id": 1601,
     "name": "수원여자대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14764,10 +14400,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 771,
+    "id": 1602,
     "name": "숙명여자대학교 약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14783,10 +14419,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 772,
+    "id": 1603,
     "name": "순천대학교 약학학과",
     "type": "전공교육",
     "region": "전라남도",
@@ -14802,10 +14438,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 773,
+    "id": 1604,
     "name": "신라대학교 간호/보건학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -14821,10 +14457,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 774,
+    "id": 1605,
     "name": "신성대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -14840,10 +14476,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 775,
+    "id": 1606,
     "name": "신한대학교(동두천) 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14859,10 +14495,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 776,
+    "id": 1607,
     "name": "아주대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14878,10 +14514,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 777,
+    "id": 1608,
     "name": "안동대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -14897,10 +14533,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 778,
+    "id": 1609,
     "name": "안산대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14916,10 +14552,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 779,
+    "id": 1610,
     "name": "여주대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14935,10 +14571,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 780,
+    "id": 1611,
     "name": "연성대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -14954,10 +14590,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 781,
+    "id": 1612,
     "name": "연세대학교 의과/보건/약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -14976,7 +14612,7 @@ const institutionData =
     "lastConsultDate": "2021-06-08"
   },
   {
-    "id": 782,
+    "id": 1613,
     "name": "연세대학교 미래캠퍼스 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -14992,10 +14628,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 783,
+    "id": 1614,
     "name": "연세대학교(신촌) 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -15011,10 +14647,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 784,
+    "id": 1615,
     "name": "연세대학교(원주) 의과/보건학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -15030,10 +14666,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 785,
+    "id": 1616,
     "name": "영남대학교 의과/약학학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -15049,10 +14685,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 786,
+    "id": 1617,
     "name": "영남이공대학교 간호학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -15068,10 +14704,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 787,
+    "id": 1618,
     "name": "영산대학교 간호학과",
     "type": "전공교육",
     "region": "경상남도",
@@ -15087,10 +14723,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 788,
+    "id": 1619,
     "name": "영진전문대학교(복현) 간호학과",
     "type": "전공교육",
     "region": "대구광역시",
@@ -15109,7 +14745,7 @@ const institutionData =
     "lastConsultDate": "2024-11-20"
   },
   {
-    "id": 789,
+    "id": 1620,
     "name": "예수대학교 간호학과",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -15125,10 +14761,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 790,
+    "id": 1621,
     "name": "용인예술과학대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -15144,10 +14780,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 791,
+    "id": 1622,
     "name": "우석대학교 간호학과",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -15163,10 +14799,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 792,
+    "id": 1623,
     "name": "우송대학교 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -15182,10 +14818,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 793,
+    "id": 1624,
     "name": "우송정보대학 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -15201,10 +14837,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 794,
+    "id": 1625,
     "name": "울산과학대학교 간호학과",
     "type": "전공교육",
     "region": "울산광역시",
@@ -15220,10 +14856,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 795,
+    "id": 1626,
     "name": "울산대학교 간호학과",
     "type": "전공교육",
     "region": "울산광역시",
@@ -15239,10 +14875,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 796,
+    "id": 1627,
     "name": "울산대학교(서울아산병원) 의과학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -15258,10 +14894,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 797,
+    "id": 1628,
     "name": "원광대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -15277,10 +14913,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 798,
+    "id": 1629,
     "name": "위덕대학교 간호학과",
     "type": "전공교육",
     "region": "경상북도",
@@ -15296,10 +14932,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 799,
+    "id": 1630,
     "name": "유원대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -15315,10 +14951,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 800,
+    "id": 1631,
     "name": "을지대학교 보건학과",
     "type": "전공교육",
     "region": "경기도",
@@ -15334,10 +14970,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 801,
+    "id": 1632,
     "name": "을지대학교 성남캠퍼스 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -15353,10 +14989,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 802,
+    "id": 1633,
     "name": "을지대학교 의정부캠퍼스 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -15372,10 +15008,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 803,
+    "id": 1634,
     "name": "인제대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "부산광역시",
@@ -15394,7 +15030,7 @@ const institutionData =
     "lastConsultDate": "2012-10-04"
   },
   {
-    "id": 804,
+    "id": 1635,
     "name": "인천가톨릭대학교 간호학과",
     "type": "전공교육",
     "region": "인천광역시",
@@ -15410,10 +15046,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 805,
+    "id": 1636,
     "name": "인하대학교 간호/의과학과",
     "type": "전공교육",
     "region": "인천광역시",
@@ -15432,7 +15068,7 @@ const institutionData =
     "lastConsultDate": "2024-04-25"
   },
   {
-    "id": 806,
+    "id": 1637,
     "name": "재능대학교 간호학과",
     "type": "전공교육",
     "region": "인천광역시",
@@ -15448,10 +15084,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 807,
+    "id": 1638,
     "name": "전남대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -15467,10 +15103,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 808,
+    "id": 1639,
     "name": "제주대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "제주특별자치도",
@@ -15489,7 +15125,7 @@ const institutionData =
     "lastConsultDate": "2022-03-10"
   },
   {
-    "id": 809,
+    "id": 1640,
     "name": "조선간호대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -15505,10 +15141,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 810,
+    "id": 1641,
     "name": "조선대학교 간호/의과/약학학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -15527,7 +15163,7 @@ const institutionData =
     "lastConsultDate": "2019-03-26"
   },
   {
-    "id": 811,
+    "id": 1642,
     "name": "중부대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -15543,10 +15179,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 812,
+    "id": 1643,
     "name": "중앙대학교 의과/약학학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -15565,7 +15201,7 @@ const institutionData =
     "lastConsultDate": "2023-12-08"
   },
   {
-    "id": 813,
+    "id": 1644,
     "name": "중앙대학교 적십자간호대학 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -15581,10 +15217,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 814,
+    "id": 1645,
     "name": "중원대학교(괴산) 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -15600,10 +15236,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 815,
+    "id": 1646,
     "name": "차의과학대학교 간호/의과/약학학과",
     "type": "전공교육",
     "region": "경기도",
@@ -15619,10 +15255,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 816,
+    "id": 1647,
     "name": "창신대학교 간호학과",
     "type": "전공교육",
     "region": "경상남도",
@@ -15638,10 +15274,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 817,
+    "id": 1648,
     "name": "창원대학교 간호학과",
     "type": "전공교육",
     "region": "경상남도",
@@ -15657,10 +15293,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 818,
+    "id": 1649,
     "name": "청운대학교 홍성캠퍼스 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -15679,7 +15315,7 @@ const institutionData =
     "lastConsultDate": "2019-09-24"
   },
   {
-    "id": 819,
+    "id": 1650,
     "name": "청주대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -15695,10 +15331,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 820,
+    "id": 1651,
     "name": "초당대학교 간호학과",
     "type": "전공교육",
     "region": "전라남도",
@@ -15714,10 +15350,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 821,
+    "id": 1652,
     "name": "춘해보건대학교 간호학과",
     "type": "전공교육",
     "region": "울산광역시",
@@ -15733,10 +15369,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 822,
+    "id": 1653,
     "name": "충남대학교 간호/의과/보건/약학학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -15755,7 +15391,7 @@ const institutionData =
     "lastConsultDate": "2020-05-08"
   },
   {
-    "id": 823,
+    "id": 1654,
     "name": "충북대학교 간호/의과/약학학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -15771,10 +15407,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 824,
+    "id": 1655,
     "name": "충북보건과학대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -15793,7 +15429,7 @@ const institutionData =
     "lastConsultDate": "2019-06-28"
   },
   {
-    "id": 825,
+    "id": 1656,
     "name": "충청대학교 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -15809,10 +15445,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 826,
+    "id": 1657,
     "name": "한국교통대학교 증평캠퍼스 간호학과",
     "type": "전공교육",
     "region": "충청북도",
@@ -15828,10 +15464,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 827,
+    "id": 1658,
     "name": "한국성서대학교 간호학과",
     "type": "전공교육",
     "region": "서울특별시",
@@ -15847,10 +15483,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 828,
+    "id": 1659,
     "name": "한남대학교 간호학과",
     "type": "전공교육",
     "region": "대전광역시",
@@ -15866,10 +15502,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 829,
+    "id": 1660,
     "name": "한림대학교 간호/의과학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -15888,7 +15524,7 @@ const institutionData =
     "lastConsultDate": "2018-05-28"
   },
   {
-    "id": 830,
+    "id": 1661,
     "name": "한림성심대학교 간호학과",
     "type": "전공교육",
     "region": "강원특별자치도",
@@ -15904,10 +15540,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 831,
+    "id": 1662,
     "name": "한서대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -15923,10 +15559,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 832,
+    "id": 1663,
     "name": "한세대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -15942,10 +15578,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 833,
+    "id": 1664,
     "name": "한일장신대학교 간호학과",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -15961,10 +15597,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 834,
+    "id": 1665,
     "name": "혜전대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -15980,10 +15616,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 835,
+    "id": 1666,
     "name": "호남대학교 간호학과",
     "type": "전공교육",
     "region": "광주광역시",
@@ -15999,10 +15635,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 836,
+    "id": 1667,
     "name": "호서대학교 간호학과",
     "type": "전공교육",
     "region": "충청남도",
@@ -16018,10 +15654,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 837,
+    "id": 1668,
     "name": "호원대학교 간호학과",
     "type": "전공교육",
     "region": "전북특별자치도",
@@ -16037,10 +15673,10 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
   },
   {
-    "id": 838,
+    "id": 1669,
     "name": "화성의과학대학교 간호학과",
     "type": "전공교육",
     "region": "경기도",
@@ -16056,6 +15692,3027 @@ const institutionData =
     "purchaseStage": "인지",
     "lastPurchaseDate": "-",
     "consultCount": 0,
-    "lastConsultDate": ""
+    "lastConsultDate": null
+  },
+  {
+    "id": 1670,
+    "name": "서울대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "관악구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1671,
+    "name": "연세대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1672,
+    "name": "고려대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1674,
+    "name": "한양대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성��구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1675,
+    "name": "중앙대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "동작구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "2023-12-12",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1676,
+    "name": "경희대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1677,
+    "name": "서강대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "마포구",
+    "lat": null,
+    "lng": null,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "-",
+    "purchaseVolume": 301,
+    "purchaseAmount": 240800,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "Tue Sep 13 2022 00:00:00 GMT+0900 (한국 표준시)",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1679,
+    "name": "숙명여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "용산구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1680,
+    "name": "건국대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1681,
+    "name": "동국대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "중구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1682,
+    "name": "홍익대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "마포구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1683,
+    "name": "국민대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1684,
+    "name": "숭실대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "동작구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1685,
+    "name": "세종대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1686,
+    "name": "광운대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1687,
+    "name": "명지대학교(인문캠퍼스)",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1688,
+    "name": "상명대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "종로구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1689,
+    "name": "삼육대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1690,
+    "name": "서울시립대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1691,
+    "name": "한국외국어대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1692,
+    "name": "서울과학기술대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1693,
+    "name": "서울여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1694,
+    "name": "덕성여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "도봉구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1695,
+    "name": "성신여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1696,
+    "name": "한성대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1697,
+    "name": "서경대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1698,
+    "name": "KC대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "강서구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1699,
+    "name": "감리교신학대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1700,
+    "name": "총신대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "동작구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1701,
+    "name": "장로회신학대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "광진구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1702,
+    "name": "한국체육대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "송파구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1703,
+    "name": "추계예술대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1704,
+    "name": "동덕여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1705,
+    "name": "성공회대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "구로구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1706,
+    "name": "서울한영대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "구로구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1707,
+    "name": "한국성서대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1708,
+    "name": "서울기독대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "은평구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1709,
+    "name": "경기대학교(서울캠퍼스)",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1710,
+    "name": "인하대학교",
+    "type": "대학보건센터",
+    "region": "인천광역시",
+    "district": "미추홀구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1711,
+    "name": "인천대학교",
+    "type": "대학보건센터",
+    "region": "인천광역시",
+    "district": "연수구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "고려",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1712,
+    "name": "인천가톨릭대학교",
+    "type": "대학보건센터",
+    "region": "인천광역시",
+    "district": "강화군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1713,
+    "name": "연세대학교(국제캠퍼스)",
+    "type": "대학보건센터",
+    "region": "인천광역시",
+    "district": "연수구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1714,
+    "name": "아주대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "수원시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1716,
+    "name": "단국대학교(죽전캠퍼스)",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1717,
+    "name": "한신대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "오산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1718,
+    "name": "용인대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1719,
+    "name": "수원대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "화성시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1720,
+    "name": "안양대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안양시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1721,
+    "name": "협성대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "화성시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1722,
+    "name": "강남대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1723,
+    "name": "대진대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "포천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1724,
+    "name": "한경국립대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안성시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1726,
+    "name": "한국공학대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "시흥시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1727,
+    "name": "한국항공대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "고양시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1728,
+    "name": "차의과학대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "포천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1729,
+    "name": "성결대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안양시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1730,
+    "name": "평택대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "평택시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1731,
+    "name": "성균관대학교(자연과학캠퍼스)",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "수원시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1732,
+    "name": "경희대학교(국제캠퍼스)",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1733,
+    "name": "한국외국어대학교(글로벌캠퍼스)",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "고려",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1734,
+    "name": "중앙대학교(안성캠퍼스)",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안성시",
+    "lat": null,
+    "lng": null,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "-",
+    "purchaseVolume": 300,
+    "purchaseAmount": 240000,
+    "purchaseStage": "COLD",
+    "lastPurchaseDate": "2023-12-12",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1735,
+    "name": "명지대학교(자연캠퍼스)",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1736,
+    "name": "루터대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1737,
+    "name": "칼빈대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1738,
+    "name": "신한대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "동두천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1739,
+    "name": "경인교육대학교",
+    "type": "대학보건센터",
+    "region": "인천광역시",
+    "district": "계양구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1740,
+    "name": "서울교육대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서초구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1741,
+    "name": "한세대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "군포시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1742,
+    "name": "수원가톨릭대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "화성시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1743,
+    "name": "한국예술종합학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1744,
+    "name": "충남대학교",
+    "type": "대학보건센터",
+    "region": "대전광역시",
+    "district": "유성구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1745,
+    "name": "한남대학교",
+    "type": "대학보건센터",
+    "region": "대전광역시",
+    "district": "대덕구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1746,
+    "name": "대전대학교",
+    "type": "대학보건센터",
+    "region": "대전광역시",
+    "district": "동구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1747,
+    "name": "목원대학교",
+    "type": "대학보건센터",
+    "region": "대전광역시",
+    "district": "서구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1748,
+    "name": "배재대학교",
+    "type": "대학보건센터",
+    "region": "대전광역시",
+    "district": "서구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1749,
+    "name": "우송대학교",
+    "type": "대학보건센터",
+    "region": "대전광역시",
+    "district": "동구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1750,
+    "name": "건양대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "논산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1752,
+    "name": "한서대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "서산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1753,
+    "name": "호서대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "아산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1754,
+    "name": "충북대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": "2026-03-26"
+  },
+  {
+    "id": 1755,
+    "name": "청주대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1756,
+    "name": "서원대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1760,
+    "name": "충남대학교(세종캠퍼스)",
+    "type": "대학보건센터",
+    "region": "세종특별자치시",
+    "district": null,
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1761,
+    "name": "고려대학교(세종캠퍼스)",
+    "type": "대학보건센터",
+    "region": "세종특별자치시",
+    "district": null,
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1762,
+    "name": "홍익대학교(세종캠퍼스)",
+    "type": "대학보건센터",
+    "region": "세종특별자치시",
+    "district": null,
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1763,
+    "name": "한국영상대학교",
+    "type": "대학보건센터",
+    "region": "세종특별자치시",
+    "district": null,
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "고려",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1764,
+    "name": "건국대학교(글로컬캠퍼스)",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "충주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1765,
+    "name": "백석대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "천안시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1766,
+    "name": "남서울대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "천안시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1767,
+    "name": "상명대학교(천안캠퍼스)",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "천안시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1768,
+    "name": "선문대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "아산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1769,
+    "name": "중부대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "금산군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1770,
+    "name": "극동대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "음성군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1771,
+    "name": "중원대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "괴산군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1772,
+    "name": "세명대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "제천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1773,
+    "name": "유원대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "영동군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1774,
+    "name": "한국교원대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1775,
+    "name": "청주교육대학교",
+    "type": "대학보건센터",
+    "region": "충청북도",
+    "district": "청주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1776,
+    "name": "공주교육대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "공주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1777,
+    "name": "부산대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "금정구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1778,
+    "name": "경북대학교",
+    "type": "대학보건센터",
+    "region": "대구광역시",
+    "district": "북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1780,
+    "name": "포항공과대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "포항시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1781,
+    "name": "경상국립대학교",
+    "type": "대학보건센터",
+    "region": "경상남도",
+    "district": "진주시",
+    "lat": null,
+    "lng": null,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "-",
+    "purchaseVolume": 315,
+    "purchaseAmount": 252000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "Thu Aug 22 2024 00:00:00 GMT+0900 (한국 표준시)",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1782,
+    "name": "동아대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "사하구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1784,
+    "name": "신라대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "사상구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1785,
+    "name": "동의대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "부산진구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1786,
+    "name": "영남대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1787,
+    "name": "대구대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1788,
+    "name": "계명대학교",
+    "type": "대학보건센터",
+    "region": "대구광역시",
+    "district": "달서구",
+    "lat": null,
+    "lng": null,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "-",
+    "purchaseVolume": 2000,
+    "purchaseAmount": 2280000,
+    "purchaseStage": "구매",
+    "lastPurchaseDate": "Tue Sep 10 2024 00:00:00 GMT+0900 (한국 표준시)",
+    "consultCount": 4,
+    "lastConsultDate": "2026-02-13"
+  },
+  {
+    "id": 1789,
+    "name": "울산대학교",
+    "type": "대학보건센터",
+    "region": "울산광역시",
+    "district": "남구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1791,
+    "name": "인제대학교",
+    "type": "대학보건센터",
+    "region": "경상남도",
+    "district": "김해시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1792,
+    "name": "경남대학교",
+    "type": "대학보건센터",
+    "region": "경상남도",
+    "district": "창원시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1793,
+    "name": "동서대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "사상구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1794,
+    "name": "한동대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "포항시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1795,
+    "name": "대구가톨릭대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1796,
+    "name": "동국대학교(경주캠퍼스)",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "경주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1797,
+    "name": "위덕대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "경주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1798,
+    "name": "김천대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "김천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1799,
+    "name": "경운대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "구미시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1802,
+    "name": "경일대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1803,
+    "name": "대구교육대학교",
+    "type": "대학보건센터",
+    "region": "대구광역시",
+    "district": "남구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1804,
+    "name": "부산교육대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "연제구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1805,
+    "name": "진주교육대학교",
+    "type": "대학보건센터",
+    "region": "경상남도",
+    "district": "진주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1806,
+    "name": "부산외국어대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "금정구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1807,
+    "name": "동명대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "남구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1808,
+    "name": "영산대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "해운대구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1809,
+    "name": "경성대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "남구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1810,
+    "name": "고신대학교",
+    "type": "대학보건센터",
+    "region": "부산광역시",
+    "district": "영도구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1811,
+    "name": "대신대학교",
+    "type": "대학보건센터",
+    "region": "경상북도",
+    "district": "경산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1813,
+    "name": "조선대학교",
+    "type": "대학보건센터",
+    "region": "광주광역시",
+    "district": "동구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1814,
+    "name": "원광대학교",
+    "type": "대학보건센터",
+    "region": "전북특별자치도",
+    "district": "익산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1819,
+    "name": "동신대학교",
+    "type": "대학보건센터",
+    "region": "전라남도",
+    "district": "나주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1820,
+    "name": "호남대학교",
+    "type": "대학보건센터",
+    "region": "광주광역시",
+    "district": "광산구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1821,
+    "name": "남부대학교",
+    "type": "대학보건센터",
+    "region": "광주광역시",
+    "district": "광산구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1822,
+    "name": "광주대학교",
+    "type": "대학보건센터",
+    "region": "광주광역시",
+    "district": "남구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1823,
+    "name": "우석대학교",
+    "type": "대학보건센터",
+    "region": "전북특별자치도",
+    "district": "완주군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1824,
+    "name": "세한대학교",
+    "type": "대학보건센터",
+    "region": "전라남도",
+    "district": "영암군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1826,
+    "name": "광주교육대학교",
+    "type": "대학보건센터",
+    "region": "광주광역시",
+    "district": "북구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1827,
+    "name": "전주교육대학교",
+    "type": "대학보건센터",
+    "region": "전북특별자치도",
+    "district": "전주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1828,
+    "name": "한국전통문화대학교",
+    "type": "대학보건센터",
+    "region": "충청남도",
+    "district": "부여군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1829,
+    "name": "초당대학교",
+    "type": "대학보건센터",
+    "region": "전라남도",
+    "district": "무안군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1830,
+    "name": "목포가톨릭대학교",
+    "type": "대학보건센터",
+    "region": "전라남도",
+    "district": "목포시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1831,
+    "name": "한일장신대학교",
+    "type": "대학보건센터",
+    "region": "전북특별자치도",
+    "district": "완주군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1832,
+    "name": "강원대학교",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": null,
+    "lng": null,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "-",
+    "purchaseVolume": 200,
+    "purchaseAmount": 160000,
+    "purchaseStage": "COLD",
+    "lastPurchaseDate": "2022-05-10",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1833,
+    "name": "한림대학교",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1834,
+    "name": "가톨릭관동대학교",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "강릉시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1836,
+    "name": "춘천교육대학교",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "춘천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1837,
+    "name": "강원대학교(삼척캠퍼스)",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "삼척시",
+    "lat": null,
+    "lng": null,
+    "products": [
+      "알쓰패치"
+    ],
+    "purchaseCycle": "-",
+    "purchaseVolume": 200,
+    "purchaseAmount": 160000,
+    "purchaseStage": "COLD",
+    "lastPurchaseDate": "2022-05-10",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1838,
+    "name": "상지대학교",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "원주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1839,
+    "name": "연세대학교(원주캠퍼스)",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "원주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1840,
+    "name": "한라대학교",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "원주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1841,
+    "name": "경동대학교",
+    "type": "대학보건센터",
+    "region": "강원특별자치도",
+    "district": "고성군",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1842,
+    "name": "제주국제대학교",
+    "type": "대학보건센터",
+    "region": "제주특별자치도",
+    "district": "제주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1843,
+    "name": "서울예술대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1844,
+    "name": "동양미래대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "구로구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1845,
+    "name": "명지전문대학",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1846,
+    "name": "인덕대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "노원구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1847,
+    "name": "한양여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "성동구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1848,
+    "name": "삼육보건대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "동대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1849,
+    "name": "서일대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "중랑구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1850,
+    "name": "배화여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "종로구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1851,
+    "name": "서울여자간호대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "서대문구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1852,
+    "name": "숭의여자대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "중구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1853,
+    "name": "정화예술대학교",
+    "type": "대학보건센터",
+    "region": "서울특별시",
+    "district": "종로구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1854,
+    "name": "한국관광대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "이천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1855,
+    "name": "수원과학대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "화성시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1856,
+    "name": "용인예술과학대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "용인시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1857,
+    "name": "안산대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1858,
+    "name": "오산대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "오산시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1859,
+    "name": "신구대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "성남시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1860,
+    "name": "대림대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안양시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1861,
+    "name": "동서울대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "성남시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1862,
+    "name": "부천대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "부천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1863,
+    "name": "경인여자대학교",
+    "type": "대학보건센터",
+    "region": "인천광역시",
+    "district": "계양구",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1865,
+    "name": "두원공과대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "안성시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1866,
+    "name": "유한대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "부천시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
+  },
+  {
+    "id": 1867,
+    "name": "동원대학교",
+    "type": "대학보건센터",
+    "region": "경기도",
+    "district": "광주시",
+    "lat": null,
+    "lng": null,
+    "products": [],
+    "purchaseCycle": "-",
+    "purchaseVolume": 0,
+    "purchaseAmount": 0,
+    "purchaseStage": "관심",
+    "lastPurchaseDate": "-",
+    "consultCount": 0,
+    "lastConsultDate": null
   }
 ];

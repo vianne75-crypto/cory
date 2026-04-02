@@ -27,6 +27,14 @@
 - [x] P4 기관 검색 기능 요건 정의 (PULSE) ✅ 2026-03-25 → `P4_기관검색_요건정의서.md`
 - [ ] X1 HC 동기화 안정 운영 모니터링 (FLUX)
 
+## 🔁 매일 (상시 과제)
+
+- [ ] **M1 기관명 매칭 개선** — 매일 미매칭 건 확인 → 줄임말 사전 추가 · 매칭 로직 보완 (FLUX)
+  - 줄임말 사전: `scripts/rematch-consultations.js` ABBREVIATIONS
+  - 주문 매칭: `gas/order-worker.js` 3-tier 로직
+  - 상담 매칭: `scripts/rematch-consultations.js` inferBogunso + 공백제거
+  - **매일 체크**: 미매칭 상담 건수 확인 → 패턴 발견 시 사전 추가 → 재매칭 실행
+
 ## 🟡 단기 (4월)
 
 - [ ] **X5 주문관리 시스템 자동화** — 전사 중요 과제 (대표 지시 2026-03-27, FLUX 이음 주관)
