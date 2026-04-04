@@ -1,30 +1,112 @@
-Fetching all institutions...
-// ⚠️ AUTO-GENERATED: Supabase institutions table
-// Generated: 2026-04-02T14:01:39.998Z
-// Do not edit manually - use /rest/v1/institutions API instead
+// 구매단계 정의 (7단계 — 2026-03-19 재설계)
+const PURCHASE_STAGES = ['인지', '관심', '고려', '구매', '활용', '재구매', '파트너'];
 
-const institutionData = [
-  {
-    "id": 839,
-    "name": "강진군보건소",
-    "type": "보건소",
-    "region": "전라남도",
-    "district": "강진군",
-    "lat": 34.9097,
-    "lng": 126.8485,
-    "products": [
-      "알쓰패치"
-    ],
-    "purchaseCycle": "단건",
-    "purchaseVolume": 500,
-    "purchaseAmount": 890000,
-    "purchaseStage": "구매",
-    "lastPurchaseDate": "...
+// 기관 유형 정의 및 색상
+const INSTITUTION_TYPES = {
+  '보건소': { color: '#2196F3', icon: 'H' },
+  '전문기관': { color: '#9C27B0', icon: 'M' },
+  '금연지원센터': { color: '#4CAF50', icon: 'S' },
+  '광역시도 건강증진부서': { color: '#F44336', icon: 'G' },
+  '교육기관': { color: '#3F51B5', icon: 'E' },
+  '전공교육': { color: '#E91E63', icon: 'P' },
+  '군/경/소방': { color: '#795548', icon: 'D' },
+  '사업장': { color: '#FF9800', icon: 'B' },
+  '복지기관': { color: '#009688', icon: 'W' },
+  '대학보건관리자': { color: '#00897b', icon: 'HC' },
+  '공공기관(기타)': { color: '#607D8B', icon: 'C' },
+  '강사·대행사': { color: '#FF6F00', icon: 'T' }
+};
 
-✅ Generated data for 1000 institutions
-// ⚠️ AUTO-GENERATED: Supabase institutions table
-// Generated: 2026-04-02T14:01:39.998Z
-// Do not edit manually - use /rest/v1/institutions API instead
+// 구매단계별 색상 (7단계)
+const STAGE_COLORS = {
+  '인지': '#e0e0e0', '관심': '#b0bec5', '고려': '#ffb74d',
+  '구매': '#4fc3f7', '활용': '#29b6f6', '재구매': '#66bb6a', '파트너': '#ab47bc'
+};
+
+// 제품 유형
+const PRODUCT_TYPES = ['알쓰패치', '노담패치'];
+
+// 전문센터 키워드 (P0-C — 2026-03-30)
+const EXPERT_CENTER_KEYWORDS = [
+  '암센터', '암병원', '중독관리', '알코올상담', '정신건강복지',
+  '근로자건강센터', '금연지원센터', '한국건강증진개발원', '중독관리통합'
+];
+
+// 세그먼트 분류 함수 (P0-C)
+function getSegment(name, type) {
+  if (EXPERT_CENTER_KEYWORDS.some(kw => name.includes(kw))) return '전문센터';
+  if (type === '금연지원센터') return '전문센터';
+  if (['보건소', '광역시도 건강증진부서'].includes(type)) return '보건소';
+  if (['교육기관', '전공교육', '대학보건관리자'].includes(type)) return '학교';
+  if (type === '사업장') return '사업장';
+  if (type === '군/경/소방') return '군경';
+  return '기타';
+}
+
+// 지역별 전체 대상기관 수 (추정)
+const REGION_TOTAL_TARGETS = {
+  '강원특별자치도': 64,
+  '경기도': 124,
+  '경상남도': 55,
+  '경상북도': 71,
+  '광주광역시': 26,
+  '대구광역시': 37,
+  '대전광역시': 25,
+  '부산광역시': 56,
+  '서울특별시': 104,
+  '세종특별자치시': 5,
+  '울산광역시': 16,
+  '인천광역시': 34,
+  '전라남도': 60,
+  '전북특별자치도': 54,
+  '제주특별자치도': 8,
+  '충청남도': 58,
+  '충청북도': 41,
+};
+
+// 지역별 대학보건관리자(HC) 대상 수
+const HC_REGION_TARGETS = {
+  '강원특별자치도': 16,
+  '경기도': 55,
+  '경상남도': 12,
+  '경상북도': 21,
+  '광주광역시': 11,
+  '대구광역시': 8,
+  '대전광역시': 11,
+  '부산광역시': 16,
+  '서울특별시': 53,
+  '세종특별자치시': 4,
+  '울산광역시': 3,
+  '인천광역시': 8,
+  '전라남도': 13,
+  '전북특별자치도': 9,
+  '제주특별자치도': 3,
+  '충청남도': 17,
+  '충청북도': 13,
+};
+
+// 지역별 중심 좌표
+const REGION_CENTERS = {
+  '서울특별시': [37.5665, 126.978],
+  '부산광역시': [35.1796, 129.0756],
+  '대구광역시': [35.8714, 128.6014],
+  '인천광역시': [37.4563, 126.7052],
+  '광주광역시': [35.1595, 126.8526],
+  '대전광역시': [36.3504, 127.3845],
+  '울산광역시': [35.5384, 129.3114],
+  '세종특별자치시': [36.48, 127.0],
+  '경기도': [37.275, 127.01],
+  '강원특별자치도': [37.8228, 128.1555],
+  '충청북도': [36.6357, 127.4912],
+  '충청남도': [36.5184, 126.8],
+  '전북특별자치도': [35.82, 127.11],
+  '전라남도': [34.816, 126.463],
+  '경상북도': [36.576, 128.506],
+  '경상남도': [35.46, 128.213],
+  '제주특별자치도': [33.489, 126.498]
+};
+
+// 정제된 주문 데이터 기반 공공기관 (263개)
 
 const institutionData = [
   {
