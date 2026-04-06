@@ -40,7 +40,10 @@
 - [ ] **X5 주문관리 시스템 자동화** — 전사 중요 과제 (대표 지시 2026-03-27, FLUX 이음 주관)
   - ✅ 스펙 확정 2026-03-27 → `경영지원(슬기)/S7_주문관리자동화_스펙기획.md`
   - ~~Phase 1 P1 신규 주문 알림~~ → 불필요 (애니빌드 기존 알림으로 충분, 대표 확인 2026-03-30)
-  - **Phase 2 (4/20)**: P2 CRM 자동 매칭 + P3 입금 확인 UI
+  - **Phase 2 (4/20)**:
+    - [x] P2 CRM 자동 매칭 ✅ 2026-04-06 — syncOrders()에 smartMatchOrder 엔진 연결 (score≥0.7 자동, 폴백 이름매칭)
+    - [x] P3 입금 확인 UI ✅ 2026-04-06 — 미수금 필터 카드 + 입금확인 버튼 + payment_confirmed/payment_date 필드
+    - 🔴 **대표 실행 필요**: `data/add-payment-fields.sql` Supabase SQL Editor에서 실행
   - P4 run_workflow.py 비대화식 개선 (후순위)
   - INBOX #11 착수 요청 등록 완료
 

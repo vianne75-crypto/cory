@@ -39,25 +39,49 @@ async function loadOrders() {
   renderOrderTable();
 }
 
+let orderFilter = 'all'; // all | unpaid | paid
+
+function setOrderFilter(filter) {
+  orderFilter = filter;
+  orderPage = 1;
+  renderOrderStats();
+  renderOrderTable();
+}
+
+function getFilteredOrders() {
+  if (orderFilter === 'unpaid') return orderCache.filter(d => d.state_subject === '입금대기');
+  if (orderFilter === 'paid') return orderCache.filter(d => d.payment_confirmed);
+  return orderCache;
+}
+
 function renderOrderStats() {
   const total = orderCache.length;
   const matched = orderCache.filter(d => d.matched).length;
   const totalAmount = orderCache.reduce((s, d) => s + (d.sale_price || 0) * (d.sale_cnt || 0), 0);
+  const unpaid = orderCache.filter(d => d.state_subject === '입금대기').length;
+  const unpaidAmount = orderCache.filter(d => d.state_subject === '입금대기')
+    .reduce((s, d) => s + (d.sale_price || 0) * (d.sale_cnt || 0), 0);
 
   document.getElementById('orderStats').innerHTML = `
-    <div class="stat-card"><span class="label">전체 주문</span><span class="value">${total}</span></div>
+    <div class="stat-card" style="cursor:pointer" onclick="setOrderFilter('all')"><span class="label">전체 주문</span><span class="value">${total}</span></div>
     <div class="stat-card"><span class="label">매칭됨</span><span class="value" style="color:#4CAF50">${matched}</span></div>
     <div class="stat-card"><span class="label">미매칭</span><span class="value" style="color:#F44336">${total - matched}</span></div>
     <div class="stat-card"><span class="label">총 금액</span><span class="value">${adminFormatCurrency(totalAmount)}</span></div>
+    <div class="stat-card" style="cursor:pointer;${orderFilter==='unpaid'?'border:2px solid #F44336':''}" onclick="setOrderFilter(orderFilter==='unpaid'?'all':'unpaid')">
+      <span class="label">💰 미수금</span>
+      <span class="value" style="color:#F44336">${unpaid}건</span>
+      <span style="font-size:11px;color:#888">${adminFormatCurrency(unpaidAmount)}</span>
+    </div>
   `;
 }
 
 function renderOrderTable() {
-  const totalPages = Math.max(1, Math.ceil(orderCache.length / PAGE_SIZE));
+  const filtered = getFilteredOrders();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   if (orderPage > totalPages) orderPage = totalPages;
 
   const start = (orderPage - 1) * PAGE_SIZE;
-  const pageData = orderCache.slice(start, start + PAGE_SIZE);
+  const pageData = filtered.slice(start, start + PAGE_SIZE);
 
   const tbody = document.getElementById('orderBody');
   tbody.innerHTML = pageData.map(d => {
@@ -66,7 +90,20 @@ function renderOrderTable() {
     const matchClass = d.matched ? 'matched' : 'unmatched';
     const matchText = d.matched ? '매칭' : '미매칭';
 
-    return `<tr>
+    // 입금 상태 표시 (P3)
+    const isUnpaid = d.state_subject === '입금대기';
+    const isPaid = d.payment_confirmed;
+    let paymentBadge = '';
+    if (isUnpaid && !isPaid) {
+      paymentBadge = `<button class="btn btn-sm" style="background:#F44336;color:#fff;font-size:11px;padding:2px 8px;" onclick="confirmPayment(${d.id}, '${d.order_idx}')">입금확인</button>`;
+    } else if (isPaid) {
+      paymentBadge = `<span style="color:#4CAF50;font-size:11px;">✅ ${d.payment_date || '확인'}</span>`;
+    }
+
+    // 입금대기 행 하이라이트
+    const rowStyle = isUnpaid && !isPaid ? 'background:#FFF3E0;' : '';
+
+    return `<tr style="${rowStyle}">
       <td>${d.order_idx || '-'}</td>
       <td>${d.option_user || '-'}</td>
       <td class="truncate">${d.goods_name || '-'}</td>
@@ -74,12 +111,38 @@ function renderOrderTable() {
       <td>${adminFormatCurrency(amount)}</td>
       <td class="truncate">${d.addr || '-'}</td>
       <td><span class="match-badge ${matchClass}">${matchText}</span> ${instName}</td>
-      <td>${d.state_subject || '-'}</td>
+      <td>${d.state_subject || '-'} ${paymentBadge}</td>
       <td>${(d.reg_time || '').substring(0, 10)}</td>
     </tr>`;
   }).join('');
 
   renderPagination('orderPagination', orderPage, totalPages, 'goOrderPage');
+}
+
+// 입금 확인 처리 (X5 P3)
+async function confirmPayment(orderId, orderIdx) {
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
+
+  const { error } = await supabase.from('orders')
+    .update({ payment_confirmed: true, payment_date: today, state_subject: '발송대기' })
+    .eq('id', orderId);
+
+  if (error) {
+    showToast('입금 확인 실패: ' + error.message, 'error');
+    return;
+  }
+
+  // 캐시 업데이트
+  const order = orderCache.find(o => o.id === orderId);
+  if (order) {
+    order.payment_confirmed = true;
+    order.payment_date = today;
+    order.state_subject = '발송대기';
+  }
+
+  renderOrderStats();
+  renderOrderTable();
+  showToast(`주문 ${orderIdx} 입금 확인 완료 → 발송대기`, 'success');
 }
 
 function goOrderPage(page) {
@@ -137,9 +200,16 @@ async function syncOrders() {
       const optUser = (order.option_user || '').trim();
       const addr = (order.addr || '').trim();
 
-      // 간단한 이름 매칭
+      // 스마트 매칭 엔진 적용 (X5 P2)
       let matchedInst = null;
-      if (optUser && instCache.length > 0) {
+      if (instCache.length > 0 && typeof smartMatchOrder === 'function') {
+        const result = smartMatchOrder(order, instCache);
+        if (result && result.inst && result.score >= 0.7) {
+          matchedInst = result.inst;
+        }
+      }
+      // 폴백: 단순 이름 매칭
+      if (!matchedInst && optUser && instCache.length > 0) {
         matchedInst = instCache.find(d => d.name === optUser) ||
           instCache.find(d => d.name.includes(optUser) || optUser.includes(d.name));
       }
