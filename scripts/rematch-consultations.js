@@ -214,6 +214,87 @@ async function main() {
       console.log(`  ${count}건  ${name}`);
     }
   }
+
+  // ═══ STEP 4: 미등록 기관 자동 등록 (#30 SAGE 승인 2026-04-01) ═══
+  if (Object.keys(newInstitutions).length > 0) {
+    console.log(`\n=== STEP 4: 미등록 기관 자동 등록 ===`);
+    const SYSTEM_NAMES = ['root', 'key9039', 'iron96', 'adot', '테스트기관', 'admin', 'test'];
+    const registered = [];
+
+    for (const [name] of Object.entries(newInstitutions)) {
+      if (SYSTEM_NAMES.includes(name) || name.length < 3) continue;
+      // 이미 등록됐는지 재확인
+      if (nameMap[name]) continue;
+
+      const type = inferInstitutionType(name);
+      const region = '미분류';
+
+      const newInst = {
+        name,
+        type,
+        region,
+        purchase_stage: '관심',
+        sourced_by: 'consult_discovery',
+        metadata: { needs_wcolive_check: true, auto_registered: new Date().toISOString() }
+      };
+
+      const res = await supaFetch('/rest/v1/institutions', 'POST', newInst);
+      if (res.status === 201) {
+        registered.push({ name, type });
+        // nameMap 갱신 (후속 매칭용)
+        const created = await supaFetch(`/rest/v1/institutions?name=eq.${encodeURIComponent(name)}&select=id,name`, 'GET');
+        if (created && created.length > 0) {
+          nameMap[name] = created[0].id;
+          noSpaceMap[name.replace(/\s/g, '')] = created[0].id;
+        }
+      }
+    }
+
+    if (registered.length > 0) {
+      console.log(`✅ 자동 등록 ${registered.length}건:`);
+      for (const r of registered) {
+        console.log(`  ${r.name} (${r.type})`);
+      }
+
+      // 등록된 기관에 대해 미매칭 상담 재매칭 시도
+      console.log('\n=== STEP 5: 신규 등록 기관 재매칭 ===');
+      let rematched = 0;
+      const stillUnmatched = await supaFetch(
+        '/rest/v1/consultations?matched=eq.false&select=id,content,tags&limit=1000', 'GET'
+      );
+      for (const c of (stillUnmatched || [])) {
+        const rawText = (c.content || '') + ' ' + ((c.tags || []).join(' '));
+        const text = expandAbbreviations(rawText);
+        for (const r of registered) {
+          if (text.includes(r.name)) {
+            const instId = nameMap[r.name];
+            if (instId) {
+              await supaFetch(`/rest/v1/consultations?id=eq.${c.id}`, 'PATCH', { institution_id: instId, matched: true });
+              rematched++;
+              break;
+            }
+          }
+        }
+      }
+      console.log(`재매칭: ${rematched}건`);
+    } else {
+      console.log('자동 등록 대상 없음');
+    }
+  }
+}
+
+// 기관명 suffix 기반 type 추론 (M2)
+function inferInstitutionType(name) {
+  if (/보건소$/.test(name)) return '보건소';
+  if (/중독관리|정신건강|알코올/.test(name)) return '전문기관';
+  if (/금연지원센터/.test(name)) return '금연지원센터';
+  if (/대학교|대학$/.test(name)) return '교육기관';
+  if (/초등학교|중학교|고등학교|중고$/.test(name)) return '초중고';
+  if (/병원$|의원$/.test(name)) return '군/경/소방';
+  if (/공단|공사$/.test(name)) return '공공기관(기타)';
+  if (/학회|협회|재단/.test(name)) return '강사·대행사';
+  if (/건설|제약|기업|주식회사/.test(name)) return '사업장';
+  return '미분류';
 }
 
 main().catch(console.error);
