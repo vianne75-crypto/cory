@@ -458,6 +458,7 @@
         <h2>주문 모니터링</h2>
         <div class="content-actions">
           <button class="btn btn-primary" onclick="syncOrders()">주문 동기화</button>
+          <button class="btn btn-secondary" onclick="backfillMemos()">메모 파싱</button>
           <span id="orderSyncStatus" class="sync-status-text"></span>
         </div>
       </div>
@@ -471,8 +472,10 @@
               <th>상품</th>
               <th>수량</th>
               <th>금액</th>
-              <th>주소</th>
               <th>매칭기관</th>
+              <th>입금</th>
+              <th>인쇄</th>
+              <th>전세</th>
               <th>상태</th>
               <th>주문일</th>
             </tr>
@@ -832,6 +835,7 @@
   <script src="js/admin/admin-institutions.js?v=4"></script>
   <script src="js/admin/admin-consultations.js"></script>
   <script src="js/admin/admin-unmatched.js"></script>
+  <script src="js/admin/admin-memo-parser.js"></script>
   <script src="js/admin/admin-orders.js"></script>
   <script src="js/admin/admin-publish.js"></script>
   <script src="js/admin/admin-cleanup.js"></script>

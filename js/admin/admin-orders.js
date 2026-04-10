@@ -51,6 +51,7 @@ function setOrderFilter(filter) {
 function getFilteredOrders() {
   if (orderFilter === 'unpaid') return orderCache.filter(d => d.state_subject === '입금대기');
   if (orderFilter === 'paid') return orderCache.filter(d => d.payment_confirmed);
+  if (orderFilter === 'no_invoice') return orderCache.filter(d => d.payment_confirmed && !d.invoice_issued);
   return orderCache;
 }
 
@@ -71,6 +72,14 @@ function renderOrderStats() {
       <span class="label">💰 미수금</span>
       <span class="value" style="color:#F44336">${unpaid}건</span>
       <span style="font-size:11px;color:#888">${adminFormatCurrency(unpaidAmount)}</span>
+    </div>
+    <div class="stat-card" style="cursor:pointer;${orderFilter==='no_invoice'?'border:2px solid #FF9800':''}" onclick="setOrderFilter(orderFilter==='no_invoice'?'all':'no_invoice')">
+      <span class="label">📄 전세 미발행</span>
+      <span class="value" style="color:#FF9800">${orderCache.filter(d => d.payment_confirmed && !d.invoice_issued).length}건</span>
+    </div>
+    <div class="stat-card">
+      <span class="label">🖨️ 인쇄접수</span>
+      <span class="value" style="color:#1976D2">${orderCache.filter(d => d.print_received).length}건</span>
     </div>
   `;
 }
@@ -103,15 +112,31 @@ function renderOrderTable() {
     // 입금대기 행 하이라이트
     const rowStyle = isUnpaid && !isPaid ? 'background:#FFF3E0;' : '';
 
+    // 인쇄 접수 뱃지 (P3+)
+    let printBadge = '-';
+    if (d.print_received) {
+      const rushTag = d.print_rush ? '⚡' : '';
+      const qtyTag = d.print_qty ? ` ${d.print_qty}매` : '';
+      printBadge = `<span style="color:#1976D2;font-size:11px;">${rushTag}${d.print_type || '접수'}${qtyTag}</span>`;
+    }
+
+    // 세금계산서 뱃지 (P3+)
+    let invoiceBadge = '-';
+    if (d.invoice_issued) {
+      invoiceBadge = `<span style="color:#4CAF50;font-size:11px;">✅ ${d.invoice_date || '발행'}</span>`;
+    }
+
     return `<tr style="${rowStyle}">
       <td>${d.order_idx || '-'}</td>
       <td>${d.option_user || '-'}</td>
       <td class="truncate">${d.goods_name || '-'}</td>
       <td>${d.sale_cnt || 0}</td>
       <td>${adminFormatCurrency(amount)}</td>
-      <td class="truncate">${d.addr || '-'}</td>
       <td><span class="match-badge ${matchClass}">${matchText}</span> ${instName}</td>
-      <td>${d.state_subject || '-'} ${paymentBadge}</td>
+      <td>${paymentBadge || (d.payment_method === '카드' ? '<span style="color:#FF9800;font-size:11px;">💳카드(미정산)</span>' : '-')}</td>
+      <td>${printBadge}</td>
+      <td>${invoiceBadge}</td>
+      <td>${d.state_subject || '-'}</td>
       <td>${(d.reg_time || '').substring(0, 10)}</td>
     </tr>`;
   }).join('');
