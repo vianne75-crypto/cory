@@ -219,12 +219,14 @@
             <option value="all">전체 유형</option>
             <option value="팔로업">팔로업</option>
             <option value="애니빌드">애니빌드</option>
+            <option value="에이닷">에이닷</option>
           </select>
           <select id="consultMatchFilter" class="filter-select" onchange="filterConsultations()">
             <option value="all">전체</option>
             <option value="matched">매칭됨</option>
             <option value="unmatched">미매칭</option>
           </select>
+          <button class="btn btn-secondary" onclick="rematchAdotConsultations()">📱 에이닷 재매칭</button>
           <button class="btn btn-warning" onclick="filterTodayFollowups()" id="todayFollowupBtn">📞 오늘 팔로업</button>
           <button class="btn btn-primary" onclick="openFollowupModal()">+ 팔로업 기록</button>
           <button class="btn btn-secondary" onclick="showSyncPanel()">상담 동기화</button>

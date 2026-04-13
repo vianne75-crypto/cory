@@ -250,3 +250,198 @@ function parseAndApplyMemo(order) {
 
   return parsedToUpdateObj(result);
 }
+
+// ============================================
+// 에이닷 통화요약 파서 — 상담내역 자동 분류
+// ============================================
+
+/**
+ * 에이닷 통화요약 형식:
+ *
+ * 에이닷
+ *
+ * {상대방}({전화번호}) 님과의 통화
+ * {날짜} {시간}
+ * {통화시간}
+ *
+ *
+ * [통화요약]
+ * * 요약 제목
+ *   - 세부 항목
+ *     • 상세 내용
+ */
+
+// 에이닷 통화요약인지 판별
+function isAdotContent(content) {
+  if (!content) return false;
+  return /^에이닷\s/m.test(content) || /님과의 통화/.test(content);
+}
+
+// 에이닷 통화요약 파싱
+function parseAdotSummary(content) {
+  if (!content) return null;
+
+  const result = {
+    source: '에이닷',
+    caller_raw: null,       // 원본 상대방 표시
+    caller_name: null,       // 기관명/이름
+    caller_phone: null,      // 전화번호
+    call_date: null,         // 통화 날짜
+    call_duration: null,     // 통화 시간
+    summary: null,           // [통화요약] 전체
+    tags: [],                // 자동 추출 태그
+    is_sales: false,         // 영업 관련 여부
+    contact_type: '전화'
+  };
+
+  // 상대방 + 전화번호 추출
+  // 패턴1: "인천미추홀구자살예방센터(032-421-4047) 님과의 통화"
+  // 패턴2: "010-6323-2208 님과의 통화"
+  // 패턴3: "033-610-0168 님과의 통화"
+  const callerMatch = content.match(/\n\n(.+?)\s*님과의 통화/);
+  if (callerMatch) {
+    result.caller_raw = callerMatch[1].trim();
+
+    // 이름(전화번호) 분리
+    const namePhoneMatch = result.caller_raw.match(/^(.+?)\((\d{2,4}-\d{3,4}-\d{4})\)$/);
+    if (namePhoneMatch) {
+      result.caller_name = namePhoneMatch[1].trim();
+      result.caller_phone = namePhoneMatch[2];
+    } else if (/^\d{2,4}-\d{3,4}-\d{4}$/.test(result.caller_raw)) {
+      // 전화번호만
+      result.caller_phone = result.caller_raw;
+    } else {
+      result.caller_name = result.caller_raw;
+    }
+  }
+
+  // 통화 날짜
+  const dateMatch = content.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./);
+  if (dateMatch) {
+    const mm = dateMatch[2].padStart(2, '0');
+    const dd = dateMatch[3].padStart(2, '0');
+    result.call_date = `${dateMatch[1]}/${mm}/${dd}`;
+  }
+
+  // 통화 시간
+  const durMatch = content.match(/(\d+분\s*\d+초|\d+초)/);
+  if (durMatch) result.call_duration = durMatch[1];
+
+  // [통화요약] 추출
+  const summaryMatch = content.match(/\[통화요약\]\s*\n([\s\S]+)/);
+  if (summaryMatch) result.summary = summaryMatch[1].trim();
+
+  // 태그 자동 추출 (키워드 매칭)
+  const text = (result.summary || content).toLowerCase();
+  if (/견적|단가|가격|얼마/.test(text)) result.tags.push('견적');
+  if (/주문|발주|수량|\d+개/.test(text)) result.tags.push('수주');
+  if (/문의|궁금|상담/.test(text)) result.tags.push('문의');
+  if (/샘플|체험|테스트/.test(text)) result.tags.push('샘플');
+  if (/계산서|세금|전세/.test(text)) result.tags.push('전세요청');
+  if (/배송|출고|언제|택배/.test(text)) result.tags.push('배송문의');
+  if (/취소|환불|반품/.test(text)) result.tags.push('취소');
+  if (/인쇄|스티커|배너|현수막|시안/.test(text)) result.tags.push('인쇄');
+  if (/후불|청구/.test(text)) result.tags.push('후불');
+
+  // 영업 여부 판별
+  const salesKeywords = /알쓰패치|알스패치|노담패치|패치|캠페인|교육|보건소|센터|병원|주문|견적|발주|납품/;
+  const nonSalesKeywords = /그라비아|인쇄업체|포장지|택배비|비번/;
+  result.is_sales = salesKeywords.test(text) && !nonSalesKeywords.test(text);
+
+  // 태그 없으면 미분류
+  if (result.tags.length === 0) result.tags.push('미분류');
+
+  return result;
+}
+
+// 에이닷 파싱 결과로 기관 매칭 시도
+async function matchAdotToInstitution(parsed) {
+  if (!parsed) return null;
+
+  // 1. 기관명으로 매칭 (instCache 사용)
+  if (parsed.caller_name && typeof instCache !== 'undefined' && instCache.length > 0) {
+    // 정확 매칭
+    const exact = instCache.find(i => i.name === parsed.caller_name);
+    if (exact) return exact.id;
+
+    // 부분 매칭 (긴 이름 우선)
+    const sorted = [...instCache].sort((a, b) => b.name.length - a.name.length);
+    for (const inst of sorted) {
+      if (inst.name.length < 3) continue;
+      if (parsed.caller_name.includes(inst.name) || inst.name.includes(parsed.caller_name)) {
+        return inst.id;
+      }
+    }
+  }
+
+  // 2. 전화번호로 역추적
+  if (parsed.caller_phone) {
+    const { data } = await supabase.from('institutions')
+      .select('id')
+      .or(`metadata->>contact_phone.eq.${parsed.caller_phone},metadata->>contact_mobile.eq.${parsed.caller_phone}`)
+      .limit(1);
+    if (data && data.length > 0) return data[0].id;
+  }
+
+  return null;
+}
+
+// 에이닷 상담 일괄 재매칭
+async function rematchAdotConsultations() {
+  const statusEl = document.getElementById('orderSyncStatus') || document.getElementById('instStats');
+
+  // instCache 로드
+  if (typeof instCache !== 'undefined' && instCache.length === 0) {
+    await loadInstitutions();
+  }
+
+  // 에이닷 상담 로드
+  const { data: adotConsults, error } = await supabase.from('consultations')
+    .select('id, content, institution_id, matched, tags')
+    .like('content', '%에이닷%')
+    .order('id', { ascending: false })
+    .limit(500);
+
+  if (error || !adotConsults) {
+    showToast('에이닷 상담 로드 실패', 'error');
+    return;
+  }
+
+  let rematched = 0, tagged = 0, skipped = 0;
+
+  for (const c of adotConsults) {
+    const parsed = parseAdotSummary(c.content);
+    if (!parsed) { skipped++; continue; }
+
+    const updateObj = {};
+
+    // 기관 매칭
+    const instId = await matchAdotToInstitution(parsed);
+    if (instId && instId !== c.institution_id) {
+      updateObj.institution_id = instId;
+      updateObj.matched = true;
+      updateObj.raw_institution_name = parsed.caller_name || parsed.caller_raw;
+      rematched++;
+    }
+
+    // 태그 자동 추출 (기존 태그가 ['통화요약']만이면 교체)
+    const existingTags = c.tags || [];
+    if (existingTags.length <= 1 && parsed.tags.length > 0) {
+      updateObj.tags = parsed.tags;
+      tagged++;
+    }
+
+    // source 표시
+    updateObj.source = '에이닷';
+    updateObj.contact_type = '전화';
+    if (parsed.caller_name) updateObj.contact_person = parsed.caller_name;
+
+    if (Object.keys(updateObj).length > 0) {
+      await supabase.from('consultations').update(updateObj).eq('id', c.id);
+    }
+  }
+
+  const msg = `에이닷 재매칭: ${rematched}건 매칭, ${tagged}건 태그, ${skipped}건 스킵 (총 ${adotConsults.length}건)`;
+  showToast(msg, 'success');
+  if (statusEl) statusEl.textContent = msg;
+}
