@@ -374,11 +374,11 @@ async function matchAdotToInstitution(parsed) {
     }
   }
 
-  // 2. 전화번호로 역추적
+  // 2. 전화번호로 역추적 (표준 컬럼 우선, metadata 폴백)
   if (parsed.caller_phone) {
     const { data } = await supabase.from('institutions')
       .select('id')
-      .or(`metadata->>contact_phone.eq.${parsed.caller_phone},metadata->>contact_mobile.eq.${parsed.caller_phone}`)
+      .or(`contact_phone.eq.${parsed.caller_phone},contact_mobile.eq.${parsed.caller_phone},metadata->>contact_phone.eq.${parsed.caller_phone},metadata->>contact_mobile.eq.${parsed.caller_phone}`)
       .limit(1);
     if (data && data.length > 0) return data[0].id;
   }

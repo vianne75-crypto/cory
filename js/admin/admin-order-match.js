@@ -353,6 +353,8 @@ function goOrderMatchPage(page) {
 // ─── 주문 매칭 액션 ───
 
 async function acceptOrderMatch(orderId, institutionId) {
+  const order = orderMatchCache.find(o => o.id === orderId);
+
   const { error } = await supabase.from('orders')
     .update({ institution_id: institutionId, matched: true, manual_match: true })
     .eq('id', orderId);
@@ -360,6 +362,25 @@ async function acceptOrderMatch(orderId, institutionId) {
   if (error) {
     showToast('매칭 실패: ' + error.message, 'error');
     return;
+  }
+
+  // F1 스타터패키지 감지 → 기관 자동 업데이트
+  if (order && institutionId) {
+    const gn = (order.goods_name || '').toLowerCase();
+    const isF1 = gn.includes('f1') || gn.includes('스타터') || gn.includes('starter');
+    if (isF1) {
+      const orderDate = order.reg_time ? String(order.reg_time).slice(0, 10) : new Date().toISOString().slice(0, 10);
+      const { data: inst } = await supabase.from('institutions').select('has_master,master_count,audit_k_sessions,f1_starter_purchased,f1_starter_date').eq('id', institutionId).single();
+      if (inst && !inst.f1_starter_purchased) {
+        const tier = calcAllianceTier(inst.has_master, inst.master_count || 0, true, inst.audit_k_sessions || 0);
+        await supabase.from('institutions').update({
+          f1_starter_purchased: true,
+          f1_starter_date: orderDate,
+          alliance_tier: tier,
+        }).eq('id', institutionId);
+        showToast('F1 스타터패키지 도입 자동 태깅 완료', 'success');
+      }
+    }
   }
 
   orderMatchCache = orderMatchCache.filter(o => o.id !== orderId);

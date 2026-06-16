@@ -101,6 +101,9 @@ function transformHcRow(row) {
     purchase_volume: totalQty,
     products: hasPurchase ? ['알쓰패치'] : [],
     last_purchase_date: (row['최근구매일'] || '').trim() || '-',
+    contact_name: row['담당자명'] || null,
+    contact_phone: row['건강센터연락처'] || null,
+    contact_updated_at: (row['담당자명'] || row['건강센터연락처']) ? new Date().toISOString() : null,
     metadata: {
       school_type: row['학교유형'] || '',
       category: row['구분'] || '',

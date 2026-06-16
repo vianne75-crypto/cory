@@ -262,6 +262,30 @@ async function syncOrders() {
       if (error) throw error;
     }
 
+    // F1 스타터패키지 자동 태깅 (매칭된 주문 중 F1 상품)
+    const f1Orders = records.filter(r => {
+      if (!r.institution_id) return false;
+      const gn = (r.goods_name || '').toLowerCase();
+      return gn.includes('f1') || gn.includes('스타터') || gn.includes('starter');
+    });
+    for (const r of f1Orders) {
+      const { data: inst } = await supabase.from('institutions')
+        .select('has_master,master_count,audit_k_sessions,f1_starter_purchased')
+        .eq('id', r.institution_id).single();
+      if (inst && !inst.f1_starter_purchased) {
+        const orderDate = r.reg_time ? String(r.reg_time).slice(0, 10) : new Date().toISOString().slice(0, 10);
+        const tier = typeof calcAllianceTier === 'function'
+          ? calcAllianceTier(inst.has_master, inst.master_count || 0, true, inst.audit_k_sessions || 0)
+          : null;
+        await supabase.from('institutions').update({
+          f1_starter_purchased: true,
+          f1_starter_date: orderDate,
+          alliance_tier: tier,
+        }).eq('id', r.institution_id);
+      }
+    }
+    if (f1Orders.length) showToast(`F1 도입 기관 ${f1Orders.length}곳 자동 태깅`, 'success');
+
     statusEl.textContent = `${newOrders.length}건 동기화 (매칭 ${matchCount})`;
     showToast(`${newOrders.length}건 주문 동기화 완료`, 'success');
     loadOrders();
