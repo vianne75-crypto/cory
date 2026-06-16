@@ -2,6 +2,14 @@
 // 기관 CRUD
 // ============================================
 
+// alliance_tier 자동 산출 (has_master·f1·auditK 기반)
+function calcAllianceTier(hasMaster, masterCount, f1Purchased, auditKSessions) {
+  if (!hasMaster || masterCount === 0) return null;
+  if (masterCount >= 2 && f1Purchased && auditKSessions >= 5) return 'ACTIVE_MASTER';
+  if (f1Purchased) return 'MASTER';
+  return 'POTENTIAL';
+}
+
 let instCache = [];
 let instFiltered = [];
 let instPage = 1;
@@ -112,6 +120,7 @@ function _applySearchIds() {
   const typeFilter = document.getElementById('instTypeFilter').value;
   const regionFilter = document.getElementById('instRegionFilter').value;
   const stageFilter = document.getElementById('instStageFilter').value;
+  const trackFilter = document.getElementById('instTrackFilter') ? document.getElementById('instTrackFilter').value : 'all';
   const eduFilter = document.getElementById('instEduFilter') ? document.getElementById('instEduFilter').value : 'all';
 
   instFiltered = instCache.filter(d => {
@@ -119,6 +128,7 @@ function _applySearchIds() {
     if (typeFilter !== 'all' && d.type !== typeFilter) return false;
     if (regionFilter !== 'all' && d.region !== regionFilter) return false;
     if (stageFilter !== 'all' && d.purchase_stage !== stageFilter) return false;
+    if (trackFilter !== 'all' && d.track !== trackFilter) return false;
     if (eduFilter !== 'all' && getEduLevel(d) !== parseInt(eduFilter)) return false;
     return true;
   });
@@ -136,8 +146,10 @@ function matchesSearch(d, query) {
   const targets = [
     d.name,
     d.district,
-    meta.contact_name,
-    meta.contact_phone,
+    d.contact_name || meta.contact_name,
+    d.contact_phone || meta.contact_phone,
+    d.contact_mobile,
+    d.contact_email,
     meta.utm_code,
   ].filter(Boolean).map(v => String(v).toLowerCase());
   return targets.some(t => t.includes(q));
@@ -164,6 +176,7 @@ function filterInstitutions() {
   const typeFilter = document.getElementById('instTypeFilter').value;
   const regionFilter = document.getElementById('instRegionFilter').value;
   const stageFilter = document.getElementById('instStageFilter').value;
+  const trackFilter = document.getElementById('instTrackFilter') ? document.getElementById('instTrackFilter').value : 'all';
   const eduFilter = document.getElementById('instEduFilter') ? document.getElementById('instEduFilter').value : 'all';
 
   const NEW_INFLOW_SOURCES = ['hc_dm_qr','hc_dm_sample','hunter_manual','campaign_dm','consult_discovery'];
@@ -178,6 +191,7 @@ function filterInstitutions() {
     if (typeFilter !== 'all' && d.type !== typeFilter) return false;
     if (regionFilter !== 'all' && d.region !== regionFilter) return false;
     if (stageFilter !== 'all' && d.purchase_stage !== stageFilter) return false;
+    if (trackFilter !== 'all' && d.track !== trackFilter) return false;
     if (eduFilter !== 'all' && getEduLevel(d) !== parseInt(eduFilter)) return false;
     return true;
   });
@@ -269,7 +283,7 @@ function renderInstTable() {
       if (dmSent) { dmLabel = dmSent.length > 10 ? new Date(dmSent).toLocaleDateString('ko-KR') : dmSent; dmColor = '#4CAF50'; }
       else if (dmTarget === 'Y') { dmLabel = '미발송'; dmColor = '#FF9800'; }
       else { dmLabel = '-'; dmColor = '#999'; }
-      const contact = highlight(meta.contact_name) || highlight(meta.contact_phone) || '-';
+      const contact = highlight(d.contact_name || meta.contact_name) || highlight(d.contact_mobile || d.contact_phone || meta.contact_phone) || '-';
 
       return `<tr>
         <td>${d.id}</td>
@@ -289,12 +303,15 @@ function renderInstTable() {
       </tr>`;
     }
 
+    const allianceTierBadge = d.alliance_tier
+      ? `<span style="font-size:0.72rem;background:#e8f5e9;color:#2e7d32;padding:1px 5px;border-radius:6px;margin-left:4px;font-weight:600;">${d.alliance_tier}</span>`
+      : '';
     return `<tr>
       <td>${d.id}</td>
       <td><strong>${highlight(d.name)}</strong>${d.district ? `<br><small style="color:#999">${highlight(d.district)}</small>` : ''}</td>
-      <td>${d.type}</td>
+      <td>${d.type}${renderTrackBadge(d.track)}</td>
       <td>${d.region}</td>
-      <td><span class="stage-badge" style="background:${stageColor}">${d.purchase_stage}</span></td>
+      <td><span class="stage-badge" style="background:${stageColor}">${d.purchase_stage}</span>${allianceTierBadge}</td>
       <td>${renderEduBadge(getEduLevel(d))}</td>
       <td>${adminFormatCurrency(d.purchase_amount || 0)}</td>
       <td>${(d.purchase_volume || 0).toLocaleString()}</td>
@@ -368,6 +385,13 @@ function editInstitution(id) {
   document.getElementById('editInstProd1').checked = (inst.products || []).includes('알쓰패치');
   document.getElementById('editInstProd2').checked = (inst.products || []).includes('노담패치');
   document.getElementById('editInstEduLevel').value = String(getEduLevel(inst));
+  document.getElementById('editInstHasMaster').checked = !!inst.has_master;
+  document.getElementById('editInstMasterCount').value = inst.master_count || 0;
+  document.getElementById('editInstF1Purchased').checked = !!inst.f1_starter_purchased;
+  document.getElementById('editInstF1Date').value = inst.f1_starter_date || '';
+  document.getElementById('editInstProgrambook').checked = !!inst.programbook_received;
+  document.getElementById('editInstAuditK').value = inst.audit_k_sessions || 0;
+  document.getElementById('editInstAllianceTier').value = inst.alliance_tier || '';
 
   const regionSelect = document.getElementById('editInstRegion');
   const regions = Object.keys(REGION_TOTAL_TARGETS || {}).sort();
@@ -532,9 +556,10 @@ async function openInstConsultModal(instId, instName) {
   const inst = instRes.data;
   if (inst) {
     const m = inst.metadata || {};
-    const phone = m.contact_phone || '';
-    const mobile = m.contact_mobile || '';
-    const contact = m.contact_name || '';
+    const phone = inst.contact_phone || m.contact_phone || '';
+    const mobile = inst.contact_mobile || m.contact_mobile || '';
+    const contact = inst.contact_name || m.contact_name || '';
+    const email = inst.contact_email || m.contact_email || '';
     const address = m.address || '';
     const address2 = m.address2 || '';
     const zipcode = m.postal_code || '';
@@ -559,6 +584,19 @@ async function openInstConsultModal(instId, instName) {
       contactDays = diff === 0 ? '오늘' : `D+${diff}`;
     }
 
+    // 얼라이언스 배지
+    const tierColors = { POTENTIAL: '#fff8e1', MASTER: '#e8f5e9', ACTIVE_MASTER: '#e3f2fd', PRO_INSTITUTION: '#ede7f6' };
+    const tierTextColors = { POTENTIAL: '#f57f17', MASTER: '#2e7d32', ACTIVE_MASTER: '#1565c0', PRO_INSTITUTION: '#6a1b9a' };
+    const tierBadge = inst.alliance_tier
+      ? `<span style="background:${tierColors[inst.alliance_tier]||'#f3f4f6'};color:${tierTextColors[inst.alliance_tier]||'#555'};font-size:0.75rem;padding:2px 8px;border-radius:10px;font-weight:700;margin-left:4px;">🏅 ${inst.alliance_tier}</span>`
+      : '';
+    const allianceTags = [
+      inst.has_master ? `<span style="font-size:0.78rem;background:#e8f5e9;color:#2e7d32;padding:1px 7px;border-radius:8px;">👤 마스터 ${inst.master_count || 1}명</span>` : '',
+      inst.f1_starter_purchased ? `<span style="font-size:0.78rem;background:#e3f2fd;color:#1565c0;padding:1px 7px;border-radius:8px;">📦 F1 도입${inst.f1_starter_date ? ' ' + inst.f1_starter_date : ''}</span>` : '',
+      inst.programbook_received ? `<span style="font-size:0.78rem;background:#ede7f6;color:#6a1b9a;padding:1px 7px;border-radius:8px;">📖 프로그램북 수령</span>` : '',
+      inst.audit_k_sessions ? `<span style="font-size:0.78rem;background:#fce4ec;color:#c62828;padding:1px 7px;border-radius:8px;">📊 AUDIT-K ${inst.audit_k_sessions}회</span>` : '',
+    ].filter(Boolean).join('');
+
     // 리드 경로
     const leadSrcMap = { 'hc_dm_qr': 'HC DM → QR', 'hc_dm_sample': 'HC DM → 샘플신청', 'hunter_manual': 'HUNTER 수동', 'campaign_dm': '캠페인 DM', 'consult_discovery': '상담 발견', 'order_discovery': '주문 발견' };
     const leadSrc = inst.sourced_by ? (leadSrcMap[inst.sourced_by] || inst.sourced_by) : '';
@@ -579,6 +617,7 @@ async function openInstConsultModal(instId, instName) {
             <span class="stage-badge" style="background:${stageColor};margin-right:6px">${stage}</span>
             <strong>${inst.type || ''}</strong>
             ${eduLevel ? ` · 교육도입 <strong>${eduText}</strong>` : ''}
+            ${tierBadge}
           </div>
           <div style="text-align:right;color:#555">
             ${inst.purchase_amount ? '납품 <strong>' + Number(inst.purchase_amount).toLocaleString() + '원</strong>' : ''}
@@ -594,6 +633,7 @@ async function openInstConsultModal(instId, instName) {
           ${lastContactDate ? `<span>📞 마지막 접촉 ${lastContactDate} <strong style="color:${contactDays.startsWith('D+') && parseInt(contactDays.slice(2)) > 14 ? '#c62828' : '#555'}">(${contactDays})</strong></span>` : '<span style="color:#c62828">📞 접촉 이력 없음</span>'}
           ${inst.last_purchase_date ? `<span>🛒 최근구매 ${inst.last_purchase_date}</span>` : ''}
         </div>
+        ${allianceTags ? `<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">${allianceTags}</div>` : ''}
         <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
           <span style="font-size:0.82rem;color:#888;white-space:nowrap">📌 기관 메모:</span>
           <input type="text" id="icmNote" class="input" value="${(note || '').replace(/"/g, '&quot;')}" placeholder="이 기관에 대한 영구 메모 (예: 9월 예산확인, 담당자 변경)" style="flex:1;font-size:0.82rem;padding:4px 8px;">
@@ -825,6 +865,36 @@ function printPostLabel() {
 }
 
 // 기관 저장
+// ICP v3.1 트랙 배지 (1A·1B·1C만 색상 강조, 나머지는 회색)
+const ICP_TRACK_BADGE = {
+  '1A': { bg:'#e3f2fd', fg:'#1565c0', label:'1A' },
+  '1B': { bg:'#fff3e0', fg:'#e65100', label:'1B' },
+  '1C': { bg:'#f3e5f5', fg:'#6a1b9a', label:'1C' },
+};
+function renderTrackBadge(track) {
+  if (!track) return '';
+  const s = ICP_TRACK_BADGE[track];
+  if (!s) return ''; // mega·b2b·other는 배지 생략(유형으로 이미 구분)
+  return `<span style="font-size:0.68rem;background:${s.bg};color:${s.fg};padding:1px 5px;border-radius:6px;margin-left:4px;font-weight:700;">${s.label}</span>`;
+}
+
+// ICP v3.1 트랙 자동 분류 — SQL(data/add-icp-track-field.sql)과 동일 규칙 유지
+// 신규 기관 등록·수정 시 region/district/type 기반으로 track 자동 산출
+const ICP_METRO_REGIONS = ['서울특별시','부산광역시','대구광역시','인천광역시','광주광역시','대전광역시','울산광역시'];
+function classifyTrack(type, region, district) {
+  const d = district || '';
+  if (type === '보건소') {
+    if (d.endsWith('군')) return '1C';                                  // 군 단위(광역시 소속 군 포함)
+    if (ICP_METRO_REGIONS.includes(region) && d.endsWith('구')) return '1A'; // 광역시 자치구
+    if (d.endsWith('시')) return '1B';                                  // 일반 시
+    if (d.endsWith('구')) return '1B';                                  // 일반 시 행정구
+    return 'other';
+  }
+  if (type === '산업보건' || type === '사업장') return 'b2b';
+  if (type === '광역시도 및 중앙기관' || type === '금연지원센터' || type === '전문기관') return 'mega';
+  return 'other';
+}
+
 async function saveInstitution() {
   const id = document.getElementById('editInstId').value;
   const name = document.getElementById('editInstName').value.trim();
@@ -861,11 +931,28 @@ async function saveInstitution() {
     type: document.getElementById('editInstType').value,
     region: document.getElementById('editInstRegion').value,
     district: document.getElementById('editInstDistrict').value || null,
+    track: classifyTrack(
+      document.getElementById('editInstType').value,
+      document.getElementById('editInstRegion').value,
+      document.getElementById('editInstDistrict').value || null
+    ),
     purchase_stage: document.getElementById('editInstStage').value,
     purchase_amount: parseFloat(document.getElementById('editInstAmount').value) || 0,
     purchase_volume: parseInt(document.getElementById('editInstVolume').value) || 0,
     products,
-    metadata: existingMeta
+    metadata: existingMeta,
+    has_master: document.getElementById('editInstHasMaster').checked,
+    master_count: parseInt(document.getElementById('editInstMasterCount').value) || 0,
+    f1_starter_purchased: document.getElementById('editInstF1Purchased').checked,
+    f1_starter_date: document.getElementById('editInstF1Date').value || null,
+    programbook_received: document.getElementById('editInstProgrambook').checked,
+    audit_k_sessions: parseInt(document.getElementById('editInstAuditK').value) || 0,
+    alliance_tier: document.getElementById('editInstAllianceTier').value || calcAllianceTier(
+      document.getElementById('editInstHasMaster').checked,
+      parseInt(document.getElementById('editInstMasterCount').value) || 0,
+      document.getElementById('editInstF1Purchased').checked,
+      parseInt(document.getElementById('editInstAuditK').value) || 0
+    ),
   };
 
   let error;

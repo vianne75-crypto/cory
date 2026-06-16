@@ -61,6 +61,15 @@
           <select id="instRegionFilter" class="filter-select" onchange="filterInstitutions()">
             <option value="all">전체 지역</option>
           </select>
+          <select id="instTrackFilter" class="filter-select" onchange="filterInstitutions()" title="ICP v3.1 B2G 트랙">
+            <option value="all">전체 트랙</option>
+            <option value="1A">1A 광역시 자치구</option>
+            <option value="1B">1B 일반 시</option>
+            <option value="1C">1C 군 단위</option>
+            <option value="mega">메가/공공전문</option>
+            <option value="b2b">b2b 사업장</option>
+            <option value="other">기타</option>
+          </select>
           <select id="instStageFilter" class="filter-select" onchange="filterInstitutions()">
             <option value="all">전체 단계</option>
             <option value="인지">인지</option>
@@ -763,6 +772,44 @@
             <option value="3">3. 시각물 활용</option>
             <option value="4">4. 성과보고서 활용</option>
           </select>
+        </div>
+        <div class="form-row" style="border-top:1px solid #e8eaf6;padding-top:12px;margin-top:4px;">
+          <label style="color:#5c6bc0;font-weight:700;">얼라이언스</label>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <label style="display:flex;align-items:center;gap:4px;font-weight:normal;white-space:nowrap;">
+              <input type="checkbox" id="editInstHasMaster"> 마스터 보유
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;font-weight:normal;white-space:nowrap;">
+              마스터 수: <input type="number" id="editInstMasterCount" class="input" min="0" style="width:60px;padding:3px 6px;display:inline-block;">
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;font-weight:normal;white-space:nowrap;">
+              <input type="checkbox" id="editInstF1Purchased"> F1 구매
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;font-weight:normal;white-space:nowrap;">
+              F1 구매일: <input type="date" id="editInstF1Date" class="input" style="width:140px;padding:3px 6px;display:inline-block;">
+            </label>
+          </div>
+        </div>
+        <div class="form-row">
+          <label></label>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <label style="display:flex;align-items:center;gap:4px;font-weight:normal;white-space:nowrap;">
+              <input type="checkbox" id="editInstProgrambook"> 프로그램북 수령
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;font-weight:normal;white-space:nowrap;">
+              AUDIT-K 횟수: <input type="number" id="editInstAuditK" class="input" min="0" style="width:60px;padding:3px 6px;display:inline-block;">
+            </label>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:0.82rem;color:#888;">등급:</span>
+              <select id="editInstAllianceTier" class="input" style="width:150px;padding:3px 6px;">
+                <option value="">—</option>
+                <option value="POTENTIAL">POTENTIAL</option>
+                <option value="MASTER">MASTER</option>
+                <option value="ACTIVE_MASTER">ACTIVE_MASTER</option>
+                <option value="PRO_INSTITUTION">PRO_INSTITUTION</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
       <!-- 상담내역 탭 -->
