@@ -5,6 +5,10 @@
       "Read(//Users/olive/Qsync/cory/**)",
       "Bash(ls:*)",
       "Bash(pip3 list:*)"
+    ],
+    "additionalDirectories": [
+      "/tmp",
+      "/Users/olive/Qsync/cory"
     ]
   }
 }
