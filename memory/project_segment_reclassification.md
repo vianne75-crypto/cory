@@ -2,6 +2,8 @@
 name: 세그먼트 유동적 재분류 원칙
 description: cory 기관 세그먼트는 파밍·마케팅 결과에 따라 추후 유동적으로 재분류할 수 있음
 type: project
+title: project_segment_reclassification
+date: '2026-05-12'
 ---
 
 현재 세그먼트 순서(2026-03-29 확정):

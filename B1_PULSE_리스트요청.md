@@ -1,3 +1,13 @@
+---
+title: B1_PULSE_리스트요청
+date: '2026-05-12'
+type: brief
+tags:
+- CRM
+agent: PULSE
+status: active
+---
+
 # PULSE 다온에게 — 재구매 상위 기관 리스트 요청
 
 > 발신: BOND 가온 | 일자: 2026-03-18 | 과제: B1 재구매 기관 인터뷰

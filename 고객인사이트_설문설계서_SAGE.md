@@ -256,6 +256,6 @@ APS 드림
 
 ## 관련 문서
 
-- [[cory/INBOX]] — #11 HUNTER 요청 원문
-- [[PM Skills/09-running-log/2026-03-30-stakeholder-map-F1시범기관선정]] — F1 시범기관 선정
+- `cory/INBOX` — #11 HUNTER 요청 원문
+- `PM Skills/09-running-log/2026-03-30-stakeholder-map-F1시범기관선정` — F1 시범기관 선정
 - [[마케팅전략/aps_marketing/재구매이탈_지식DB]] — 재구매·이탈 메커니즘

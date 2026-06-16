@@ -117,5 +117,5 @@ status: active
 
 ## 관련 문서
 
-- [[PM Skills/09-running-log/2026-03-30-sprint-알쓰패치-Phase0인프라]] — P0 스프린트 전체
+- `PM Skills/09-running-log/2026-03-30-sprint-알쓰패치-Phase0인프라` — P0 스프린트 전체
 - [[cory/C3_sourced_by_필드설계서_FLUX_이음]] — P0-D SQL 연계

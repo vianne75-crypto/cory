@@ -1,3 +1,13 @@
+---
+title: B1_PULSE_리스트요청_독촉
+date: '2026-05-12'
+type: brief
+tags:
+- CRM
+agent: PULSE
+status: active
+---
+
 # PULSE 다온에게 — B1 리스트 회신 재확인
 
 > 발신: BOND 가온 | 일자: 2026-03-19

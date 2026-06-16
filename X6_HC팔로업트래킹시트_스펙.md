@@ -211,6 +211,6 @@ function highlightUnrequested(sheet) {
 
 ## 관련 문서
 
-- [[cory/X5_주문관리자동화]] — FLUX 이음 주관 자동화 체계
+- `cory/X5_주문관리자동화` — FLUX 이음 주관 자동화 체계
 - [[farm360/HC_전화팔로업_우선순위리스트]] — Tier A/B/C 리스트
 - `apps_script_tracker.js` — 기존 doGet/doPost 핸들러

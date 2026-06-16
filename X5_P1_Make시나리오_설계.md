@@ -170,5 +170,5 @@ function checkNewOrders() {
 ## 관련 문서
 
 - [[경영지원(슬기)/S7_주문관리자동화_스펙기획]] — 전체 Phase 스펙
-- [[cory/TODO.md]] — X5 과제 현황
+- [[cory/TODO]] — X5 과제 현황
 - Supabase 접속: `rvqkoiqjjhlrgqitnxwt.supabase.co`

@@ -241,9 +241,9 @@ ORDER BY source, matched DESC
 
 ## 관련 문서
 
-- [[cory/INBOX.md]] — HUNTER 핸드오프 수신함
-- [[마케팅전략/farm360/HC_전화팔로업_우선순위리스트.md]] — HC 우선순위 리스트 + 통화 결과
-- [[마케팅전략/farm360/DM_발송_운영가이드.md]] — DM 운영 표준
+- `cory/INBOX.md` — HUNTER 핸드오프 수신함
+- [[마케팅전략/farm360/HC_전화팔로업_우선순위리스트]] — HC 우선순위 리스트 + 통화 결과
+- [[마케팅전략/farm360/DM_발송_운영가이드]] — DM 운영 표준
 - `gas/cloudflare-worker.js` — HC 자동 동기화 (hc_dm_qr/hc_dm_sample)
 - `gas/hc-followup-sheet.js` — HC 팔로업 트래킹 시트 빌더
 - `scripts/rematch-consultations.js` — 상담 발굴 (consult_discovery)

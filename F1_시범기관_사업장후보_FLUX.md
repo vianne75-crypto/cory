@@ -87,5 +87,5 @@ status: done
 ---
 
 ## 관련 문서
-- [[PM Skills/09-running-log/2026-03-30-stakeholder-map-F1시범기관선정]]
-- [[cory/INBOX]] #25
+- `PM Skills/09-running-log/2026-03-30-stakeholder-map-F1시범기관선정`
+- `cory/INBOX` #25

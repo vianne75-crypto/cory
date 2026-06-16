@@ -1,3 +1,13 @@
+---
+title: AskUserQuestion_가이드
+date: '2026-05-12'
+type: spec
+tags:
+- CRM
+agent: PULSE
+status: active
+---
+
 # AskUserQuestion 버튼식 질문 가이드
 
 > 작성: BOND 가온 | 일자: 2026-03-20 | 대상: 전체 에이전트
