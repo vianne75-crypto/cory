@@ -15,7 +15,8 @@ SELECT
   district,
   lat,
   lng,
-  EXTRACT(YEAR FROM first_purchase_date)::int AS adopted_year,
+  -- first/last_purchase_date가 TEXT(또는 비어있음)일 수 있어 연도 4자리만 안전 추출 (first 우선, 없으면 last)
+  NULLIF(LEFT(COALESCE(NULLIF(first_purchase_date::text, ''), NULLIF(last_purchase_date::text, '')), 4), '')::int AS adopted_year,
   track
 FROM institutions
 WHERE purchase_amount > 0                          -- 실거래 발생 = 도입 (purchase_stage는 수기·과소집계라 미사용)
