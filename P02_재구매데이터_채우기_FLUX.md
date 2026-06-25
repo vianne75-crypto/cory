@@ -5,7 +5,7 @@ type: spec
 product: [알쓰패치]
 tags: [재구매율, KR1, Supabase, wcolive, FLUX, P02]
 agent: SAGE
-status: active
+status: done
 ---
 
 # P0-2 재구매 데이터 채우기 (FLUX 위임)
@@ -13,6 +13,10 @@ status: active
 > 위임자: SAGE 슬기 → FLUX 이음
 > 마감: **2026-04-14**
 > 선행 조건: P0-1 SQL 실행 완료 ✅ (2026-04-08, 대표 직접 실행)
+
+> ✅ **완료 2026-06-25 (FLUX)** — `data/Order.xls`(wcolive 원본·사용처명 매칭) + cory orders 통합 집계.
+> **결과**: 119개 기관 백필 / **KR1 재구매율 26.1%**(재구매 31·구매자 119·목표 35%) / 도입연도 2022~2026 분포.
+> 스크립트: `scripts/p02-backfill-purchase-data.py`. 남은 갭: Order.xls 사용처명 미매칭 187건(신규기관·표기상이) — 줄임말 사전 보강 시 추가 매칭 가능.
 
 ---
 
