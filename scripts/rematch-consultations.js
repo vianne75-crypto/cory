@@ -108,7 +108,7 @@ async function main() {
   let institutions = [];
   offset = 0;
   while (true) {
-    const page = await supaFetch(`/rest/v1/institutions?select=id,name&limit=1000&offset=${offset}`, 'GET');
+    const page = await supaFetch(`/rest/v1/institutions?select=id,name,metadata&limit=1000&offset=${offset}`, 'GET');
     if (!page || page.length === 0) break;
     institutions = institutions.concat(page);
     if (page.length < 1000) break;
@@ -116,16 +116,22 @@ async function main() {
   }
   console.log(`기관 ${institutions.length}건 로드`);
 
-  // 이름→ID 맵 (공백 제거 버전도)
+  // 이름→ID 맵 (별칭 metadata.aliases 포함, 공백 제거 버전도)
   const nameMap = {};
   const noSpaceMap = {};
+  const nameEntries = []; // {name, id} — 정식명 + 별칭 모두 매칭 후보
   for (const inst of institutions) {
-    nameMap[inst.name] = inst.id;
-    noSpaceMap[inst.name.replace(/\s/g, '')] = inst.id;
+    const aliases = (inst.metadata && Array.isArray(inst.metadata.aliases)) ? inst.metadata.aliases : [];
+    for (const nm of [inst.name, ...aliases]) {
+      if (!nm) continue;
+      nameMap[nm] = inst.id;
+      noSpaceMap[nm.replace(/\s/g, '')] = inst.id;
+      nameEntries.push({ name: nm, id: inst.id });
+    }
   }
 
-  // 정렬: 긴 이름 우선
-  const sortedInsts = [...institutions].sort((a, b) => b.name.length - a.name.length);
+  // 정렬: 긴 이름 우선 (별칭 포함)
+  const sortedInsts = nameEntries.sort((a, b) => b.name.length - a.name.length);
 
   // ═══ STEP 3: 미매칭 상담 매칭 ═══
   let unmatched = [];

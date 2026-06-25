@@ -86,8 +86,9 @@ function smartMatchOrder(order, institutions) {
   for (const inst of institutions) {
     let score = 0;
 
-    // 이름 매칭 (0.4)
-    const nameScore = calcNameScore(buyerName, inst.name);
+    // 이름 매칭 (0.4) — 정식명 + metadata.aliases 별칭 중 최고 점수
+    const instNames = [inst.name, ...((inst.metadata && Array.isArray(inst.metadata.aliases)) ? inst.metadata.aliases : [])];
+    const nameScore = Math.max(...instNames.map(n => calcNameScore(buyerName, n)));
     score += nameScore * 0.4;
 
     // 주소 매칭 (0.35) — addr ↔ metadata.address 직접 비교 추가
