@@ -65,16 +65,28 @@ function handleNewOrder(data) {
     sheet.setFrozenRows(1);
   }
 
-  // 주문 일시 변환 (timestamp → 날짜)
+  // 주문 일시 변환 — 애니빌드는 epoch(초/ms) 또는 날짜문자열("2026-06-30 ...") 둘 다 보낼 수 있음.
+  // ⚠️ 과거 버그: parseInt("2026-06-30")=2026 → new Date(2026*1000)=1970-01-01.
+  //    날짜문자열은 parseInt 금지 (order-worker.js와 동일 로직).
   var regTime = '';
-  if (data.reg_time) {
-    var ts = parseInt(data.reg_time);
-    if (ts > 9999999999) ts = Math.floor(ts / 1000); // ms → s
-    if (ts > 0) {
-      var d = new Date(ts * 1000);
-      regTime = Utilities.formatDate(d, 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss');
+  if (data.reg_time !== null && data.reg_time !== undefined && data.reg_time !== '') {
+    var raw = String(data.reg_time).trim();
+    if (/^\d+$/.test(raw)) {
+      // 순수 숫자: epoch 또는 YYYYMMDD
+      var len = raw.length;
+      var ts = parseInt(raw);
+      if (len === 8 && ts >= 20000101 && ts <= 21001231) {
+        regTime = raw.slice(0, 4) + '-' + raw.slice(4, 6) + '-' + raw.slice(6, 8) + ' 00:00:00';
+      } else {
+        if (ts > 9999999999) ts = Math.floor(ts / 1000); // ms → s
+        var d = new Date(ts * 1000);
+        regTime = Utilities.formatDate(d, 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss');
+      }
+    } else if (/^\d{4}[-/]/.test(raw)) {
+      // 날짜문자열("2026-06-30 16:24:19" / "2026/06/30") — 그대로 정규화
+      regTime = raw.replace(/\//g, '-');
     } else {
-      regTime = String(data.reg_time);
+      regTime = raw;
     }
   }
 
