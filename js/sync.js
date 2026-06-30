@@ -224,8 +224,17 @@ async function fetchWebhookOrders(since) {
     redirect: 'follow'
   });
 
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  const data = await response.json();
+  if (!response.ok) {
+    let detail = '';
+    try { const j = await response.json(); detail = j.message || j.error || ''; } catch (e) {}
+    throw new Error(`동기화 서버 오류 (HTTP ${response.status})${detail ? ': ' + detail : ''}`);
+  }
+  let data;
+  try {
+    data = await response.json();
+  } catch (e) {
+    throw new Error('서버가 JSON이 아닌 응답을 반환했습니다 — GAS 배포 URL/권한(Cloudflare env.GAS_URL) 확인 필요');
+  }
   return data.orders || [];
 }
 

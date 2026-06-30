@@ -73,6 +73,16 @@ export default {
       });
 
       const body = await gasResponse.text();
+      // GAS가 JSON 대신 HTML(인증/에러 페이지)을 반환하면 application/json으로
+      // 위장 통과시키지 않는다 — 클라이언트의 "Unexpected token '<'" 혼란 방지.
+      // 주원인: env.GAS_URL이 죽은/구 배포를 가리킬 때 발생.
+      if (body.trimStart().startsWith('<')) {
+        return jsonResponse({
+          error: 'GAS_NON_JSON',
+          message: 'GAS 웹앱이 JSON 대신 HTML을 반환했습니다. Cloudflare env.GAS_URL 배포 URL/권한 또는 GAS 재배포를 확인하세요.',
+          gas_url_tail: GAS_URL.slice(-12)
+        }, 502);
+      }
       return new Response(body, {
         status: 200,
         headers: {
