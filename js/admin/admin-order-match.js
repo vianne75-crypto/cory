@@ -152,8 +152,10 @@ function calcAddrScore(addrInfo, rawAddr, inst) {
     }
   }
 
-  // 주소에 기관명 포함
-  if (rawAddr && inst.name) {
+  // 주소에 기관명 포함 — region 일치(또는 미파악) 시에만 적용.
+  // shortName이 순수 행정구역명("고성군")이 되는 경우 타 지역 동명 기관(강원↔경남 고성군보건소)을
+  // 끌어올려 region 변별력을 무력화하므로, region이 어긋나면 이 보강을 차단한다.
+  if (rawAddr && inst.name && (!addrInfo.region || addrInfo.region === inst.region)) {
     const shortName = inst.name.replace(/보건소|센터|병원|대학교?|학교/g, '').trim();
     if (shortName.length >= 2 && rawAddr.includes(shortName)) {
       score = Math.max(score, 0.9);
