@@ -82,6 +82,8 @@ function smartMatchOrder(order, institutions) {
 
   let bestMatch = null;
   let bestScore = 0;
+  let runnerUp = null;
+  let runnerUpScore = 0;
 
   for (const inst of institutions) {
     let score = 0;
@@ -107,13 +109,30 @@ function smartMatchOrder(order, institutions) {
     score += calcProductScore(goodsName) * 0.1;
 
     if (score > bestScore) {
+      runnerUp = bestMatch;
+      runnerUpScore = bestScore;
       bestScore = score;
       bestMatch = inst;
+    } else if (score > runnerUpScore) {
+      runnerUp = inst;
+      runnerUpScore = score;
     }
   }
 
   if (!bestMatch || bestScore < 0.3) return null;
-  return { inst: bestMatch, score: bestScore, reason: 'fuzzy' };
+
+  // 동음이의 모호성 가드: 1·2위가 동명(다른 region)이고 점수차가 미미하면
+  // 자동확정을 보류하고 수동확인 큐로 보낸다. (고성군보건소 강원↔경남 등 — region이
+  // 주소로 변별되지 않을 때 적재순서로 임의 확정되는 조용한 오매칭 방지)
+  const ambiguous = !!runnerUp
+    && runnerUp.name === bestMatch.name
+    && runnerUp.region !== bestMatch.region
+    && (bestScore - runnerUpScore) < 0.1;
+
+  return {
+    inst: bestMatch, score: bestScore, reason: 'fuzzy',
+    ambiguous, runnerUp: ambiguous ? runnerUp : null
+  };
 }
 
 // 이름 점수 계산
@@ -258,14 +277,14 @@ async function autoMatchOrders() {
       continue;
     }
 
-    if (result && result.score >= 0.7) {
+    if (result && result.score >= 0.7 && !result.ambiguous) {
       // 자동 매칭
       await supabase.from('orders')
         .update({ institution_id: result.inst.id, matched: true })
         .eq('id', order.id);
       autoMatched++;
-    } else if (result && result.score >= 0.4) {
-      // 수동 확인 필요
+    } else if (result && (result.score >= 0.4 || result.ambiguous)) {
+      // 수동 확인 필요 (점수 미달 또는 동음이의 모호)
       reviewList.push({ order, suggestion: result });
       needsReview++;
     } else {
@@ -283,7 +302,7 @@ async function autoMatchOrders() {
   // 미매칭 주문 캐시 업데이트 (수동 확인 + 매칭 불가)
   orderMatchCache = orders.filter(o => {
     const r = smartMatchOrder(o, instCache);
-    return !r || r.score < 0.7;
+    return !r || r.score < 0.7 || r.ambiguous;
   });
 
   updateOrderMatchStats(orders, reviewList);
@@ -321,8 +340,11 @@ function renderOrderMatchTable() {
   tbody.innerHTML = pageData.map(order => {
     const result = smartMatchOrder(order, instCache);
     const reasonLabel = { mem_id: '🔑회원ID', zipcode: '📮우편번호', fuzzy: '🔍유사도' };
+    const ambBadge = result && result.ambiguous && result.runnerUp
+      ? ` <span class="match-score" style="color:#FF9800" title="동명 기관 — region으로 변별 불가, 수동 확인 필요">⚠️동명: ${result.inst.region||'?'} vs ${result.runnerUp.region||'?'}</span>`
+      : '';
     const suggested = result && result.inst
-      ? `${result.inst.name} <span class="match-score">${reasonLabel[result.reason]||''} ${(result.score * 100).toFixed(0)}%</span>`
+      ? `${result.inst.name} <span class="match-score">${reasonLabel[result.reason]||''} ${(result.score * 100).toFixed(0)}%</span>${ambBadge}`
       : (result && result.reason === 'individual_grade'
         ? '<span class="match-individual">개인</span>'
         : '-');
