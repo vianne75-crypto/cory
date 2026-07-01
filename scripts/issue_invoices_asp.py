@@ -11,7 +11,7 @@
   export POPBILL_TEST=1        # 테스트환경(국세청 미전송) — 실발행은 0 또는 미설정
   python3 scripts/issue_invoices_asp.py
 """
-import os, sys, requests
+import os, requests
 from popbill import TaxinvoiceService, Taxinvoice, TaxinvoiceDetail, PopbillException
 
 LINKID    = os.environ.get("POPBILL_LINKID", "")
@@ -44,7 +44,7 @@ INVOICES = [
          email="sooew20@naver.com",
          details=[dict(dt="20260622", name="APS알쓰패치(인쇄포함)", qty="1200", supply="1941818", tax="194182")],
          supply="1941818", taxv="194182", total="2136000"),
-    dict(order="138565+138655", corpNum="1311085864", corpName="기프트수림", ceo="장인혁",
+    dict(order="138565+138655", corpNum="1311085864", corpName="기프트수림", ceo="김은주 외 1명",
          email="sulim7113@hanmail.net",
          details=[dict(dt="20260617", name="APS알쓰패치(인쇄포함)", qty="500", supply="809090", tax="80910"),
                   dict(dt="20260630", name="APS알쓰패치(인쇄포함)", qty="500", supply="809090", tax="80910")],
