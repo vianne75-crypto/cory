@@ -62,7 +62,7 @@ def build_taxinvoice(inv, mgtkey):
             qty=d["qty"], unitCost="", supplyCost=d["supply"], tax=d["tax"],
             remark=f"주문 {inv['order']}"))
     return Taxinvoice(
-        writeDate=WRITE_DATE, chargeDirection="정발행", issueType="정발행",
+        writeDate=WRITE_DATE, chargeDirection="정과금", issueType="정발행",
         purposeType="청구", taxType="과세",
         invoicerCorpNum=CORP_NUM, invoicerMgtKey=mgtkey,
         invoicerCorpName=INVOICER["corpName"], invoicerCEOName=INVOICER["ceoName"],
