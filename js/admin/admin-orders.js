@@ -120,10 +120,12 @@ function renderOrderTable() {
       printBadge = `<span style="color:#1976D2;font-size:11px;">${rushTag}${d.print_type || '접수'}${qtyTag}</span>`;
     }
 
-    // 세금계산서 뱃지 (P3+)
-    let invoiceBadge = '-';
+    // 세금계산서 뱃지 (P3+) — 미발행 시 수동 발행 버튼(메모 미기입 건 커버), 발행 시 배지(클릭=취소)
+    let invoiceBadge;
     if (d.invoice_issued) {
-      invoiceBadge = `<span style="color:#4CAF50;font-size:11px;">✅ ${d.invoice_date || '발행'}</span>`;
+      invoiceBadge = `<span style="color:#4CAF50;font-size:11px;cursor:pointer;" title="클릭 시 발행 취소" onclick="toggleInvoice(${d.id}, '${d.order_idx}', false)">✅ ${d.invoice_date || '발행'}</span>`;
+    } else {
+      invoiceBadge = `<button class="btn btn-sm" style="background:#607D8B;color:#fff;font-size:11px;padding:2px 8px;" onclick="toggleInvoice(${d.id}, '${d.order_idx}', true)">발행</button>`;
     }
 
     return `<tr style="${rowStyle}">
@@ -168,6 +170,30 @@ async function confirmPayment(orderId, orderIdx) {
   renderOrderStats();
   renderOrderTable();
   showToast(`주문 ${orderIdx} 입금 확인 완료 → 발송대기`, 'success');
+}
+
+// 세금계산서 발행 수동 토글 (경로 C — 메모 미기입 건 수동 커버)
+async function toggleInvoice(orderId, orderIdx, issued) {
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '/');
+  const patch = issued
+    ? { invoice_issued: true, invoice_date: today }
+    : { invoice_issued: false, invoice_date: null };
+
+  const { error } = await supabase.from('orders').update(patch).eq('id', orderId);
+  if (error) {
+    showToast('세금계산서 상태 변경 실패: ' + error.message, 'error');
+    return;
+  }
+
+  const order = orderCache.find(o => o.id === orderId);
+  if (order) {
+    order.invoice_issued = patch.invoice_issued;
+    order.invoice_date = patch.invoice_date;
+  }
+
+  renderOrderStats();
+  renderOrderTable();
+  showToast(`주문 ${orderIdx} 세금계산서 ${issued ? '발행 처리' : '발행 취소'}`, 'success');
 }
 
 function goOrderPage(page) {
