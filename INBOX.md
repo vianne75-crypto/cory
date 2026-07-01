@@ -21,7 +21,7 @@
 | P0-3-스타터얼라이언스CRM | SAGE 🔴 | PULSE — 신규 필드 7개(has_master·alliance_tier 등) + 자동화 트리거 3종 + alliance_tier 산출. 옵션 A/B 결정. **memory상 OPEN** | `cory/P03_스타터패키지_프로그램북_얼라이언스_CRM통합_PULSE.md` | 🔴 | OPEN |
 | 입금세금계산서-상태입력루틴화 | FLUX→PULSE 🟢 | **[FLUX 진단완료+구축 7/01]** memo_raw **전체 413건 NULL**(구조적·wcolive 관리자메모 미수집). ✅수동 발행/입금 토글 완성(메모 없는 건 커버) ✅경로A 스크래퍼 완성(jumun_list.htm 고유번호/메모)+worker `/sync-order-memos` 배포·E2E검증. **남음**: 대표 스크래퍼 1회 실행→[메모파싱] / **PULSE 주간 상태업데이트 루틴**→[[재무_월간요약_2026]] 현금·미수금 피드 | `cory/입금세금계산서_상태입력_진단회신_FLUX_20260701.md` `cory/주문메모_스크래퍼_초안_FLUX_20260701.md` | 🟢 PULSE 루틴 | OPEN |
 | 판관비-추출루트 | SAGE 🟡 | FLUX — 6월 판관비(인쇄·도구·마케팅) 추출 루트 식별(대표: cory↔홈페이지 연결로 가능). cory에 비용 테이블 없음·인쇄필드 미채움 → 애니빌드 정산/발주/결제 경로 대표 확인 후 6월분 집계 → 재무시트 영업이익 마감. 월별 정례화 | `cory/판관비_추출루트_핸드오프_SAGE_20260701.md` | 🟡 금주 | OPEN |
-| 대리점세금계산서-팝빌API구현 | SAGE 🟡 | FLUX(대표 방식A 확정) — ①**대리점 사업자번호 추출: wcolive 회원정보(mem_id 기준)→cory 매핑** ②팝빌 발행 API `cory/scripts/issue_invoices_asp.py`(승인목록 Y건만·공급가액 floor(총액/1.1)·수신자=대리점 사업자번호) ③발행결과 Supabase `invoice_issued/invoice_date` 쓰기(서비스롤) ④승인목록 md 생성. 선행: 대표 팝빌 가입·인증서 등록. 수동대체=run_workflow.py | `경영지원(슬기)/재무/대리점_세금계산서_발행자동화_설계_v1.md` | 🟡 팝빌 세팅 후 | OPEN |
+| 대리점세금계산서-팝빌API구현 | SAGE 🟡 | FLUX(대표 방식A 확정). **[Phase0 착수 7/01]** ✅대리점 12명 명단 추출+`dealer_business_info` 스키마(사외비). **대표 확인 대기**: ①회원목록 진단 스니펫 실행→사업자번호 수집구조 확정 ②빈 mem_id 8건(680만·미발행7). **선행 블로커: 대표 팝빌 가입·인증서(Phase1)**. 이후 ②`issue_invoices_asp.py`+승인목록+발행결과 Supabase쓰기(서비스롤) | `cory/대리점_사업자번호_매핑_Phase0_FLUX_20260701.md` `경영지원(슬기)/재무/대리점_세금계산서_발행자동화_설계_v1.md` | 🟡 팝빌 세팅 후 | OPEN |
 | 버전병존-archive스캔 | 대표 🟡 | cory/ 하위 v1/v2 병존 문서 _archive 스캔 (전사 CLAUDE.md §7) | 전사 CLAUDE.md §7 | 상시 | OPEN |
 
 ---
