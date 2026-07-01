@@ -76,3 +76,8 @@
 
 - [x] X2 교육 도입 수준 필드 DB 반영 (FLUX) ✅ 2026-03-25 — admin에 "교육도입 초기배치" 버튼 추가, runEduAdoptionBatch() 구현
 - [x] X4 기관 검색 기능 구현 (FLUX) ✅ 2026-03-25 — G1 주문번호 역추적 + G2 #태그 검색
+
+## 세금계산서 발행 연동 (다음 할일, 2026-07-01 대표)
+- [ ] cory 주문 [발행] 버튼 → 실제 팝빌 발행 API 연동 (현재는 invoice_issued 표시만, 실발행 안 됨)
+  - 팝빌 issue_invoices_asp.py 완성 후 admin-orders.js confirmInvoice/toggleInvoice에서 호출
+  - 안전장치: 발행 전 확인 다이얼로그 + 발행 실패 시 표시 롤백
