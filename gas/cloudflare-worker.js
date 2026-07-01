@@ -125,6 +125,20 @@ export default {
         }
       }
 
+      // 주문 관리자 메모 동기화 엔드포인트 (경로 A — wcolive 주문목록 스크래핑)
+      if (url.pathname === '/sync-order-memos') {
+        if (!SUPABASE_URL || !SUPABASE_KEY) {
+          return jsonResponse({ error: 'Supabase not configured' }, 500);
+        }
+        try {
+          const records = JSON.parse(body);
+          const result = await syncOrderMemos(records, SUPABASE_URL, SUPABASE_KEY);
+          return jsonResponse(result);
+        } catch (err) {
+          return jsonResponse({ error: err.message }, 500);
+        }
+      }
+
       // HC 샘플 발송 기록 엔드포인트
       if (url.pathname === '/record-shipment') {
         if (!SUPABASE_URL || !SUPABASE_KEY) {
@@ -275,6 +289,40 @@ async function syncConsultations(records, supabaseUrl, supabaseKey) {
     matched,
     institutionsUpdated: Object.keys(instUpdates).length
   };
+}
+
+// ─── 주문 관리자 메모 동기화 (경로 A) ───
+// records = [{ order_idx, memo }]. wcolive 주문목록에서 긁은 관리자 메모를
+// orders.memo_raw 에 order_idx 기준으로 기록. 파싱은 cory 관리자 "메모 파싱"
+// 버튼(admin-memo-parser.js)이 단일 소스로 담당 → memo_parsed=false 로 리셋.
+async function syncOrderMemos(records, supabaseUrl, supabaseKey) {
+  if (!Array.isArray(records) || records.length === 0) {
+    return { error: 'no records' };
+  }
+
+  let updated = 0, skipped = 0, notFound = 0;
+
+  for (const rec of records) {
+    const orderIdx = String(rec.order_idx || '').trim();
+    const memo = (rec.memo || '').trim();
+    if (!orderIdx || !memo) { skipped++; continue; }
+
+    // order_idx 로 해당 주문(상품별 여러 행)의 memo_raw 일괄 갱신 + 파싱 리셋
+    const res = await supaFetch(supabaseUrl, supabaseKey,
+      `/rest/v1/orders?order_idx=eq.${encodeURIComponent(orderIdx)}`,
+      'PATCH',
+      { memo_raw: memo, memo_parsed: false }
+    );
+
+    // return=minimal → status 204. 매칭 행 없으면 notFound 추정 불가하므로 updated로 집계.
+    if (res && (res.status === 204 || res.status === 200)) {
+      updated++;
+    } else {
+      notFound++;
+    }
+  }
+
+  return { success: true, total: records.length, updated, skipped, notFound };
 }
 
 // ─── HC 기관 동기화 (GAS → Worker → Supabase) ───
