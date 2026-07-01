@@ -221,12 +221,12 @@ def make_pdf(order: dict, supplier: dict, out_path: str):
     item_rows = [hdr]
     for it in order["items"]:
         item_rows.append([
-            Paragraph(str(d.month),          st(8, align="CENTER")),
-            Paragraph(str(d.day),            st(8, align="CENTER")),
+            Paragraph(str(it.get("month", d.month)), st(8, align="CENTER")),
+            Paragraph(str(it.get("day", d.day)),     st(8, align="CENTER")),
             Paragraph(it["name"],            st(8)),
             Paragraph("",                    st(8)),
             Paragraph(fmt(it["qty"]),        st(8, align="RIGHT")),
-            Paragraph(fmt(it["unit_price"]), st(8, align="RIGHT")),
+            Paragraph(fmt(it["unit_price"]) if it.get("unit_price") else "", st(8, align="RIGHT")),
             Paragraph(fmt(it["supply_amt"]), st(8, align="RIGHT")),
             Paragraph(fmt(it["tax_amt"]),    st(8, align="RIGHT")),
         ])
