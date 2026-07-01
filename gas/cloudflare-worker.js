@@ -42,6 +42,22 @@ export default {
         return jsonResponse({ version: '2026-03-20-stage9-shipment', deployed: new Date().toISOString() });
       }
 
+      // 대리점 사업자정보 조회 (사외비 — key 검증 필수). 웹훅 반영 확인·팝빌 발행용.
+      if (url.pathname === '/dealer-business') {
+        if (url.searchParams.get('key') !== '52b8fc2a5de7cf289fe7729a547f5b2d') {
+          return jsonResponse({ error: 'unauthorized' }, 401);
+        }
+        if (!SUPABASE_URL || !SUPABASE_KEY) return jsonResponse({ error: 'Supabase not configured' }, 500);
+        const memId = url.searchParams.get('mem_id');
+        // mem_id 지정 시 해당 건, 아니면 최근 수정순 20건(웹훅 반영 확인용)
+        const q = memId
+          ? `/rest/v1/dealer_business_info?mem_id=eq.${encodeURIComponent(memId)}&select=*`
+          : `/rest/v1/dealer_business_info?select=mem_id,memlv,company_name,business_no,ceo_name,email,updated_at&order=updated_at.desc&limit=20`;
+        const rows = await supaFetch(SUPABASE_URL, SUPABASE_KEY, q, 'GET');
+        const cnt = await supaFetch(SUPABASE_URL, SUPABASE_KEY, '/rest/v1/dealer_business_info?select=mem_id', 'GET');
+        return jsonResponse({ total: Array.isArray(cnt) ? cnt.length : null, rows });
+      }
+
       if (url.pathname === '/fetch-sheet') {
         const sheetId = url.searchParams.get('id');
         const gid = url.searchParams.get('gid') || '0';
