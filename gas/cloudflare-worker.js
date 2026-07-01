@@ -139,6 +139,48 @@ export default {
         }
       }
 
+      // 애니빌드 회원가입 Push Webhook — 신규 대리점 사업자번호 자동 수집
+      // (가입시 정보전송 샘플: json_data 파라미터, 애니빌드 서버 IP만 허용, 응답은 'OK'만)
+      if (url.pathname === '/anybuild-member') {
+        const ip = request.headers.get('CF-Connecting-IP') || '';
+        const ALLOW = ['121.125.73.', '218.237.67.', '221.139.49.'];
+        if (!ALLOW.some(p => ip.startsWith(p))) {
+          return new Response('Access blocked', { status: 403 });
+        }
+        try {
+          const params = new URLSearchParams(body);
+          let raw = params.get('json_data') || body;
+          raw = raw.replace(/\\(.)/g, '$1'); // stripslashes 유사
+          const m = JSON.parse(raw);
+          await upsertDealerBusiness(m, SUPABASE_URL, SUPABASE_KEY);
+        } catch (err) { /* 수신 확인 우선 — 실패해도 재전송 폭주 방지 위해 OK 반환. 누락분은 스크래퍼 폴백 */ }
+        return new Response('OK', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+      }
+
+      // 대리점 사업자정보 백필 (스크래퍼 1회 — 기존 회원 mem_list.htm 추출분)
+      if (url.pathname === '/sync-dealer-business') {
+        if (!SUPABASE_URL || !SUPABASE_KEY) {
+          return jsonResponse({ error: 'Supabase not configured' }, 500);
+        }
+        try {
+          const records = JSON.parse(body);
+          const GRADE_CODE = { '유통회원': '1100', 'APS대리점': '1400', '대리점': '3000' };
+          let upserted = 0, skipped = 0;
+          for (const r of records) {
+            if (!r.mem_id) { skipped++; continue; }
+            await upsertDealerBusiness({
+              mem_id: r.mem_id, memlv: GRADE_CODE[r.grade] || r.grade,
+              sangho: r.company, name: r.name, biz_num: r.business_no,
+              email: r.email, addr1: r.addr
+            }, SUPABASE_URL, SUPABASE_KEY);
+            upserted++;
+          }
+          return jsonResponse({ success: true, total: records.length, upserted, skipped });
+        } catch (err) {
+          return jsonResponse({ error: err.message }, 500);
+        }
+      }
+
       // HC 샘플 발송 기록 엔드포인트
       if (url.pathname === '/record-shipment') {
         if (!SUPABASE_URL || !SUPABASE_KEY) {
@@ -289,6 +331,38 @@ async function syncConsultations(records, supabaseUrl, supabaseKey) {
     matched,
     institutionsUpdated: Object.keys(instUpdates).length
   };
+}
+
+// ─── 대리점 사업자정보 upsert (webhook·백필 공용) ───
+// 대리점 등급(1100 유통회원·1400 APS대리점·3000 대리점)만 dealer_business_info에 저장.
+async function upsertDealerBusiness(m, supabaseUrl, supabaseKey) {
+  const DEALER = ['1100', '1400', '3000'];
+  const memId = String(m.mem_id || '').trim();
+  const memlv = String(m.memlv || '').trim();
+  if (!memId || !DEALER.includes(memlv)) return; // 대리점 등급만
+
+  const rec = {
+    mem_id:       memId,
+    memlv:        memlv,
+    company_name: (m.sangho || '').trim(),
+    business_no:  String(m.biz_num || '').trim(),
+    ceo_name:     (m.name || '').trim(),
+    address:      [m.addr1, m.addr2].filter(Boolean).join(' ').trim(),
+    email:        (m.email || '').trim(),
+    updated_at:   new Date().toISOString()
+  };
+
+  // upsert (mem_id 충돌 시 병합)
+  await fetch(`${supabaseUrl}/rest/v1/dealer_business_info?on_conflict=mem_id`, {
+    method: 'POST',
+    headers: {
+      'apikey': supabaseKey,
+      'Authorization': `Bearer ${supabaseKey}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify([rec])
+  });
 }
 
 // ─── 주문 관리자 메모 동기화 (경로 A) ───
