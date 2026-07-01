@@ -201,6 +201,28 @@ function goOrderPage(page) {
   renderOrderTable();
 }
 
+// ─── 주문 관리자메모 동기화 패널 (경로 A) ───
+function showOrderMemoSyncPanel() {
+  const panel = document.getElementById('orderMemoSyncPanel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  if (panel.style.display === 'block') updateOrderMemoScript();
+}
+
+function updateOrderMemoScript() {
+  const pages = parseInt(document.getElementById('orderMemoPages').value) || 10;
+  // wcolive jumun_list.htm 관리자메모 스크래퍼 (고유번호=order_idx, 메모=관리자메모)
+  const script = `(async function(){const U='/admin/sub_sale/jumun_list.htm?ajax_yn=0';const P=${pages};const W='https://aps-webhook.vianne75.workers.dev/sync-order-memos';const OH=['고유번호','주문번호','주문no','ordno'];const MH=['메모','관리자메모','주문메모','admin_memo'];const fc=(hc,cs)=>{for(let i=0;i<hc.length;i++){const t=(hc[i].textContent||'').replace(/\\s/g,'').toLowerCase();if(cs.some(c=>t.includes(c.replace(/\\s/g,'').toLowerCase())))return i}return -1};const all=[];let er=0;console.log('=== 주문메모 스크래핑 ('+P+'p) ===');for(let p=1;p<=P;p++){try{const r=await fetch(U+'&page='+p,{credentials:'same-origin'});const h=await r.text();const doc=new DOMParser().parseFromString(h,'text/html');const ts=[...doc.querySelectorAll('table')];let tb=null,oc=-1,mc=-1;for(const t of ts){const hd=t.querySelector('tr');if(!hd)continue;const hc=hd.querySelectorAll('th,td');const o=fc(hc,OH),m=fc(hc,MH);if(o>=0&&m>=0){tb=t;oc=o;mc=m;break}}if(!tb){console.warn('p'+p+': 컬럼 못찾음');continue}const rows=tb.querySelectorAll('tr');for(let i=1;i<rows.length;i++){const c=rows[i].querySelectorAll('td,th');if(c.length<=Math.max(oc,mc))continue;const oi=(c[oc].textContent||'').trim().replace(/[^0-9]/g,'');const mo=(c[mc].innerText||c[mc].textContent||'').trim();if(oi&&mo)all.push({order_idx:oi,memo:mo})}console.log(p+'/'+P+' 누적 '+all.length);await new Promise(z=>setTimeout(z,100))}catch(e){console.error('p'+p+':'+e.message);er++;if(er>10)break;await new Promise(z=>setTimeout(z,500))}}console.log('스크래핑 완료: '+all.length+'건(메모 있는 주문)');if(!all.length){console.warn('추출 0건 — 로그인/구조 확인');return}let up=0;for(let i=0;i<all.length;i+=200){const b=all.slice(i,i+200);try{const r=await fetch(W,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});const j=await r.json();if(j.success){up+=j.updated||0;console.log('배치'+(Math.floor(i/200)+1)+': updated '+j.updated)}else console.error(j.error)}catch(e){console.error(e.message)}}console.log('=== 완료: memo_raw '+up+'건 갱신 → cory에서 [메모 파싱] 클릭 ===')})();`;
+  document.getElementById('orderMemoScriptCode').textContent = script;
+}
+
+function copyOrderMemoScript() {
+  updateOrderMemoScript();
+  const script = document.getElementById('orderMemoScriptCode').textContent;
+  navigator.clipboard.writeText(script).then(() => {
+    showToast('스크립트가 클립보드에 복사되었습니다.', 'success');
+  });
+}
+
 // 주문 동기화 (기존 webhook에서 가져오기)
 async function syncOrders() {
   const statusEl = document.getElementById('orderSyncStatus');

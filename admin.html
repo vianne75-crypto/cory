@@ -469,10 +469,42 @@
         <h2>주문 모니터링</h2>
         <div class="content-actions">
           <button class="btn btn-primary" onclick="syncOrders()">주문 동기화</button>
+          <button class="btn btn-secondary" onclick="showOrderMemoSyncPanel()">메모 동기화</button>
           <button class="btn btn-secondary" onclick="backfillMemos()">메모 파싱</button>
           <span id="orderSyncStatus" class="sync-status-text"></span>
         </div>
       </div>
+
+      <!-- 주문 관리자메모 동기화 패널 (경로 A) -->
+      <div id="orderMemoSyncPanel" class="sync-panel" style="display:none;">
+        <div class="sync-panel-header">
+          <h3>주문 관리자메모 동기화 (입금·세금계산서)</h3>
+          <button class="modal-x" onclick="document.getElementById('orderMemoSyncPanel').style.display='none'">&times;</button>
+        </div>
+        <div class="sync-panel-body">
+          <p>wcolive 관리자 로그인 후, 아래 스크립트를 콘솔(F12)에 붙여넣어 실행하세요. 주문목록 "메모"칸(입완·전세)을 긁어 memo_raw에 기록합니다.</p>
+          <div class="sync-steps">
+            <div class="sync-step"><span class="step-num">1</span><span>wcolive 관리자 아무 화면 로그인</span></div>
+            <div class="sync-step"><span class="step-num">2</span><span>F12 → 콘솔(Console) 탭 열기</span></div>
+            <div class="sync-step"><span class="step-num">3</span><span>아래 스크립트 복사 → 붙여넣기 → Enter</span></div>
+            <div class="sync-step"><span class="step-num">4</span><span>완료 후 이 화면에서 [메모 파싱] 클릭</span></div>
+          </div>
+          <div class="sync-script-area">
+            <div class="sync-script-header">
+              <span>동기화 스크립트</span>
+              <div>
+                <label class="sync-pages-label">페이지 수:
+                  <input type="number" id="orderMemoPages" value="10" min="1" max="98" class="sync-pages-input">
+                </label>
+                <button class="btn btn-sm btn-secondary" onclick="copyOrderMemoScript()">복사</button>
+              </div>
+            </div>
+            <pre id="orderMemoScriptCode" class="sync-script-code"></pre>
+          </div>
+          <p class="sync-hint">1페이지 ≈ 15건. 최근 메모 위주면 10페이지면 충분. 메모 없는 주문은 자동 제외됩니다.</p>
+        </div>
+      </div>
+
       <div class="stats-row" id="orderStats"></div>
       <div class="table-container">
         <table id="orderTable">
