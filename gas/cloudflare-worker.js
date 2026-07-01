@@ -165,9 +165,11 @@ export default {
         }
         try {
           const params = new URLSearchParams(body);
-          let raw = params.get('json_data') || body;
-          raw = raw.replace(/\\(.)/g, '$1'); // stripslashes 유사
-          const m = JSON.parse(raw);
+          const raw = params.get('json_data') || body;
+          // 직접 파싱 우선(\uXXXX 한글 이스케이프 보존). 실패 시에만 stripslashes 폴백.
+          let m;
+          try { m = JSON.parse(raw); }
+          catch (e) { m = JSON.parse(raw.replace(/\\(.)/g, '$1')); }
           const rec = buildDealerRecord(m);
           if (rec) await upsertDealerRecords([rec], SUPABASE_URL, SUPABASE_KEY);
         } catch (err) { /* 수신 확인 우선 — 실패해도 재전송 폭주 방지 위해 OK 반환. 누락분은 스크래퍼 폴백 */ }
