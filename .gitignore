@@ -1,1 +1,6 @@
 .DS_Store
+
+# 사외비 — 인증정보·사업자번호 등 민감데이터
+_SECRET/
+*.dealer_business.json
+dealer_business*.json
