@@ -152,7 +152,8 @@ export default {
           let raw = params.get('json_data') || body;
           raw = raw.replace(/\\(.)/g, '$1'); // stripslashes 유사
           const m = JSON.parse(raw);
-          await upsertDealerBusiness(m, SUPABASE_URL, SUPABASE_KEY);
+          const rec = buildDealerRecord(m);
+          if (rec) await upsertDealerRecords([rec], SUPABASE_URL, SUPABASE_KEY);
         } catch (err) { /* 수신 확인 우선 — 실패해도 재전송 폭주 방지 위해 OK 반환. 누락분은 스크래퍼 폴백 */ }
         return new Response('OK', { status: 200, headers: { 'Content-Type': 'text/plain' } });
       }
@@ -165,17 +166,14 @@ export default {
         try {
           const records = JSON.parse(body);
           const GRADE_CODE = { '유통회원': '1100', 'APS대리점': '1400', '대리점': '3000' };
-          let upserted = 0, skipped = 0;
-          for (const r of records) {
-            if (!r.mem_id) { skipped++; continue; }
-            await upsertDealerBusiness({
-              mem_id: r.mem_id, memlv: GRADE_CODE[r.grade] || r.grade,
-              sangho: r.company, name: r.name, biz_num: r.business_no,
-              email: r.email, addr1: r.addr
-            }, SUPABASE_URL, SUPABASE_KEY);
-            upserted++;
-          }
-          return jsonResponse({ success: true, total: records.length, upserted, skipped });
+          // 전 레코드를 한 번에 벌크 upsert (fetch 1번 — subrequest 한도 회피)
+          const recs = records.map(r => buildDealerRecord({
+            mem_id: r.mem_id, memlv: GRADE_CODE[r.grade] || r.grade,
+            sangho: r.company, name: r.name, biz_num: r.business_no,
+            email: r.email, addr1: r.addr
+          })).filter(Boolean);
+          const { upserted } = await upsertDealerRecords(recs, SUPABASE_URL, SUPABASE_KEY);
+          return jsonResponse({ success: true, total: records.length, upserted, skipped: records.length - upserted });
         } catch (err) {
           return jsonResponse({ error: err.message }, 500);
         }
@@ -333,15 +331,14 @@ async function syncConsultations(records, supabaseUrl, supabaseKey) {
   };
 }
 
-// ─── 대리점 사업자정보 upsert (webhook·백필 공용) ───
-// 대리점 등급(1100 유통회원·1400 APS대리점·3000 대리점)만 dealer_business_info에 저장.
-async function upsertDealerBusiness(m, supabaseUrl, supabaseKey) {
+// ─── 대리점 사업자정보 (webhook·백필 공용) ───
+// 대리점 등급(1100 유통회원·1400 APS대리점·3000 대리점)만 대상. 아니면 null.
+function buildDealerRecord(m) {
   const DEALER = ['1100', '1400', '3000'];
   const memId = String(m.mem_id || '').trim();
   const memlv = String(m.memlv || '').trim();
-  if (!memId || !DEALER.includes(memlv)) return; // 대리점 등급만
-
-  const rec = {
+  if (!memId || !DEALER.includes(memlv)) return null;
+  return {
     mem_id:       memId,
     memlv:        memlv,
     company_name: (m.sangho || '').trim(),
@@ -351,9 +348,17 @@ async function upsertDealerBusiness(m, supabaseUrl, supabaseKey) {
     email:        (m.email || '').trim(),
     updated_at:   new Date().toISOString()
   };
+}
 
-  // upsert (mem_id 충돌 시 병합)
-  await fetch(`${supabaseUrl}/rest/v1/dealer_business_info?on_conflict=mem_id`, {
+// 벌크 upsert — 여러 레코드를 fetch 1번으로 (subrequest 한도 회피). mem_id 병합.
+async function upsertDealerRecords(records, supabaseUrl, supabaseKey) {
+  // 배치 내 mem_id 중복 제거(뒤엣것 유지) — ON CONFLICT 이중영향 방지
+  const byId = {};
+  for (const r of records) if (r) byId[r.mem_id] = r;
+  const uniq = Object.values(byId);
+  if (uniq.length === 0) return { upserted: 0 };
+
+  const res = await fetch(`${supabaseUrl}/rest/v1/dealer_business_info?on_conflict=mem_id`, {
     method: 'POST',
     headers: {
       'apikey': supabaseKey,
@@ -361,8 +366,10 @@ async function upsertDealerBusiness(m, supabaseUrl, supabaseKey) {
       'Content-Type': 'application/json',
       'Prefer': 'resolution=merge-duplicates,return=minimal'
     },
-    body: JSON.stringify([rec])
+    body: JSON.stringify(uniq)
   });
+  if (res.status >= 400) throw new Error(`supabase ${res.status}: ${(await res.text()).slice(0,200)}`);
+  return { upserted: uniq.length };
 }
 
 // ─── 주문 관리자 메모 동기화 (경로 A) ───
