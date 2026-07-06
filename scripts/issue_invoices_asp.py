@@ -97,8 +97,8 @@ def main():
 
     # 연동 확인
     try:
-        bal = svc.getBalance(CORP_NUM)
-        print(f"  연동 OK · 잔여포인트 {bal}")
+        bal = svc.getPartnerBalance(CORP_NUM)  # 파트너 과금 모델 — 발행은 파트너포인트 차감
+        print(f"  연동 OK · 파트너포인트 {bal} (발행단가 100원/건)")
     except PopbillException as e:
         print(f"  ❌ 연동 실패 [{e.code}] {e.message}")
         return
