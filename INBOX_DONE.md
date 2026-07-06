@@ -8,6 +8,9 @@
 
 | # | FROM | 요청 내용 | 참조 파일 | 마감 | 상태 |
 |---|------|---------|---------|------|------|
+| KISS카운터-일별한정재구조 | SAGE 🔴 (대표 B안) | **[KISS 카운터 일별 재구조]** | `cory/workers/aps-lead-worker.js` `cory/KISS_실행가이드_대표용_20260705.md` | 학회 전 | DONE ✅ 2026-07-05 (FLUX — getCounterState 일별모델 재작성: 캡100·매일 KST리셋·일별시딩(7/9=55·7/10=58)·마감임박 상태(open/low≤20/ending≤5/closed)·is_last_day. `GET /kiss-counter`={date,cap,taken,remaining,status,is_last_day}. settings.kiss_counter 시딩 SQL 대표 실행 확인. PIXEL 프론트 렌더 전환 = 웹운영 INBOX 발주) |
+| KISS-민감정보-비식별저장 | PIXEL 🔴 (BOND §23) | **[KISS 민감정보 처리]** | `cory/KISS_실행가이드_대표용_20260705.md` `cory/data/kiss-privacy-hardening.sql` | 7/6 전 | DONE ✅ 2026-07-05 (FLUX — **대표 결정: 민감정보 비수집**. Worker가 quiz_answer 미저장 → 파이프라인 민감정보 0건 → §23 비수집 충족. + ref_key 해시(전화 원본 미저장)·sensitive_agreed 컬럼·salt fail-closed. BOND 비수집 통보=얼라이언스CS INBOX / PIXEL 동의UI 제거=웹운영 INBOX) |
+| KISS-리드테이블신설-통지 | PIXEL 🟢 | **[KISS 리드 테이블 인지·연계]** | `cory/js/admin/admin-kiss.js` `cory/data/kiss-flywheel-schema.sql` | 인지 | DONE ✅ 2026-07-05 (FLUX — cory 대시보드 KISS 리드 탭 신설(신청+진단 뷰·기관매칭·처리토글). kiss_flywheel PIXEL 테이블에 ref_key 정합 + `/kiss-flywheel` 엔드포인트 E2E. 38에이전트 적대적 검증 후 하드닝. 카운터 count는 뷰 기반) |
 | P0-2-재구매데이터 | SAGE 🔴 | **[재구매 데이터 백필 → KR1 측정 가동]** | `cory/P02_재구매데이터_채우기_FLUX.md` `cory/scripts/p02-backfill-purchase-data.py` | KR1 측정 | DONE ✅ 2026-06-25 (FLUX — Order.xls(wcolive 원본·사용처명 매칭 115건) + cory orders(157) 통합 집계 → 119개 기관 first/last_purchase_date·purchase_count 백필. **KR1 재구매율 26.1%**(재구매 31·구매자 119·목표 35%). 도입연도 2022~2026 분포→도입지도 정확도↑. 미매칭 187건은 추후 줄임말 사전 보강) |
 | FAB-v2.7 / 팔안쪽 표준 | SAGE 슬기 ⭐⭐ | **[FAB v2.7 + "팔 안쪽" 메시지 표준 cory 적용]** | `cory/CRM_메시지_표준_FAB_v2.7_팔안쪽.md` | ⭐ 즉시 | DONE ✅ 2026-06-09 (FLUX — cory 발신 코드·GAS·HTML·webhook 전수 점검: 금지표현(손등·팔뚝·상박) **0건**, 구버전 FAB 정량 클레임 **0건**, webhook은 JSON 응답으로 카피 없음 → **정정 대상 없음**. winback·order-alert는 내부 알림(FAB 불필요). f1-launch-mailer는 F1키트 전용·발송 완료. 향후 신규/개정 메시지 준수용 표준 문서 신설(FAB v2.7 full+단축형, 팔안쪽 톤, 절주/금연 분담). 메시지 개정 시 적용) |
 | ICP-v3.1-3트랙공지 | SAGE 슬기 ⭐⭐ | **[ICP v3.1 3트랙 cory 반영]** FLUX+PULSE 공동. | `마케팅전략/aps_marketing/ICP_v3.1_3트랙_B2G.md` · `cory/data/add-icp-track-field.sql` | ⭐ 즉시 | DONE ✅ 2026-06-09 (FLUX+PULSE — ①track 필드 SQL 마이그레이션 `data/add-icp-track-field.sql` (VARCHAR+CHECK 1A·1B·1C·mega·b2b·other + 인덱스 + 자동분류 UPDATE) ②보건소 241개 자동분류 검증 **1A 72·1B 86·1C 83** (other 0·울주군 등 광역시 군→1C 정확) ③대시보드 트랙 필터+배지 ④신규 등록 classifyTrack() 자동. 🔴 **대표 SQL 실행 필요** → Supabase SQL Editor. 트랙별 재구매·이탈 분석은 실행 후 가능) |
@@ -81,3 +84,6 @@
 | 40 | 납품 후 피드백 질문지 CRM 연동 검토 (L3·L4 작업으로 승계) | `APS보건교육연구소/납품후피드백_질문지_PULSE협업요청.md` |
 | 33 | 추천 액션 프로토콜 설계 (CJM 교차 루프로 승계) | — |
 | #35 | HC 전화 팔로업 기관 6건 후속 (연세대미래·인천대·한국관광대 등·3/19 발송) | `farm360/HC_전화팔로업_이메일템플릿_MUSE.md` |
+
+## ✅ 대리점 세금계산서 팝빌 발행 (2026-07-06)
+6월 대리점 4장 국세청 실발행 완료(총 6,125,000원, 승인번호 ...ad1b4~b7). 팝빌 API `issue_invoices_asp.py`. 연동계정 vianne75·파트너포인트 과금. cory invoice_issued 반영. 다음할일: cory [발행]버튼→실팝빌 연동.
