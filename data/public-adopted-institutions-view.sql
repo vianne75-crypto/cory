@@ -20,7 +20,8 @@ SELECT
   track
 FROM institutions
 WHERE purchase_amount > 0                          -- 실거래 발생 = 도입 (purchase_stage는 수기·과소집계라 미사용)
-  AND type IN ('보건소','전문기관','금연지원센터','광역시도 및 중앙기관')
+  AND type IN ('보건소','전문기관','금연지원센터','광역시도 및 중앙기관','공공병원','기타 지자체 및 복지기관')
+  -- ⚠️ '군경소방'은 의도적 제외 (군부대·국군병원 실명 공개 민감성 — 2026-07-06 대표 확정)
   AND COALESCE((metadata->>'public_optout')::boolean, false) = false;  -- 기관 옵트아웃 존중
 
 -- Supabase Data API 노출 (2026-10-30 GRANT enforcement 정책 대응)
