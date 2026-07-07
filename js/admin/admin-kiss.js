@@ -69,6 +69,11 @@ async function loadKissDiagnosis() {
   }
 
   kissDiagnosisCache = data || [];
+  // 신청↔진단 연결용: 신청 데이터가 없으면 함께 로드(같은 시크릿 엔드포인트)
+  if (!kissCache.length) {
+    const s = await kissAdminFetch('/kiss-admin-list?limit=500');
+    if (s.data) kissCache = s.data;
+  }
   renderKissDiagnosisStats();
   renderKissDiagnosisTable();
   if (statusEl) statusEl.textContent = `${kissDiagnosisCache.length}건 진단 응답`;
@@ -166,10 +171,14 @@ function renderKissDiagnosisTable() {
   const start = (kissPage - 1) * PAGE_SIZE;
   const pageData = kissDiagnosisCache.slice(start, start + PAGE_SIZE);
 
+  // 신청↔진단 연결: 두 테이블 공통 ref_key(전화 해시)로 신청자 조회
+  const signupByRef = {};
+  kissCache.forEach(s => { if (s.ref_key) signupByRef[s.ref_key] = s; });
+
   const thead = document.querySelector('#kissTable thead tr');
   if (thead) {
     thead.innerHTML = `
-      <th>ID</th><th>연결(ref_key)</th>
+      <th>ID</th><th>신청자(이름·기관)</th>
       <th>Q1 참석반복</th><th>Q2 채널</th><th>Q3 공공활용</th>
       <th>Q4 CJM</th><th>Q5 도입활용</th><th>Q6 플라이휠 의향</th>
       <th>응답 시각</th>
@@ -180,11 +189,15 @@ function renderKissDiagnosisTable() {
   if (!tbody) return;
   tbody.innerHTML = pageData.map(d => {
     const created = (d.created_at || '').replace('T', ' ').slice(0, 19);
-    // ref_key = salt SHA-256 비식별 조인키 (원본 전화 아님)
-    const ref = d.ref_key ? `<span style="color:#4CAF50">✓ ${escapeHtml(String(d.ref_key).slice(0, 12))}…</span>` : `<span style="color:#999">-</span>`;
+    // ref_key로 신청자 연결 (비식별 조인키 = 전화 해시)
+    const s = d.ref_key ? signupByRef[d.ref_key] : null;
+    const who = s
+      ? `<strong>${escapeHtml(s.name || '-')}</strong><br><small style="color:#888">${escapeHtml(s.institution_name || '-')}</small>`
+      : (d.ref_key ? `<span style="color:#E67E22" title="신청 기록과 매칭 안 됨(전화 다름/신청 없음)">미연결</span>`
+                   : `<span style="color:#999">-</span>`);
     return `<tr>
       <td>${d.id}</td>
-      <td>${ref}</td>
+      <td>${who}</td>
       <td><small>${escapeHtml(d.q1_attendance || '-')}</small></td>
       <td><small>${escapeHtml(Array.isArray(d.q2_channels) ? d.q2_channels.join(',') : (d.q2_channels || '-'))}${d.q2_channels_etc ? ' / 기타: ' + escapeHtml(d.q2_channels_etc) : ''}</small></td>
       <td><small>${escapeHtml(d.q3_public || '-')}</small></td>
