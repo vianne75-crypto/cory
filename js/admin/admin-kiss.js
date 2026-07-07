@@ -110,7 +110,7 @@ function renderKissTable() {
   if (thead) {
     thead.innerHTML = `
       <th>ID</th><th>이름</th><th>연락처</th><th>기관</th><th>이메일</th>
-      <th>퀴즈</th><th>매칭</th><th>처리</th><th>UTM</th><th>신청 시각</th>
+      <th>주소</th><th>매칭</th><th>처리</th><th>UTM</th><th>신청 시각</th>
     `;
   }
 
@@ -124,7 +124,6 @@ function renderKissTable() {
       : `<button class="btn btn-sm" style="background:#607D8B;color:#fff;font-size:11px;padding:2px 8px;" onclick="toggleKissProcessed(${d.id}, true)">처리 완료</button>`;
     const utm = [d.utm_source, d.utm_medium, d.utm_content].filter(Boolean).join('/') || '-';
     const created = (d.created_at || '').replace('T', ' ').slice(0, 19);
-    const quiz = d.quiz_answer || '-';
     const email = d.email || '-';
     const marketing = d.marketing_agreed ? ' 📧' : '';
 
@@ -134,7 +133,7 @@ function renderKissTable() {
       <td>${escapeHtml(d.phone || '-')}</td>
       <td>${escapeHtml(d.institution_name || '-')}<br><small style="color:#888">${escapeHtml(inst)}</small></td>
       <td>${escapeHtml(email)}</td>
-      <td>${escapeHtml(quiz)}</td>
+      <td><small>${escapeHtml(d.address || '-')}</small></td>
       <td>${matchBadge}</td>
       <td>${processedBadge}</td>
       <td><small>${escapeHtml(utm)}</small></td>
