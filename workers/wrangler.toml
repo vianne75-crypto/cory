@@ -1,0 +1,20 @@
+# Cloudflare Worker 설정 — aps-lead
+# 배포: wrangler deploy --config workers/wrangler.toml
+# 시크릿: wrangler secret put SUPABASE_SERVICE_KEY --config workers/wrangler.toml
+#         wrangler secret put IP_SALT --config workers/wrangler.toml
+
+name = "aps-lead"
+main = "aps-lead-worker.js"
+compatibility_date = "2026-07-01"
+
+# 환경변수 (공개 가능한 값만)
+[vars]
+SUPABASE_URL = "https://rvqkoiqjjhlrgqitnxwt.supabase.co"
+
+# Secrets (wrangler secret put 로 별도 설정):
+# - SUPABASE_SERVICE_KEY : Supabase service_role key
+# - IP_SALT              : IP 해시용 salt (임의 문자열)
+
+# 로그 (Cloudflare 대시보드에서 확인)
+[observability]
+enabled = true

@@ -1047,6 +1047,8 @@ body {
 .memlv-config td:first-child, .memlv-config th:first-child { text-align: left; }
 #orderMatchTableWrap .table-container { max-height: 400px; overflow-y: auto; }
 #orderMatchTableWrap td.truncate { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#orderMatchTableWrap td.truncate.addr-col { max-width: 300px; }  /* 주소 2배 */
+#orderMatchTableWrap td.truncate.prod-col { max-width: 90px; }   /* 상품 축소 */
 
 /* ─── 팔로업 모달 ─── */
 .inst-suggest { padding: 8px 12px; cursor: pointer; font-size: 0.9rem; }

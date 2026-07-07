@@ -22,6 +22,12 @@ function parseRegTime(raw) {
 let orderCache = [];
 let orderPage = 1;
 
+// 취소·환불·반품 판정 (전 화면 공통, 정합성 소스)
+function isCancelledOrder(o) {
+  const s = String(o && o.state_subject || '');
+  return s.includes('취소') || s.includes('환불') || s.includes('반품');
+}
+
 async function loadOrders() {
   const { data, error } = await supabase
     .from('orders')
@@ -39,7 +45,7 @@ async function loadOrders() {
   renderOrderTable();
 }
 
-let orderFilter = 'all'; // all | unpaid | paid
+let orderFilter = 'all'; // all(유효) | unpaid | paid | no_invoice | cancelled
 
 function setOrderFilter(filter) {
   orderFilter = filter;
@@ -49,25 +55,34 @@ function setOrderFilter(filter) {
 }
 
 function getFilteredOrders() {
-  if (orderFilter === 'unpaid') return orderCache.filter(d => d.state_subject === '입금대기');
-  if (orderFilter === 'paid') return orderCache.filter(d => d.payment_confirmed);
-  if (orderFilter === 'no_invoice') return orderCache.filter(d => d.payment_confirmed && !d.invoice_issued);
-  return orderCache;
+  // 취소·환불·반품은 별도 뷰(cancelled)에서만 표시. 기본 뷰에서는 항상 제외.
+  if (orderFilter === 'cancelled') return orderCache.filter(isCancelledOrder);
+  const valid = orderCache.filter(d => !isCancelledOrder(d));
+  if (orderFilter === 'unpaid') return valid.filter(d => d.state_subject === '입금대기');
+  if (orderFilter === 'paid') return valid.filter(d => d.payment_confirmed);
+  if (orderFilter === 'no_invoice') return valid.filter(d => d.payment_confirmed && !d.invoice_issued);
+  return valid;
 }
 
 function renderOrderStats() {
-  const total = orderCache.length;
-  const matched = orderCache.filter(d => d.matched).length;
-  const totalAmount = orderCache.reduce((s, d) => s + (d.sale_price || 0) * (d.sale_cnt || 0), 0);
-  const unpaid = orderCache.filter(d => d.state_subject === '입금대기').length;
-  const unpaidAmount = orderCache.filter(d => d.state_subject === '입금대기')
+  // 정합성 원칙: 통계는 유효 주문(취소·환불·반품 제외) 기준
+  const validOrders = orderCache.filter(d => !isCancelledOrder(d));
+  const cancelledOrders = orderCache.filter(isCancelledOrder);
+
+  const total = validOrders.length;
+  const matched = validOrders.filter(d => d.matched).length;
+  const totalAmount = validOrders.reduce((s, d) => s + (d.sale_price || 0) * (d.sale_cnt || 0), 0);
+  const unpaid = validOrders.filter(d => d.state_subject === '입금대기').length;
+  const unpaidAmount = validOrders.filter(d => d.state_subject === '입금대기')
     .reduce((s, d) => s + (d.sale_price || 0) * (d.sale_cnt || 0), 0);
+  const cancelledCount = cancelledOrders.length;
+  const cancelledAmount = cancelledOrders.reduce((s, d) => s + (d.sale_price || 0) * (d.sale_cnt || 0), 0);
 
   document.getElementById('orderStats').innerHTML = `
-    <div class="stat-card" style="cursor:pointer" onclick="setOrderFilter('all')"><span class="label">전체 주문</span><span class="value">${total}</span></div>
+    <div class="stat-card" style="cursor:pointer;${orderFilter==='all'?'border:2px solid #4CAF50':''}" onclick="setOrderFilter('all')"><span class="label">유효 주문</span><span class="value">${total}</span></div>
     <div class="stat-card"><span class="label">매칭됨</span><span class="value" style="color:#4CAF50">${matched}</span></div>
     <div class="stat-card"><span class="label">미매칭</span><span class="value" style="color:#F44336">${total - matched}</span></div>
-    <div class="stat-card"><span class="label">총 금액</span><span class="value">${adminFormatCurrency(totalAmount)}</span></div>
+    <div class="stat-card"><span class="label">유효 매출</span><span class="value">${adminFormatCurrency(totalAmount)}</span></div>
     <div class="stat-card" style="cursor:pointer;${orderFilter==='unpaid'?'border:2px solid #F44336':''}" onclick="setOrderFilter(orderFilter==='unpaid'?'all':'unpaid')">
       <span class="label">💰 미수금</span>
       <span class="value" style="color:#F44336">${unpaid}건</span>
@@ -75,11 +90,16 @@ function renderOrderStats() {
     </div>
     <div class="stat-card" style="cursor:pointer;${orderFilter==='no_invoice'?'border:2px solid #FF9800':''}" onclick="setOrderFilter(orderFilter==='no_invoice'?'all':'no_invoice')">
       <span class="label">📄 전세 미발행</span>
-      <span class="value" style="color:#FF9800">${orderCache.filter(d => d.payment_confirmed && !d.invoice_issued).length}건</span>
+      <span class="value" style="color:#FF9800">${validOrders.filter(d => d.payment_confirmed && !d.invoice_issued).length}건</span>
     </div>
     <div class="stat-card">
       <span class="label">🖨️ 인쇄접수</span>
-      <span class="value" style="color:#1976D2">${orderCache.filter(d => d.print_received).length}건</span>
+      <span class="value" style="color:#1976D2">${validOrders.filter(d => d.print_received).length}건</span>
+    </div>
+    <div class="stat-card" style="cursor:pointer;${orderFilter==='cancelled'?'border:2px solid #9E9E9E':''}" onclick="setOrderFilter(orderFilter==='cancelled'?'all':'cancelled')">
+      <span class="label">🚫 취소·환불</span>
+      <span class="value" style="color:#9E9E9E">${cancelledCount}건</span>
+      <span style="font-size:11px;color:#888">${adminFormatCurrency(cancelledAmount)}</span>
     </div>
   `;
 }
@@ -109,8 +129,11 @@ function renderOrderTable() {
       paymentBadge = `<span style="color:#4CAF50;font-size:11px;">✅ ${d.payment_date || '확인'}</span>`;
     }
 
-    // 입금대기 행 하이라이트
-    const rowStyle = isUnpaid && !isPaid ? 'background:#FFF3E0;' : '';
+    // 행 하이라이트 (취소·환불 > 입금대기)
+    const isCancelled = isCancelledOrder(d);
+    let rowStyle = '';
+    if (isCancelled) rowStyle = 'background:#F5F5F5;color:#999;text-decoration:line-through;';
+    else if (isUnpaid && !isPaid) rowStyle = 'background:#FFF3E0;';
 
     // 인쇄 접수 뱃지 (P3+)
     let printBadge = '-';

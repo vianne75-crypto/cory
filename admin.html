@@ -44,6 +44,7 @@
       <button class="admin-tab" data-tab="tab-consultations">상담 내역</button>
       <button class="admin-tab" data-tab="tab-unmatched">미매칭</button>
       <button class="admin-tab" data-tab="tab-orders">주문</button>
+      <button class="admin-tab" data-tab="tab-kiss">KISS 리드</button>
       <button class="admin-tab" data-tab="tab-publish">게시</button>
       <button class="admin-tab" data-tab="tab-settings">설정</button>
       <button class="admin-tab" data-tab="tab-upload">데이터 업로드</button>
@@ -162,7 +163,9 @@
             <div id="orderMatchInfo" style="margin-bottom:12px;"></div>
             <input type="text" id="orderMatchSearch" class="filter-input" placeholder="기관명 검색..."
               oninput="searchOrderMatchCandidates()" style="width:100%; margin-bottom:8px;">
-            <div id="orderMatchCandidates" class="match-candidates" style="max-height:300px; overflow-y:auto;"></div>
+            <div id="orderMatchCandidates" class="match-candidates" style="max-height:260px; overflow-y:auto;"></div>
+            <!-- 신규 기관 간편 등록 (추천에 없을 때) -->
+            <div id="orderMatchNewInst" style="margin-top:12px; padding-top:12px; border-top:1px dashed #d0d0d0;"></div>
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" onclick="closeOrderMatchModal()">닫기</button>
@@ -529,7 +532,42 @@
       <div class="pagination" id="orderPagination"></div>
     </div>
 
-    <!-- 탭 5: 게시 -->
+    <!-- 탭 5: KISS 리드 (aps-lead Worker · kiss_signups) -->
+    <div class="admin-content" id="tab-kiss">
+      <div class="content-header">
+        <h2>KISS 2026 신청 리드</h2>
+        <div class="content-actions">
+          <button class="btn btn-primary" onclick="loadKissSignups()">새로고침</button>
+          <button class="btn btn-secondary" onclick="loadKissDiagnosis()">진단 응답</button>
+          <span id="kissSyncStatus" class="sync-status-text"></span>
+        </div>
+      </div>
+
+      <div class="stats-row" id="kissStats"></div>
+
+      <div class="table-container">
+        <table id="kissTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>이름</th>
+              <th>연락처</th>
+              <th>기관</th>
+              <th>이메일</th>
+              <th>퀴즈</th>
+              <th>매칭</th>
+              <th>처리</th>
+              <th>UTM</th>
+              <th>신청 시각</th>
+            </tr>
+          </thead>
+          <tbody id="kissBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="kissPagination"></div>
+    </div>
+
+    <!-- 탭 6: 게시 -->
     <div class="admin-content" id="tab-publish">
       <div class="content-header">
         <h2>대시보드 게시</h2>
@@ -918,6 +956,7 @@
   <script src="js/admin/admin-unmatched.js"></script>
   <script src="js/admin/admin-memo-parser.js"></script>
   <script src="js/admin/admin-orders.js"></script>
+  <script src="js/admin/admin-kiss.js"></script>
   <script src="js/admin/admin-publish.js"></script>
   <script src="js/admin/admin-cleanup.js"></script>
   <script src="js/admin/admin-upload.js"></script>

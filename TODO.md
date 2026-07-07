@@ -4,6 +4,30 @@
 
 ---
 
+## 🟢 KISS 2026 백엔드 (7/2~7/5, FLUX) — 학회 준비 완료
+
+> 상세: `KISS_실행가이드_대표용_20260705.md` · `KISS_당일운영런북_20260705.md`
+> Worker: `aps-lead.vianne75.workers.dev` (별도 Worker, aps-webhook과 격리)
+
+- [x] `aps-lead` Worker 신규 배포 — /kiss-submit·/kiss-counter·/kiss-diagnosis·/kiss-flywheel·/health ✅ 7/2~7/5
+- [x] kiss_signups·kiss_diagnosis 테이블 + 카운터 뷰 ✅
+- [x] 카운터 **일별모델 재구조**(캡100·매일리셋·시딩 7/9=55·7/10=58·마감임박 상태) ✅ 7/5 (대표 확정 B안)
+- [x] 진단 6문항(kiss_diagnosis) + cory 대시보드 KISS 리드 탭 ✅
+- [x] 플라이휠(kiss_flywheel) — PIXEL 테이블에 ref_key 정합 + /kiss-flywheel E2E ✅ 7/5
+- [x] **민감정보 비수집**(quiz_answer 미저장) — BOND §23 비수집 충족 ✅ 7/5 (대표 결정)
+- [x] 개인정보 강화 — ref_key 해시(전화 원본 미저장)·salt fail-closed·검증·중복차단 ✅
+- [x] **38에이전트 적대적 검증** → 16확정·14기각 → 내부 코드 하드닝 반영 ✅ 7/3
+- [x] 커밋 SQL ↔ 라이브 컬럼명 정합(재빌드 안전) ✅
+- [ ] 🟠 (PIXEL) 카운터 렌더 + 플라이휠 버튼 엔드포인트 전환 — 웹운영 INBOX 발주됨
+- [ ] 🟢 (선택·대표) ref_phone DROP·PRIVACY_HASH_SALT·Turnstile — 법적 필수 아님(비수집)
+- [ ] 🟢 (fast-follow) 원자 카운터 RPC → Worker 전환 — `data/kiss-atomic-counter.sql`
+
+## 🟢 주문 정합성 (7/2, FLUX) — 완료
+
+- [x] admin-orders.js 취소/환불/반품 자동 제외 — `isCancelledOrder()` + 유효주문 통계 + 🚫취소 별도 뷰 ✅ 7/2
+  - 진단 SQL: `data/order-integrity-diagnostic.sql` (institution amount 왜곡 규모 확인용)
+  - ⚠️ 잔여: institution.purchase_amount 롤백(취소 시 차감) + Webhook 상태변경 drift(138625 사례 = 애니빌드 취소 vs cory 발송대기) 근본 조사
+
 ## 🔴 즉시 (긴급)
 
 - [x] X3 주문 동기화 버그 수정 — reg_time 1970년 파싱 오류 + 중복 행 삽입 (FLUX) ✅ 2026-03-20

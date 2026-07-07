@@ -352,8 +352,8 @@ function renderOrderMatchTable() {
     return `<tr>
       <td>${order.reg_time || '-'}</td>
       <td class="truncate">${order.option_user || '-'}</td>
-      <td class="truncate">${order.addr || '-'}</td>
-      <td>${order.goods_name || '-'}</td>
+      <td class="truncate addr-col" title="${omAttr(order.addr || '')}">${order.addr || '-'}</td>
+      <td class="truncate prod-col" title="${omAttr(order.goods_name || '')}">${order.goods_name || '-'}</td>
       <td>${order.memlv || '-'}</td>
       <td>${suggested}</td>
       <td>
@@ -449,7 +449,114 @@ function openOrderMatchModal(orderId) {
   const searchInit = parseInstName(order.option_user || '');
   document.getElementById('orderMatchSearch').value = searchInit;
   searchOrderMatchCandidates();
+  renderOrderMatchNewInst(order);   // 신규 기관 간편 등록 폼 (주문에 적힌 기관명 프리필)
   document.getElementById('orderMatchModal').style.display = 'flex';
+}
+
+// ─── 신규 기관 간편 등록 (추천에 없거나, 주문에 적힌 기관명을 그대로 쓸 때) ───
+
+// HTML 속성값 안전 이스케이프 (escapeHtml은 따옴표 미처리 → 속성 문맥용 보강)
+function omAttr(s) {
+  return escapeHtml(s).replace(/"/g, '&quot;');
+}
+
+function inferInstType(name) {
+  const n = name || '';
+  if (n.includes('보건소') || n.includes('보건지소') || n.includes('보건진료소')) return '보건소';
+  if (n.includes('금연지원')) return '금연지원센터';
+  if (n.includes('대학교') || n.includes('대학') || n.includes('보건센터') || n.includes('간호')) return '대학보건센터';
+  if (n.includes('초등학교') || n.includes('중학교') || n.includes('고등학교') || n.includes('학교')) return '초중고';
+  if (n.includes('정신건강') || n.includes('중독관리') || n.includes('자살예방') || n.includes('복지센터') ||
+      n.includes('센터') || n.includes('병원') || n.includes('의료원')) return '전문기관';
+  if (n.includes('공단') || n.includes('공사') || n.includes('주식회사') || n.includes('(주)') || n.includes('건설')) return '산업보건';
+  return '전문기관';
+}
+
+function renderOrderMatchNewInst(order) {
+  const container = document.getElementById('orderMatchNewInst');
+  if (!container) return;
+
+  const parsedName = parseInstName(order.option_user || '');
+  const addrInfo = (typeof uploadParseAddress === 'function')
+    ? uploadParseAddress(order.addr || '')
+    : { region: null, district: null };
+  const inferType = inferInstType(parsedName);
+
+  // 광역시도 옵션: 기존 기관 캐시의 고유 지역 + 파싱된 지역 보장
+  const regions = [...new Set(instCache.map(d => d.region).filter(Boolean))].sort();
+  if (addrInfo.region && !regions.includes(addrInfo.region)) regions.unshift(addrInfo.region);
+
+  const typeOpts = ['보건소','전문기관','금연지원센터','광역시도 및 중앙기관','산업보건','대학보건센터','초중고','전공교육','강사·대행사'];
+
+  container.innerHTML = `
+    <div style="font-weight:600; margin-bottom:6px; color:#2e7d32;">➕ 신규 기관 등록
+      <span style="font-weight:400;color:#888;font-size:12px;">— 추천에 없으면 주문에 적힌 기관명을 그대로 등록</span></div>
+    <div style="display:grid; grid-template-columns:1fr 130px; gap:6px; margin-bottom:6px;">
+      <input type="text" id="newInstName" class="filter-input" placeholder="기관명" value="${omAttr(parsedName)}">
+      <select id="newInstType" class="filter-input">
+        ${typeOpts.map(t => `<option value="${t}" ${t === inferType ? 'selected' : ''}>${t}</option>`).join('')}
+      </select>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:8px;">
+      <select id="newInstRegion" class="filter-input">
+        <option value="">(광역시도)</option>
+        ${regions.map(r => `<option value="${omAttr(r)}" ${r === addrInfo.region ? 'selected' : ''}>${escapeHtml(r)}</option>`).join('')}
+      </select>
+      <input type="text" id="newInstDistrict" class="filter-input" placeholder="시군구" value="${addrInfo.district ? omAttr(addrInfo.district) : ''}">
+    </div>
+    <button class="btn btn-primary btn-sm" style="width:100%;" onclick="createAndMatchOrderInstitution()">
+      이 기관 신규 등록 + 주문 매칭
+    </button>
+  `;
+}
+
+async function createAndMatchOrderInstitution() {
+  if (!currentOrderMatchId) return;
+  const name = (document.getElementById('newInstName').value || '').trim();
+  if (!name) { showToast('기관명을 입력하세요.', 'error'); return; }
+
+  const type = document.getElementById('newInstType').value;
+  const region = document.getElementById('newInstRegion').value || null;
+  const district = (document.getElementById('newInstDistrict').value || '').trim() || null;
+  const order = orderMatchCache.find(o => o.id === currentOrderMatchId);
+
+  // 동명 기관 존재 시 — 기존 기관 매칭 유도(불필요한 중복 생성 방지)
+  const dup = instCache.find(d => d.name === name);
+  if (dup) {
+    const useDup = confirm(`"${name}" 기관이 이미 있습니다 (${dup.region || ''} ${dup.district || ''}).\n\n확인=기존 기관에 매칭 / 취소=동명 신규 생성(다른 지역인 경우)`);
+    if (useDup) {
+      await acceptOrderMatch(currentOrderMatchId, dup.id);
+      closeOrderMatchModal();
+      return;
+    }
+  }
+
+  // 상품 추론 (주문 상품명 기반)
+  const gn = (order && order.goods_name) || '';
+  const products = [];
+  if (/노담|금연/.test(gn)) products.push('노담패치');
+  if (!products.length || /알쓰|알스|aps|ept|spt|패치/i.test(gn)) products.push('알쓰패치');
+
+  const record = {
+    name, type, region, district,
+    track: (typeof classifyTrack === 'function') ? classifyTrack(type, region, district) : 'other',
+    purchase_stage: '구매',          // 실제 주문 발생 = 구매 단계
+    products: [...new Set(products)],
+    metadata: {
+      created_via: '주문매칭_신규등록',
+      created_from_order: order ? (order.order_idx || order.id) : null,
+      created_at: new Date().toISOString().slice(0, 10),
+    },
+  };
+
+  const { data, error } = await supabase.from('institutions')
+    .insert(record).select('id,name,type,region,district,track,metadata').single();
+  if (error) { showToast('기관 등록 실패: ' + error.message, 'error'); return; }
+
+  instCache.push(data);   // 캐시 즉시 반영 (이후 매칭 표시에 사용)
+  showToast(`신규 기관 "${name}" 등록 완료`, 'success');
+  await acceptOrderMatch(currentOrderMatchId, data.id);
+  closeOrderMatchModal();
 }
 
 function closeOrderMatchModal() {
