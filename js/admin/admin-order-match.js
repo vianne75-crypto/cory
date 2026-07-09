@@ -44,6 +44,22 @@ function parseInstName(optionUser) {
   return firstLine || clean;
 }
 
+// ─── 주소에서 기관명 추출 (사용처명 비었을 때 폴백) ───
+// 애니빌드 주문은 사용처명(option_user)이 비어도 addr 끝에 기관을 붙이는 관행:
+// "서울 송파구 올림픽로 326 (신천동, 송파구청) 송파구보건소 4층 건강증진팀"
+// → 괄호(구청 등 오탐) 제거 후 기관 접미사로 추출. 대형거래 미포착의 근본 원인 봉합.
+const INST_SUFFIX_RE = /([가-힣A-Za-z0-9]{2,}?(?:정신건강복지센터|중독관리통합지원센터|자살예방센터|건강가정지원센터|금연지원센터|보건의료원|보건진료소|보건지소|건강증진센터|보건환경연구원|보건센터|보건소|의료원|병원|대학교|고등학교|중학교|초등학교|사업소|공단|공사))/g;
+function parseInstFromAddr(addr) {
+  if (!addr) return '';
+  const s = String(addr).replace(/\([^)]*\)/g, ' ');  // 괄호 내용 제거(예: (신천동, 송파구청) — 구청 오탐 방지)
+  let m, best = '';
+  while ((m = INST_SUFFIX_RE.exec(s)) !== null) {
+    if (m[1].length > best.length) best = m[1];   // 가장 구체적인(긴) 기관명
+  }
+  INST_SUFFIX_RE.lastIndex = 0;
+  return best.trim();
+}
+
 // ─── 스마트 매칭 엔진 ───
 
 function smartMatchOrder(order, institutions) {
@@ -51,8 +67,12 @@ function smartMatchOrder(order, institutions) {
 
   const memId     = (order.mem_id     || '').trim();
   const zipcode   = (order.zipcode    || '').trim();
-  const buyerName = parseInstName(order.option_user || '');
   const addr      = (order.addr       || '').trim();
+  let   buyerName = parseInstName(order.option_user || '');
+  if (!buyerName || buyerName.length < 2) {          // 사용처명 비면 주소에서 기관명 폴백
+    const fromAddr = parseInstFromAddr(addr);
+    if (fromAddr) buyerName = fromAddr;
+  }
   const goodsName = (order.goods_name || '').trim();
   const memlv     = (order.memlv      || '').trim();
 
