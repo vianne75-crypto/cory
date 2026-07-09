@@ -18,7 +18,10 @@ UPDATE institutions SET name_source = '실거래'
 CREATE OR REPLACE VIEW public_adopted_institutions AS
 SELECT id, name, type, region, district, lat, lng,
   NULLIF(LEFT(COALESCE(NULLIF(first_purchase_date::text,''), NULLIF(last_purchase_date::text,'')),4),'')::int AS adopted_year,
-  track, name_public, institution_class
+  track, name_public, institution_class,
+  -- 광역/권역 관할 (물리 위치≠관할). 프론트: 선택 시도 ∈ service_regions면 지도 노출
+  metadata->'service_regions'  AS service_regions,   -- jsonb array of 시도명
+  metadata->>'service_scope'   AS service_scope       -- 광역|권역|(null=기초)
 FROM institutions
 WHERE purchase_amount > 0
   AND type IN ('보건소','전문기관','금연지원센터','광역시도 및 중앙기관','공공병원','기타 지자체 및 복지기관')
