@@ -8,6 +8,7 @@
 
 | # | FROM | 요청 내용 | 참조 파일 | 마감 | 상태 |
 |---|------|---------|---------|------|------|
+| KISS카운터-cap120증량 | PRISM 🔴🔴 (대표 7/9·라이브) | **[카운터 100 마감 → 총수량 120 증량 재오픈]** | Supabase `settings.kiss_counter` | 즉시 | DONE ✅ 2026-07-09 (FLUX — `cap_per_day: 100→120`만 변경·seeds/로직 불변·재배포 불요. 라이브 검증: cap 120·taken 55·**remaining 65** open. 카운트 되돌리지 않음=정직성 준수. 프론트 자동 반영) |
 | 도입기관-데이터정정-10건 | PIXEL 🟡 (대표확인 7/7) | **[public_adopted_institutions 소스 정정 10건]** | institutions(Supabase) · `data/public-adopted-institutions-view.sql` | 금주 | DONE ✅ 2026-07-08 (FLUX — institutions 원본 직접 정정: **①중복병합 9쌍**(구→신 FK재연결+구매합산+metadata감사+구삭제: 1000→863·995→942·1086→927·1083→1024·929→1006·893→999·1005→908·1009→1030·972→979) **②제외** 2134 public_optout=true **③개명** 987/1042/844 **④유형변경** 908·1038→전문기관/mega. 구 9건 삭제 검증. 뷰 자동반영) |
 | alth리드폼-엔드포인트 | PIXEL 🟡 (7/6·감사 M5) | **[/alth-lead 엔드포인트+alth_leads 테이블]** | `cory/workers/aps-lead-worker.js` `cory/data/alth-leads-schema.sql` | 금주 | DONE ✅ 2026-07-07 (FLUX — `POST /alth-lead`(track public/workplace·필수/길이검증·전화정규화·**IP 10분 스로틀+전화 10분 idempotent·fail-open**·기관자동매칭) + alth_leads 테이블(RLS/GRANT 2026-10-30 정합·전화 평문=연락동의 기반). 적대적검증 16확정 반영(남용방지·fail-open·likeSafe). 배포 v9c360bfb·스모크 5/5 통과. ⚠️**프론트 갭**: gov/biz에 `<form id=leadForm>` 마크업 없음→fetch 미발사=웹운영 회신) |
 | kiss진단-q2etc컬럼 | PIXEL 🟢 (7/7) | **[kiss_diagnosis q2_channels_etc 컬럼]** | `cory/workers/aps-lead-worker.js` `cory/data/kiss-diagnosis-q2etc-migration.sql` | 금주 | DONE ✅ 2026-07-07 (FLUX — ALTER ADD q2_channels_etc VARCHAR(100)·Worker kissDiagnosis 저장+빈응답가드 포함·관리자 진단뷰 렌더·조인뷰 반영. 배포·스모크 통과) |
