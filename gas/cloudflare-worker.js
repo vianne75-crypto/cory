@@ -452,13 +452,22 @@ async function syncOrderMemos(records, supabaseUrl, supabaseKey) {
   for (const rec of records) {
     const orderIdx = String(rec.order_idx || '').trim();
     const memo = (rec.memo || '').trim();
-    if (!orderIdx || !memo) { skipped++; continue; }
+    // 주문자 연락처(주문서 우선) — 있으면 함께 저장
+    const cName = (rec.contact_name || '').trim();
+    const cEmail = (rec.contact_email || '').trim();
+    const cPhone = (rec.contact_phone || '').trim();
+    const patch = {};
+    if (memo) { patch.memo_raw = memo; patch.memo_parsed = false; }
+    if (cName)  patch.contact_name  = cName;
+    if (cEmail) patch.contact_email = cEmail;
+    if (cPhone) patch.contact_phone = cPhone;
+    if (!orderIdx || Object.keys(patch).length === 0) { skipped++; continue; }
 
-    // order_idx 로 해당 주문(상품별 여러 행)의 memo_raw 일괄 갱신 + 파싱 리셋
+    // order_idx 로 해당 주문(상품별 여러 행) 일괄 갱신
     const res = await supaFetch(supabaseUrl, supabaseKey,
       `/rest/v1/orders?order_idx=eq.${encodeURIComponent(orderIdx)}`,
       'PATCH',
-      { memo_raw: memo, memo_parsed: false }
+      patch
     );
 
     // return=minimal → status 204. 매칭 행 없으면 notFound 추정 불가하므로 updated로 집계.
