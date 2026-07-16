@@ -172,8 +172,24 @@ export default {
           catch (e) { m = JSON.parse(raw.replace(/\\(.)/g, '$1')); }
           const rec = buildDealerRecord(m);
           if (rec) await upsertDealerRecords([rec], SUPABASE_URL, SUPABASE_KEY);
+          // 전 회원 연락처(email·phone) → member_contacts (CRM 연락처 보강, 대리점 아니어도)
+          const mc = buildMemberContact(m);
+          if (mc) await upsertMemberContacts([mc], SUPABASE_URL, SUPABASE_KEY);
         } catch (err) { /* 수신 확인 우선 — 실패해도 재전송 폭주 방지 위해 OK 반환. 누락분은 스크래퍼 폴백 */ }
         return new Response('OK', { status: 200, headers: { 'Content-Type': 'text/plain' } });
+      }
+
+      // 회원 연락처 백필 (스크래퍼 1회 — wcolive mem_list 전 회원)
+      if (url.pathname === '/sync-member-contacts') {
+        if (!SUPABASE_URL || !SUPABASE_KEY) return jsonResponse({ error: 'Supabase not configured' }, 500);
+        try {
+          const records = JSON.parse(body);
+          const recs = records.map(r => buildMemberContact({
+            mem_id: r.mem_id, name: r.name, email: r.email, hp: r.phone, sangho: r.company, memlv: r.memlv || r.grade
+          })).filter(Boolean);
+          const { upserted } = await upsertMemberContacts(recs, SUPABASE_URL, SUPABASE_KEY);
+          return jsonResponse({ success: true, total: records.length, upserted });
+        } catch (err) { return jsonResponse({ error: err.message }, 500); }
       }
 
       // 대리점 사업자정보 백필 (스크래퍼 1회 — 기존 회원 mem_list.htm 추출분)
@@ -383,6 +399,38 @@ async function upsertDealerRecords(records, supabaseUrl, supabaseKey) {
       'Authorization': `Bearer ${supabaseKey}`,
       'Content-Type': 'application/json',
       'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify(uniq)
+  });
+  if (res.status >= 400) throw new Error(`supabase ${res.status}: ${(await res.text()).slice(0,200)}`);
+  return { upserted: uniq.length };
+}
+
+// ─── 회원 연락처 (webhook·백필 공용) — 전 회원 email·phone → member_contacts ───
+function buildMemberContact(m) {
+  const memId = String(m.mem_id || '').trim();
+  if (!memId) return null;
+  return {
+    mem_id:     memId,
+    name:       (m.name || '').trim(),
+    email:      (m.email || '').trim(),
+    phone:      (m.hp || m.tel || '').trim(),
+    company:    (m.sangho || '').trim(),
+    memlv:      String(m.memlv || '').trim(),
+    updated_at: new Date().toISOString()
+  };
+}
+
+async function upsertMemberContacts(records, supabaseUrl, supabaseKey) {
+  const byId = {};
+  for (const r of records) if (r && r.mem_id) byId[r.mem_id] = r;
+  const uniq = Object.values(byId);
+  if (uniq.length === 0) return { upserted: 0 };
+  const res = await fetch(`${supabaseUrl}/rest/v1/member_contacts?on_conflict=mem_id`, {
+    method: 'POST',
+    headers: {
+      'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}`,
+      'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates,return=minimal'
     },
     body: JSON.stringify(uniq)
   });
