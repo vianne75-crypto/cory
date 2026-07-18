@@ -7,6 +7,7 @@
  *
  * 결제:
  *   MMDD 카드결제 / 카드  → payment_method='카드', payment_confirmed=false (카드사 정산 별도)
+ *   MMDD 이니시스(결제)?   → payment_method='카드'(PG), payment_confirmed=false (정산 별도)
  *   MMDD 입완             → payment_confirmed=true, payment_method='이체'
  *
  * 세금계산서:
@@ -57,6 +58,21 @@ function parseMemo(memo) {
     result.payment_method = '카드';
     result.payment_confirmed = false;
     result.events.push({ type: 'card_payment', date: null, raw: '카드결제 (날짜 없음)' });
+  }
+
+  // 이니시스/PG 결제 (카드 PG — 카드와 동일 취급: 정산 별도라 confirmed=false)
+  if (!result.payment_method) {
+    const pgMatch = raw.match(/(\d{4})\s*이니시스/);
+    if (pgMatch) {
+      result.payment_method = '카드';
+      result.payment_confirmed = false;
+      result.payment_date = mmddToDate(pgMatch[1]);
+      result.events.push({ type: 'pg_payment', date: result.payment_date, raw: pgMatch[0] });
+    } else if (/이니시스/.test(raw)) {
+      result.payment_method = '카드';
+      result.payment_confirmed = false;
+      result.events.push({ type: 'pg_payment', date: null, raw: '이니시스 (날짜 없음)' });
+    }
   }
 
   // 입금완료 (MMDD 입완 / MMDD입완)
